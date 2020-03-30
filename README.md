@@ -1,7 +1,7 @@
 # Covid-19 Italy Angular Dashboard
 
 __Angular 9__ didactic project of https://heyteacher.github.io/COVID-19/ 
-a COVID-19 Italy Dashboard based on dataset https://github.com/heyteacher/COVID-19. 
+a COVID-19 Italy Charts based on dataset https://github.com/heyteacher/COVID-19. 
 
 Developed with: 
 
