@@ -1,5 +1,9 @@
 # Covid-19 Italy Angular Dashboard
 
+[![Liberpay](http://img.shields.io/liberapay/receives/heyteacher.svg?logo=liberapay)](https://liberapay.com/heyteacher/donate)
+[![GitHub license](https://img.shields.io/github/license/heyteacher/ng-covid-19-ita-charts)](https://github.com/heyteacher/ng-covid-19-ita-charts/blob/master/LICENSE)
+[![GitHub commit](https://img.shields.io/github/last-commit/heyteacher/ng-covid-19-ita-charts)](https://github.com/heyteacher/ng-covid-19-ita-charts/commits/master)
+
 __Angular 9__ didactic project of https://heyteacher.github.io/COVID-19/ 
 a COVID-19 Italy Charts based on dataset https://github.com/heyteacher/COVID-19. 
 
