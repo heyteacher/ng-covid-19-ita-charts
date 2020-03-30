@@ -1,0 +1,25 @@
+mat-toolbar {
+    position: fixed;
+    top: 0
+}
+
+.sidenav-container {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+mat-sidenav[mode="side"] {
+    min-width: 250px;
+    padding-top: 10px;
+}
+
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+.logo {
+    max-height: 35px;
+}

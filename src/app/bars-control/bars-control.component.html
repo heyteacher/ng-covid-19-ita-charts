@@ -1,0 +1,25 @@
+<div class="chart-legend">
+    <span class="legend-title">{{title}}</span>
+    <span>
+        <mat-button-toggle-group>
+            <mat-button-toggle (click)="play()" *ngIf="!isPlaying">
+                <fa-icon [icon]="faPlay" size="xs"></fa-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="pause()" *ngIf="isPlaying">
+                <fa-icon [icon]="faPause" size="xs"></fa-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="stop()">
+                <fa-icon [icon]="faStop" size="xs"></fa-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </span>
+    <span>
+        <mat-form-field>
+            <mat-select (selectionChange)="onSelectionChange($event)" [value]="day()">
+                <mat-option *ngFor="let day of dataService.getDays()" [value]="day">
+                    {{day | date:'dd/MM' }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </span>
+</div>

@@ -1,0 +1,211 @@
+@import '~@angular/material/theming';
+@include mat-core();
+$dark-primary: mat-palette($mat-blue-grey);
+$dark-accent: mat-palette($mat-amber, A200, A100, A400);
+$dark-warn: mat-palette($mat-deep-orange);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+@include angular-material-theme($dark-theme);
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a,
+a:hover {
+    text-decoration: none !important;
+    color: white !important;
+    font-weight: bolder;
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 24px !important;
+    padding: 0px 7px !important;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: #FFFFFF;
+    font-weight: bolder;
+}
+
+mat-button-toggle-group {
+    margin: 0px 10px;
+}
+
+
+/**
+       * Backgrounds
+       */
+
+$color-bg-darkest: #13141b;
+$color-bg-darker: #1b1e27;
+$color-bg-dark: #232837;
+$color-bg-med: #2f3646;
+$color-bg-light: #455066;
+$color-bg-lighter: #5b6882;
+
+/**
+          * Text
+          */
+
+$color-text-dark: #72809b;
+$color-text-med-dark: #919db5;
+$color-text-med: #A0AABE;
+$color-text-med-light: #d9dce1;
+$color-text-light: #f0f1f6;
+$color-text-lighter: #fff;
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+.active {
+    font-weight: bolder;
+    color: $color-text-lighter !important;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px $color-bg-med;
+    border-radius: 10px;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: $color-bg-light;
+    border-radius: 10px;
+}
+
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: $color-bg-lighter;
+}
+
+// ngx chart
+.dark {
+    .breadcrumb {
+        background-color: transparent;
+        color: $color-text-light;
+    }
+    //background: $color-bg-darker;
+    .ngx-charts {
+        text {
+            fill: $color-text-med;
+        }
+        .tooltip-anchor {
+            fill: rgb(255, 255, 255);
+        }
+        .gridline-path {
+            stroke: $color-bg-light;
+        }
+        .refline-path {
+            stroke: $color-bg-light;
+        }
+        .reference-area {
+            fill: #fff;
+        }
+        .grid-panel {
+            &.odd {
+                rect {
+                    fill: rgba(255, 255, 255, 0.05);
+                }
+            }
+        }
+        .force-directed-graph {
+            .edge {
+                stroke: $color-bg-light;
+            }
+        }
+        .number-card {
+            p {
+                color: $color-text-light;
+            }
+        }
+        .gauge {
+            .background-arc {
+                path {
+                    fill: $color-bg-med;
+                }
+            }
+            .gauge-tick {
+                path {
+                    stroke: $color-text-med;
+                }
+                text {
+                    fill: $color-text-med;
+                }
+            }
+        }
+        .linear-gauge {
+            .background-bar {
+                path {
+                    fill: $color-bg-med;
+                }
+            }
+            .units {
+                fill: $color-text-dark;
+            }
+        }
+        .timeline {
+            .brush-background {
+                fill: rgba(255, 255, 255, 0.05);
+            }
+            .brush {
+                .selection {
+                    fill: rgba(255, 255, 255, 0.1);
+                    stroke: #aaa;
+                }
+            }
+        }
+        .polar-chart .polar-chart-background {
+            fill: rgb(30, 34, 46);
+        }
+    }
+    .chart-legend {
+        .legend-labels {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+        .legend-item {
+            &:hover {
+                color: #fff;
+            }
+        }
+        .legend-label {
+            &:hover {
+                color: #fff !important;
+            }
+            .active {
+                .legend-label-text {
+                    color: #fff !important;
+                }
+            }
+        }
+        .scale-legend-label {
+            color: $color-text-med;
+        }
+    }
+    .advanced-pie-legend {
+        color: $color-text-med;
+        .legend-item {
+            &:hover {
+                color: #fff !important;
+            }
+        }
+    }
+    .number-card .number-card-label {
+        font-size: 0.8em;
+        color: $color-text-med;
+    }
+}

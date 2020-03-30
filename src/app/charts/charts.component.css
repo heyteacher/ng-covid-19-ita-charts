@@ -1,0 +1,19 @@
+.chart-container {
+    height: 50vh;
+    min-height: 300px;
+}
+
+.margin-top {
+    margin-top: 50px;
+}
+
+.chart-container-single {
+    height: 80vh;
+    min-height: 300px;
+}
+
+@media (max-width: 1090px) {
+    .chart-container {
+        margin-top: 50px;
+    }
+}

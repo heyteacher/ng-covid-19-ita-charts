@@ -1,0 +1,19 @@
+export const environment = {
+  production: true,
+
+  siteTitle: 'COVID-19 Italia',
+  shareMessage : 'Grafici COVID-19 Italia per regione e provincia',
+  shareUrl : "https://heyteacher.github.io/COVID-19",
+  shareTags : "#coronavirus #coronavirus",
+  
+  baseHref: "/COVID-19/",
+  
+  donateUrl: 'https://liberapay.com/heyteacher/donate',
+
+  countryDataSetURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json',
+  regionalDataSetUrl: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json',
+  provincialDataSetUrl: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-province.json',
+
+  countryForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-andamento-nazionale-forecast.json',
+  regionalForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-regioni-forecast.json'
+};

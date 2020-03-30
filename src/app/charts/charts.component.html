@@ -1,0 +1,107 @@
+<div class="container-fluid pl-1 pr-4 dark">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/" class="active">Italia</a></li>
+                    <li *ngIf="breadcrumbs['region']" class="breadcrumb-item"><a routerLink="/{{breadcrumbs['region']}}" class="active">{{breadcrumbs['region']}}</a></li>
+                    <li *ngIf="breadcrumbs['province']" class="breadcrumb-item active" aria-current="page">{{breadcrumbs['province']}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row" *ngIf="!breadcrumbs['province']; else provinceTemplate">
+        <div class="col-lg-6 chart-container text-center">
+            <div class="chart-legend">
+                <span class="legend-title">Andamento Totale {{breadcrumbs['region']}}</span>
+            </div>
+            <ngx-charts-line-chart [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true" showGridLines="true" legendPosition="right">
+            </ngx-charts-line-chart>
+        </div>
+        <div class="col-lg-6 chart-container text-center">
+            <div class="chart-legend">
+                <span class="legend-title">Andamento Giornaliero {{breadcrumbs['region']}}</span>
+            </div>
+            <ngx-charts-line-chart [results]="seriesDailyData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            </ngx-charts-line-chart>
+        </div>
+
+        <div class="col-lg-4 chart-container text-center" style="padding-top:13px">
+            <div class="chart-legend">
+                <span class="legend-title">% Nuovi al Giorno {{breadcrumbs['region']}}</span>
+            </div>
+            <ngx-charts-line-chart [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            </ngx-charts-line-chart>
+        </div>
+        <div class="col-lg-4 chart-container text-center">
+            <app-bars-control (change)="getNewCasesPercBarsData($event)" title="% Nuovi al Giorno" playLastDays="15">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="newCasesPercBarsData" [scheme]="colorScheme" [xScaleMax]="newCasesPercBarsMax" showDataLabel="true" legendTitle="Nuovi Casi %" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center">
+            <app-bars-control (change)="getTotalCasesBarsData($event)" title="Totali {{breadcrumbs['region']}}">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="totalCasesBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+
+        <div class="col-lg-4 chart-container margin-top text-center">
+            <app-bars-control (change)="getNewPositiveBarsData($event)" title="Nuovi al Giorno">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="newPositiveBarsData" [scheme]="colorScheme" [xScaleMax]="newPositiveBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+            <app-bars-control (change)="getLethalityBarsData($event)" title="Tasso Letalità" playLastDays="20">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="lethalityBarsData" [scheme]="colorScheme" [xScaleMax]="lethalityBarsMax" showDataLabel="true" legendTitle="Letalità" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+            <app-bars-control (change)="getIntensiveBarsData($event)" title="Intensiva">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="intensiveBarsData" [scheme]="colorScheme" [xScaleMax]="intensiveBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+            <app-bars-control (change)="getTotalCasesPerProvinceBarsData($event)" title="Casi per Provincia">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="totalCasesPerProvinceBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesPerProvinceBarsMax" showDataLabel="true" legendTitle="Terapia Intensiva" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+            <app-bars-control (change)="getTotalSwabBarsData($event)" title="Tamponi">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="totalSwabBarsData" [scheme]="colorScheme" [xScaleMax]="totalSwabBarsMax" showDataLabel="true" legendTitle="Tamponi" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+            <app-bars-control (change)="getPositivePerSwabBarsData($event)" title="% Positivi per Tamponi">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="positivePerSwabBarsData" [scheme]="colorScheme" [xScaleMax]="positivePerSwabBarsMax" showDataLabel="true" legendTitle="Positivi per Tamponi" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
+            </ngx-charts-bar-horizontal>
+        </div>
+    </div>
+</div>
+
+<ng-template #provinceTemplate>
+    <div class="row">
+        <div class="col-lg-6 chart-container-single text-center">
+            <div class="chart-legend">
+                <span class="legend-title">Andamento {{breadcrumbs['province']}}</span>
+            </div>
+            <ngx-charts-line-chart timeline="false" [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" xAxis="true" yAxis="true" showGridLines="true">
+            </ngx-charts-line-chart>
+        </div>
+        <div class="col-lg-6 chart-container text-center">
+            <div class="chart-legend">
+                <span class="legend-title">% Nuovi Positivi Giorno Precedente {{breadcrumbs['province']}}
+                </span>
+            </div>
+            <ngx-charts-line-chart [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showLegend="false" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            </ngx-charts-line-chart>
+        </div>
+    </div>
+</ng-template>
