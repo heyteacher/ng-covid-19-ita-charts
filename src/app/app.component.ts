@@ -35,7 +35,7 @@ export class AppComponent {
     return `https://web.whatsapp.com/send?text=${environment.shareMessage} ${this.shareUrl}`
   }
   githubLink() {
-    return this.shareUrl
+    return `https://github.com/heyteacher/ng-covid-19-ita-charts`
   }
   facebookLink() {
     return `https://www.facebook.com/sharer/sharer.php?u=${this.shareUrl}`
