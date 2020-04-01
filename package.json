@@ -8,7 +8,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "release": "ng build --prod  --base-href \"/COVID-19/\" && cd dist/prod/ && git add . && git commit -m \"released at `date`\" && git push && cd ../../../"
+        "release": "ng build --prod  && cd dist/prod/ && git add . && git commit -m \"released at `date`\" && git push && cd ../../../"
     },
     "private": true,
     "dependencies": {
