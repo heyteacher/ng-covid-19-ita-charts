@@ -23,9 +23,9 @@ export class SeriesService {
    * array dati regionali filtrati per regione
    * @param region  regione
    */
-  async getCountryForecastSeries(label: string): Promise<Series> {
+  async getCountryForecastSeries(quantile: string, label: string): Promise<Series> {
     let countryForecastData = await this.dataService.getCountryForecastData();
-    return this.buildSeries(countryForecastData, 'p90', label, null, 'date');
+    return this.buildSeries(countryForecastData, quantile, label, null, 'date');
   }
 
   /**
@@ -42,10 +42,10 @@ export class SeriesService {
    * array dati regionali filtrati per regione
    * @param region  regione
    */
-  async getRegionalForecastSeries(region: string, label: string): Promise<Series> {
+  async getRegionalForecastSeries(region: string, quantile:string, label: string): Promise<Series> {
     let regionalForecastData = await this.dataService.getRegionalForecastData();
     regionalForecastData = this.dataService.filterData(regionalForecastData, 'item_id', region)
-    return this.buildSeries(regionalForecastData, 'p90', label, null, 'date');
+    return this.buildSeries(regionalForecastData, quantile, label, null, 'date');
   }
 
   /**

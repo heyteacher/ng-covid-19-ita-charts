@@ -78,7 +78,7 @@ export class ChartsComponent {
       await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', 'Dimessi Guariti'),
       await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', 'Intensiva'),
       await this.seriesService.getCountrySeries('nuovi_deceduti', 'Deceduti'),
-      await this.seriesService.getCountryForecastSeries('AWS Forecast'),
+      await this.seriesService.getCountryForecastSeries('p50', 'AWS Forecast Quantile Loss 50%')
     ]
     this.seriesPercData = [
       await this.seriesService.getCountrySeries('totale_nuovi_casi', '% Casi', 'totale_casi_ieri'),
@@ -146,17 +146,17 @@ export class ChartsComponent {
     this.seriesData = [
       await this.seriesService.getRegionalSeries(region, 'totale_casi', 'Casi'),
       await this.seriesService.getRegionalSeries(region, "dimessi_guariti", 'Dimessi Guariti'),
-      //await this.seriesService.getRegionalSeries(region, 'totale_attualmente_positivi', 'Attualmente Positivi'),
       await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', 'Intensiva'),
       await this.seriesService.getRegionalSeries(region, 'deceduti', 'Deceduti'),
     ]
     this.seriesDailyData = [
       await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", 'Casi'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti'),
-      //await this.seriesService.getRegionalSeries(region, 'nuovi_attualmente_positivi', 'Attualmente Positivi'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti'),
-      await this.seriesService.getRegionalForecastSeries(region, 'AWS Forecast'),
+      await this.seriesService.getRegionalForecastSeries(region, 'p90', 'AWS Forecast Quantile Loss 90%'),
+      await this.seriesService.getRegionalForecastSeries(region, 'p50', 'AWS Forecast Quantile Loss 50%'),
+      await this.seriesService.getRegionalForecastSeries(region, 'p10', 'AWS Forecast Quantile Loss 10%'),
     ]
     this.seriesPercData = [
       await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', '% Casi', 'totale_casi_ieri'),
