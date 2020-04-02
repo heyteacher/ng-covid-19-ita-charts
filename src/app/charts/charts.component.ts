@@ -46,6 +46,9 @@ export class ChartsComponent {
 
   newCasesPercBarsData: Bar[] = []
   newCasesPercBarsMax: number;
+  
+  newSwabBarsData: Bar[] = [];
+  newSwabBarsMax: number;
 
   constructor(
     private seriesService: SeriesService,
@@ -92,8 +95,10 @@ export class ChartsComponent {
     await this.getNewCasesPercBarsData()
     await this.getTotalCasesBarsData()
     await this.getTotalCasesPerProvinceBarsData()
+
     await this.getTotalSwabBarsData()
     await this.getPositivePerSwabBarsData()
+    await this.getNewSwabBarsData()
   }
 
   async getTotalCasesBarsData($event = { value: null }) {
@@ -135,6 +140,12 @@ export class ChartsComponent {
   async getTotalSwabBarsData($event = { value: null }) {
     this.totalSwabBarsData = await this.barsService.getRegionalBars('tamponi', $event.value)
     this.totalSwabBarsMax = this.getMaxValue(this.totalCasesBarsData,this.totalSwabBarsMax)
+  }
+
+  async getNewSwabBarsData($event = { value: null }) {
+    this.newSwabBarsData = await this.barsService.getRegionalBars('nuovi_tamponi', $event.value)
+    this.newSwabBarsMax = this.getMaxValue(this.newSwabBarsData,this.newSwabBarsMax)
+    return this.newSwabBarsData
   }
 
   async getPositivePerSwabBarsData($event = { value: null }) {
