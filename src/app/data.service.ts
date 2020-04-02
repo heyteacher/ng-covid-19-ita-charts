@@ -39,7 +39,7 @@ export class DataService {
   }
   
   getDays(): string[] {
-    if (!this.days) this.getCountryData()
+    if (!this.days) this.countryData
     return this.days
   }
 
@@ -58,6 +58,7 @@ export class DataService {
    * singleton get regional data
    */
   async getRegionalData(): Promise<any[]> {
+    this.getCountryData()
     if (!this.regionalData) {
       this.regionalData = await this.getJson(environment.regionalDataSetUrl)
     }

@@ -22,6 +22,7 @@ export class ChartsComponent {
   seriesData: Series[] = [];
   seriesDailyData: Series[] = [];
   seriesPercData: Series[] = [];
+  seriesSwabData: Series[];
 
   totalCasesBarsData: Bar[] = [];
   totalCasesBarsMax: number;
@@ -88,6 +89,9 @@ export class ChartsComponent {
       await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', '% Dimessi Guariti', 'dimessi_guariti_ieri'),
       await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', '% Intensiva ', 'terapia_intensiva_ieri'),
       await this.seriesService.getCountrySeries('nuovi_deceduti', '% Deceduti ', 'deceduti_ieri'),
+    ]
+    this.seriesSwabData = [
+      await this.seriesService.getCountrySeries('nuovi_tamponi', 'Tamponi'),
     ]
     await this.getIntensiveBarsData()
     await this.getNewPositiveBarsData()
@@ -172,6 +176,9 @@ export class ChartsComponent {
       await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', '% Dimessi Guariti', 'dimessi_guariti_ieri'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', '% Intensiva ', 'terapia_intensiva_ieri'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', '% Deceduti ', 'deceduti_ieri'),
+    ]
+    this.seriesSwabData = [
+      await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', 'Tamponi'),
     ]
     await this.getTotalCasesBarsData()
     await this.getNewCasesPercBarsData()
