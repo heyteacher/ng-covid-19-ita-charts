@@ -154,9 +154,7 @@ export class ChartsComponent {
       await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti'),
-      await this.seriesService.getRegionalForecastSeries(region, 'p90', 'AWS Forecast Quantile Loss 90%'),
       await this.seriesService.getRegionalForecastSeries(region, 'p50', 'AWS Forecast Quantile Loss 50%'),
-      await this.seriesService.getRegionalForecastSeries(region, 'p10', 'AWS Forecast Quantile Loss 10%'),
     ]
     this.seriesPercData = [
       await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', '% Casi', 'totale_casi_ieri'),
