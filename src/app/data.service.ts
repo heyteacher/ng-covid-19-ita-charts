@@ -39,7 +39,7 @@ export class DataService {
   }
   
   getDays(): string[] {
-    if (!this.days) this.countryData
+    if (!this.days) this.getCountryData()
     return this.days
   }
 
