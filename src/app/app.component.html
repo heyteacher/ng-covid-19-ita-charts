@@ -12,16 +12,6 @@
     </span>
     <span class="toolbar-spacer"></span>
     <span>
-        <a target="_blank" href="{{githubLink()}}" title="Github">
-            <fa-icon [icon]="faGithub"></fa-icon>
-        </a>&nbsp;&nbsp;
-    </span>
-    <span>
-        <a target="_blank" href="{{donateUrl}}">
-            <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">&nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
-    </span>
-    <span>
         <a target="_blank" href="{{twitterLink()}}" title="Twitter" >
             <fa-icon [icon]="faTwitter"></fa-icon>
         </a>&nbsp;&nbsp;
@@ -47,25 +37,47 @@
         </a>
     </span>
     <span>
-        <button mat-button [matMenuTriggerFor]="creditMenu">Crediti</button>
+        <a target="_blank" href="{{donateUrl}}">
+            &nbsp;&nbsp;<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
+        </a>
+    </span>
+    <span>
+        <button mat-button [matMenuTriggerFor]="repsMenu"><fa-icon [icon]="faGithub"></fa-icon> Reps</button>
+        <mat-menu #repsMenu="matMenu">
+            <a mat-menu-item href="https://github.com/heyteacher/COVID-19" target="_blank" title="COVID-19 Datasets & Forecasts">
+                <fa-icon [icon]="faGithub"></fa-icon> Datasets & Forecasts
+            </a>     
+            <a mat-menu-item href="https://github.com/heyteacher/ng-covid-19-ita-charts" target="_blank" title="Angular Source Code ">
+                <fa-icon [icon]="faGithub"></fa-icon> Angular Source Code 
+            </a>     
+            <a mat-menu-item href="https://github.com/heyteacher/sam-forecast-automation-covid-19-ita" target="_blank" title="AWS SAM Template Project">
+                <fa-icon [icon]="faGithub"></fa-icon> AWS SAM Template Project
+            </a>     
+        </mat-menu>
+    </span>
+    <span>
+        <button mat-button [matMenuTriggerFor]="creditMenu">Credits</button>
         <mat-menu #creditMenu="matMenu">
-            <a mat-menu-item href="https://github.com/pcm-dpc/COVID-19" target="pcm-dpc" title="Dati Ufficiali della Protezione Civile">
+            <a mat-menu-item href="https://github.com/pcm-dpc/COVID-19" target="_blank" title="Dati Ufficiali della Protezione Civile">
                 <fa-icon [icon]="faGithub"></fa-icon> pcm-dpc/COVID-19
             </a>
-            <a mat-menu-item href="https://material.angular.io" target="material" title="Angular Material UI">
-                <fa-icon [icon]="faAngular"></fa-icon> Material UI Library
+            <a mat-menu-item href="https://swimlane.gitbook.io/ngx-charts/" target="_blank" title="ngx-charts">
+                <img style="height: 18px;" src="./assets/icon/ngx-charts.svg"/> ngx-charts
             </a>
-            <a mat-menu-item href="https://angular.io" target="angular" title="Angular">
+            <a mat-menu-item href="https://angular.io" target="_blank" title="Angular">
                 <fa-icon [icon]="faAngular"></fa-icon> Angular
             </a>
-            <a mat-menu-item href="https://getbootstrap.com/" target="bootstrap-layout" title="Bootstrap">
+            <a mat-menu-item href="https://material.angular.io" target="_blank" title="Angular Material UI">
+                <fa-icon [icon]="faAngular"></fa-icon> Material UI Library
+            </a>
+            <a mat-menu-item href="https://getbootstrap.com/" target="_blank" title="Bootstrap">
                 <fa-icon [icon]="faBootstrap"></fa-icon> Bootstrap
             </a>
-            <a mat-menu-item href="https://swimlane.gitbook.io/ngx-charts/" target="ngx-charts" title="ngx-charts">
-                <img style="height: 18px;" src="./assets/icon/ngx-charts.svg"/> ngx-charts
+            <a mat-menu-item href="https://fontawesome.com/" target="_blank" title="Font Awesome">
+                <fa-icon [icon]="faFontAwesome"></fa-icon> Font Awesome
             </a>            
         </mat-menu>
-        </span>
+    </span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav mode="side" opened class="d-none d-lg-block">

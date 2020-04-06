@@ -4,7 +4,7 @@ import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
 import { faTwitter, faWhatsapp, faGithub, 
          faAngular, faFacebook, faBootstrap,
-         faLinkedin} from '@fortawesome/free-brands-svg-icons';
+         faLinkedin, faFontAwesome} from '@fortawesome/free-brands-svg-icons';
 import {faCopy } from '@fortawesome/free-solid-svg-icons';
 import { environment } from './../environments/environment';
  
@@ -27,15 +27,13 @@ export class AppComponent {
   faBootstrap = faBootstrap
   faLinkedin = faLinkedin
   faCopy = faCopy
+  faFontAwesome = faFontAwesome
  
   twitterLink() {
     return `https://twitter.com/intent/tweet?source=tweetbutton&text=${environment.shareMessage}&url=${this.shareUrl}&${environment.shareTags}`
   }
   whatsappLink() {
     return `https://web.whatsapp.com/send?text=${environment.shareMessage} ${this.shareUrl}`
-  }
-  githubLink() {
-    return `https://github.com/heyteacher/ng-covid-19-ita-charts`
   }
   facebookLink() {
     return `https://www.facebook.com/sharer/sharer.php?u=${this.shareUrl}`
