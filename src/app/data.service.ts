@@ -139,11 +139,11 @@ export class DataService {
   }
 
   encode(province) {
-    return province == 'In fase di definizione/aggiornamento' ? `N.A.` : province
+    return province == 'In fase di definizione/aggiornamento' ? `NON ATTRIBUITO` : province
   }
 
   decode(province) {
-    return province == 'N.A.' ? 'In fase di definizione/aggiornamento' : province
+    return province == 'NON ATTRIBUITO' ? 'In fase di definizione/aggiornamento' : province
   }
 
   orderValueDesc = (a, b) => {
