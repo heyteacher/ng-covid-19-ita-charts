@@ -58,24 +58,29 @@ export class ChartsComponent {
     activateRoute: ActivatedRoute) {
     activateRoute.params.subscribe(params => {
       this.breadcrumbs = params
-      if (params['province']) {
-        this.setProvincialData(params.region, params.province)
-      }
-      else if (params['region']) {
-        this.setRegionalData(params.region)
-      }
-      else {
-        this.setCountryData()
-      }
+      this.initData()
     })
   }
 
+  private initData() {
+    if (this.breadcrumbs['province']) {
+      this.setProvincialData(this.breadcrumbs.region, this.breadcrumbs.province)
+    }
+    else if (this.breadcrumbs['region']) {
+      this.setRegionalData(this.breadcrumbs.region)
+    }
+    else {
+      this.setCountryData()
+    }
+  }
+
   private async setCountryData() {
+    const fn = this.log10? this.formatLog10: null
     this.seriesData = [
-      await this.seriesService.getCountrySeries('totale_casi', 'Casi'),
-      await this.seriesService.getCountrySeries("dimessi_guariti", 'Dimessi Guariti'),
-      await this.seriesService.getCountrySeries('terapia_intensiva', 'Intensiva'),
-      await this.seriesService.getCountrySeries('deceduti', 'Deceduti'),
+      await this.seriesService.getCountrySeries('totale_casi', 'Casi', null, fn),
+      await this.seriesService.getCountrySeries("dimessi_guariti", 'Dimessi Guariti', null, fn),
+      await this.seriesService.getCountrySeries('terapia_intensiva', 'Intensiva', null, fn),
+      await this.seriesService.getCountrySeries('deceduti', 'Deceduti', null, fn),
     ]
     this.seriesDailyData = [
       await this.seriesService.getCountrySeries("totale_nuovi_casi", 'Casi'),
@@ -103,6 +108,46 @@ export class ChartsComponent {
     await this.getTotalSwabBarsData()
     await this.getPositivePerSwabBarsData()
     await this.getNewSwabBarsData()
+  }
+
+
+  private async setRegionalData(region: string) {
+    const fn = this.log10? this.formatLog10: null
+    this.seriesData = [
+      await this.seriesService.getRegionalSeries(region, 'totale_casi', 'Casi', null, fn),
+      await this.seriesService.getRegionalSeries(region, "dimessi_guariti", 'Dimessi Guariti', null, fn),
+      await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', 'Intensiva', null, fn),
+      await this.seriesService.getRegionalSeries(region, 'deceduti', 'Deceduti', null, fn),
+    ]
+    this.seriesDailyData = [
+      await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", 'Casi'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti'),
+      await this.seriesService.getRegionalForecastSeries(region, 'p50', 'AWS Forecast Quantile Loss 50%'),
+    ]
+    this.seriesPercData = [
+      await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', 'Casi', 'totale_casi_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti', 'dimessi_guariti_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva ', 'terapia_intensiva_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti ', 'deceduti_ieri'),
+    ]
+    this.seriesSwabData = [
+      await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', 'Tamponi'),
+    ]
+    await this.getTotalCasesBarsData()
+    await this.getNewCasesPercBarsData()
+    await this.getNewPositiveBarsData()
+  }
+
+  private async setProvincialData(region: string, province: string) {
+    this.seriesData = [
+      await this.seriesService.getProvincialSeries(region, province, 'totale_casi', 'Totale Casi'),
+      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', 'Nuovi  Casi')
+    ]
+    this.seriesPercData = [
+      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', '% Nuovi Casi', 'totale_casi_ieri'),
+    ]
   }
 
   async getTotalCasesBarsData($event = { value: null }) {
@@ -157,50 +202,35 @@ export class ChartsComponent {
     this.positivePerSwabBarsMax = this.getMaxValue(this.positivePerSwabBarsData,this.positivePerSwabBarsMax)
   }
 
-  private async setRegionalData(region: string) {
-    this.seriesData = [
-      await this.seriesService.getRegionalSeries(region, 'totale_casi', 'Casi'),
-      await this.seriesService.getRegionalSeries(region, "dimessi_guariti", 'Dimessi Guariti'),
-      await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', 'Intensiva'),
-      await this.seriesService.getRegionalSeries(region, 'deceduti', 'Deceduti'),
-    ]
-    this.seriesDailyData = [
-      await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", 'Casi'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti'),
-      await this.seriesService.getRegionalForecastSeries(region, 'p50', 'AWS Forecast Quantile Loss 50%'),
-    ]
-    this.seriesPercData = [
-      await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', '% Casi', 'totale_casi_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', '% Dimessi Guariti', 'dimessi_guariti_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', '% Intensiva ', 'terapia_intensiva_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', '% Deceduti ', 'deceduti_ieri'),
-    ]
-    this.seriesSwabData = [
-      await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', 'Tamponi'),
-    ]
-    await this.getTotalCasesBarsData()
-    await this.getNewCasesPercBarsData()
-    await this.getNewPositiveBarsData()
+  changeAggregate($event) {
+    console.log($event)
   }
 
+  log10:boolean = true
 
-  private async setProvincialData(region: string, province: string) {
-    this.seriesData = [
-      await this.seriesService.getProvincialSeries(region, province, 'totale_casi', 'Totale Casi'),
-      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', 'Nuovi  Casi')
-    ]
-    this.seriesPercData = [
-      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', '% Nuovi Casi', 'totale_casi_ieri'),
-    ]
+  changeLog10($event) {
+    this.log10 = $event
+    this.initData()
   }
+  
 
   private getMaxValue(barsData: Bar[], maxValue = null): number {
     return maxValue? maxValue: barsData[0].value
   }
 
   public formatPercentage(input) {
-    return input + '%'
+    return `${input} %`
+  }
+
+  public formatRound(input) {
+    return Math.round(input).toLocaleString()
+  }
+
+  public formatPow10(input) {
+    return Math.round(Math.pow(10,input)).toLocaleString()
+  }
+
+  public formatLog10(input) {
+    return input && input > 0? Math.log10(input): input
   }
 }

@@ -1,0 +1,26 @@
+<div class="chart-legend">
+    <span class="legend-title">{{title}}</span>
+    <span>
+        <mat-button-toggle-group [value]="log10" (change)="newLog10($event)">
+            <mat-button-toggle value="log10">
+                Log
+            </mat-button-toggle>
+            <mat-button-toggle value="linear">
+                Lineare
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </span>
+    <span *ngIf="aggregateDisabled==false">
+        <mat-button-toggle-group [value]="aggregate" (change)="newAggregate($event)">
+            <mat-button-toggle value="daily">
+                Giorno
+            </mat-button-toggle>
+            <mat-button-toggle value="weekly">
+                Settimana
+            </mat-button-toggle>
+            <mat-button-toggle  value="montly">
+                Mese
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </span>
+</div>

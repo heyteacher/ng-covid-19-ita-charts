@@ -12,15 +12,15 @@
     </div>
     <div class="row" *ngIf="!breadcrumbs['province']; else provinceTemplate">
         <div class="col-lg-6 chart-container text-center">
-            <div class="chart-legend">
-                <span class="legend-title">Andamento Totale {{breadcrumbs['region']}}</span>
-            </div>
-            <ngx-charts-line-chart [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true" showGridLines="true" legendPosition="right">
+            <app-series-control (changeLog10)="changeLog10($event)" (changeAggregate)="changeAggregate($event)" aggregateDisabled="true" title="Andamento Totale ">
+            </app-series-control>
+            <ngx-charts-line-chart [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true" showGridLines="true"
+                legendPosition="right">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center">
             <div class="chart-legend">
-                <span class="legend-title">Andamento Nuovi Giornaliero {{breadcrumbs['region']}}</span>
+                <span class="legend-title">Andamento Nuovi Giornaliero </span>
             </div>
             <ngx-charts-line-chart [results]="seriesDailyData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
@@ -28,14 +28,14 @@
 
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
             <div class="chart-legend">
-                <span class="legend-title">% Nuovi al Giorno {{breadcrumbs['region']}}</span>
+                <span class="legend-title">% Nuovi al Giorno </span>
             </div>
             <ngx-charts-line-chart [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
             <div class="chart-legend">
-                <span class="legend-title">Nuovi Tamponi {{breadcrumbs['region']}}</span>
+                <span class="legend-title">Nuovi Tamponi </span>
             </div>
             <ngx-charts-line-chart [results]="seriesSwabData" [scheme]="colorScheme" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
@@ -55,7 +55,7 @@
             </ngx-charts-bar-horizontal>
         </div>
         <div class="col-lg-4 chart-container text-center">
-            <app-bars-control (change)="getTotalCasesBarsData($event)" title="Totali {{breadcrumbs['region']}}">
+            <app-bars-control (change)="getTotalCasesBarsData($event)" title="Totali ">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="totalCasesBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
             </ngx-charts-bar-horizontal>
@@ -105,14 +105,14 @@
     <div class="row">
         <div class="col-lg-6 chart-container-single text-center">
             <div class="chart-legend">
-                <span class="legend-title">Andamento Totale {{breadcrumbs['province']}}</span>
+                <span class="legend-title">Andamento Totale</span>
             </div>
             <ngx-charts-line-chart timeline="false" [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center">
             <div class="chart-legend">
-                <span class="legend-title">% Andamento Nuovi Giornaliero {{breadcrumbs['province']}}
+                <span class="legend-title">% Andamento Nuovi Giornaliero
                 </span>
             </div>
             <ngx-charts-line-chart [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showLegend="false" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">

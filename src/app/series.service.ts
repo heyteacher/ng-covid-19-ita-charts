@@ -13,11 +13,47 @@ export class SeriesService {
   /**
    * array dati nazionali
    */
-  async getCountrySeries(key: string, label: string, denomKey: string = null): Promise<Series> {
+  async getCountrySeries(
+      key: string, 
+      label: string, 
+      denomKey: string = null, 
+      fn:any = null): Promise<Series> {
     const countryData = await this.dataService.getCountryData();
-    return this.buildSeries(countryData, key, label, denomKey)
+    return this.buildSeries(countryData, key, label, denomKey, 'data', fn)
   }
 
+
+  /**
+   * array dati regionali filtrati per regione
+   * @param region  regione
+   */
+  async getRegionalSeries(
+    region: string, 
+    key: string, 
+    label: string, 
+    denomKey: string = null,
+    fn:any = null): Promise<Series> {
+    let regionalData = await this.dataService.getRegionalData();
+    regionalData = this.dataService.filterData(regionalData, 'denominazione_regione', region)
+    return this.buildSeries(regionalData, key, label, denomKey,'data',fn);
+  }
+
+  /**
+   * array dati provinciali filtrati per provincia
+   * @param province provincia
+   */
+  async getProvincialSeries(
+    region: string, 
+    province: string, 
+    key: string, 
+    label: string, 
+    denomKey: string = null,
+    fn:any = null): Promise<Series> {
+    let provincialData = await this.dataService.getProvincialData();
+    provincialData = this.dataService.filterData(provincialData, 'denominazione_provincia', this.dataService.decode(province))
+    provincialData = this.dataService.filterData(provincialData, 'denominazione_regione', region)
+    return this.buildSeries(provincialData, key, label, denomKey,'data',fn);
+  }
 
     /**
    * array dati regionali filtrati per regione
@@ -27,17 +63,7 @@ export class SeriesService {
     let countryForecastData = await this.dataService.getCountryForecastData();
     return this.buildSeries(countryForecastData, quantile, label, null, 'date');
   }
-
-  /**
-   * array dati regionali filtrati per regione
-   * @param region  regione
-   */
-  async getRegionalSeries(region: string, key: string, label: string, denomKey: string = null): Promise<Series> {
-    let regionalData = await this.dataService.getRegionalData();
-    regionalData = this.dataService.filterData(regionalData, 'denominazione_regione', region)
-    return this.buildSeries(regionalData, key, label, denomKey);
-  }
-
+  
   /**
    * array dati regionali filtrati per regione
    * @param region  regione
@@ -48,31 +74,21 @@ export class SeriesService {
     return this.buildSeries(regionalForecastData, quantile, label, null, 'date');
   }
 
-  /**
-   * array dati provinciali filtrati per provincia
-   * @param province provincia
-   */
-  async getProvincialSeries(region: string, province: string, key: string, label: string, denomKey: string = null): Promise<Series> {
-    let provincialData = await this.dataService.getProvincialData();
-    provincialData = this.dataService.filterData(provincialData, 'denominazione_provincia', this.dataService.decode(province))
-    provincialData = this.dataService.filterData(provincialData, 'denominazione_regione', region)
-    return this.buildSeries(provincialData, key, label, denomKey);
-  }
-
    /**
    * genera ila serie nel formato richiesto da ngx-charts
    * @param data array dei dati
    * @param key chiave per estrarre il valore
    * @param label descrizione della chiava
    */
-  private buildSeries(data: any[], key: string, label: string, denomKey: string = null, date:string = 'data'): Series {
+  private buildSeries(data: any[], key: string, label: string, denomKey: string = null, date:string = 'data', fn:any = null): Series {
     const daySeries = (input) => {
-      const denomValue = denomKey && input[denomKey] > 0 && input[key] >= 0 ? input[denomKey] : 0
-      const value = denomKey == null ? 
+      const denomValue = denomKey && input[denomKey] > 0 && input[key] != 0 ? input[denomKey] : 0
+      let value = denomKey == null ? 
         input[key] : 
         denomValue > 0?
           Math.min((Math.floor((input[key] / denomValue) * 10000) / 100), 100):
           0
+      value = fn? fn(value): value
       return {
         value: value,
         name: moment(input[date]).format('DD/MM')
