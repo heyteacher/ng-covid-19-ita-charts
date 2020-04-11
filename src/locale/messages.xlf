@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+  <file source-language="it-IT" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="2631358795215683497" datatype="html">
         <source>Infected</source>
@@ -17,6 +17,9 @@
       <trans-unit id="8658515443308158959" datatype="html">
         <source>Deaths</source>
       </trans-unit>
+      <trans-unit id="4316707328830883056" datatype="html">
+        <source>NOT ATTRIBUTED YET</source>
+      </trans-unit>
       <trans-unit id="2001900165427656301" datatype="html">
         <source>COVID-19 Italy Charts per region and province</source>
       </trans-unit>
@@ -32,6 +35,9 @@
       <trans-unit id="2872317389757916525" datatype="html">
         <source>New Infected</source>
       </trans-unit>
+      <trans-unit id="2427223107800831324" datatype="html">
+        <source>Italy</source>
+      </trans-unit>
       <trans-unit id="1752445013258609371" datatype="html">
         <source>New Infected Rate</source>
       </trans-unit>
@@ -43,25 +49,18 @@
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="21e9e152decd31995c8ad5656727e577baf14473" datatype="html">
-        <source>Copy in Clipboard</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">35</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="c636cdca29278f7b066007a06c70f5526a883d12" datatype="html">
-        <source>Reps</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">45</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="2d24d1eb8d295534d8669dbeaf56201c141285af" datatype="html">
         <source>Credits</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="21e9e152decd31995c8ad5656727e577baf14473" datatype="html">
+        <source>Copy in Clipboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="548080372d453a3c0f6480522a5a20e680f8a242" datatype="html">
@@ -108,6 +107,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f4f5abf9c693029a755f002f632b2e51778ac322" datatype="html">

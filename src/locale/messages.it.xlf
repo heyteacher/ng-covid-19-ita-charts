@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+  <file source-language="it" datatype="plaintext" original="ng2.template">
     <body>
+
       <trans-unit id="2631358795215683497" datatype="html" approved="yes">
         <source>Infected</source>
         <target state="translated">Infettati</target>
@@ -18,10 +19,19 @@
         <source>Intensive Care</source>
         <target state="translated">Terapia Intensiva</target>
       </trans-unit>
-      <trans-unit id="8658515443308158959" datatype="html" approved="no">
+      <trans-unit id="8658515443308158959" datatype="html" approved="yes">
         <source>Deaths</source>
-        <target state="needs-translation">Deceduti</target>
+        <target state="translated">Deceduti</target>
       </trans-unit>
+      <trans-unit id="4316707328830883056" datatype="html" approved="yes">
+        <source>NOT ATTRIBUTED YET</source>
+        <target state="translated">NON ATTRIBUITI</target>
+      </trans-unit>
+      <trans-unit id="2427223107800831324" datatype="html">
+        <source>Italy</source>
+        <target state="translated">Italia</target>
+      </trans-unit>
+
       <trans-unit id="2001900165427656301" datatype="html" approved="yes">
         <source>COVID-19 Italy Charts per region and province</source>
         <target state="translated">COVID-19 Italia, grafici per regione e provincia</target>
@@ -46,28 +56,12 @@
         <source>New Infected Rate</source>
         <target state="translated">Tasso Nuovi Infettati</target>
       </trans-unit>
-      <trans-unit id="6441dea9eb52d42530be66bc18471202649aeaad" datatype="html" approved="no">
+      <trans-unit id="6441dea9eb52d42530be66bc18471202649aeaad" datatype="html" approved="yes">
         <source>Click to select regions and provinces</source>
-        <target state="needs-translation">Clicca per selezionare regioni e province</target>
+        <target state="translated">Clicca per Selezionare Regioni e provincie</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.component.html</context>
           <context context-type="linenumber">3</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="21e9e152decd31995c8ad5656727e577baf14473" datatype="html" approved="yes">
-        <source>Copy in Clipboard</source>
-        <target state="translated">Copia nella Clipboard</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">35</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="c636cdca29278f7b066007a06c70f5526a883d12" datatype="html" approved="yes">
-        <source>Reps</source>
-        <target state="translated">Reps</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2d24d1eb8d295534d8669dbeaf56201c141285af" datatype="html" approved="yes">
@@ -75,7 +69,15 @@
         <target state="translated">Crediti</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.component.html</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="21e9e152decd31995c8ad5656727e577baf14473" datatype="html" approved="yes">
+        <source>Copy in Clipboard</source>
+        <target state="translated">Copia nella Clipboard</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="548080372d453a3c0f6480522a5a20e680f8a242" datatype="html" approved="yes">
@@ -129,6 +131,10 @@
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">45</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="f4f5abf9c693029a755f002f632b2e51778ac322" datatype="html" approved="yes">
         <source>Daily Infected</source>
@@ -140,7 +146,7 @@
       </trans-unit>
       <trans-unit id="225a69decf4ac490f4898bf960b41084cf39f33d" datatype="html" approved="yes">
         <source>Total Infected</source>
-        <target state="translated">Totale Infettati</target>
+        <target state="translated">Infettati Totali</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">58</context>

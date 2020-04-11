@@ -90,7 +90,7 @@ export class DataService {
    */
   public async getTree(): Promise<Node[]> {
     const tree: Node[] = [{
-      name: 'Italia',
+      name: $localize`Italy`,
       uri: '/',
       children: []
     }];
@@ -139,11 +139,11 @@ export class DataService {
   }
 
   encode(province) {
-    return province == 'In fase di definizione/aggiornamento' ? `NON ATTRIBUITO` : province
+    return province == 'In fase di definizione/aggiornamento' ? $localize`NOT ATTRIBUTED YET` : province
   }
 
   decode(province) {
-    return province == 'NON ATTRIBUITO' ? 'In fase di definizione/aggiornamento' : province
+    return province == $localize`NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
   }
 
   orderValueDesc = (a, b) => {
