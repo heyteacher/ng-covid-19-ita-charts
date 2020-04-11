@@ -9,6 +9,12 @@
             "root": "",
             "sourceRoot": "src",
             "prefix": "app",
+            "i18n": {
+                "sourceLocale": "it-IT",
+                "locales": {
+                    "it": "src/locale/messages.it.xlf"
+                }
+            },
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
@@ -45,6 +51,7 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
+                            "aot": true,
                             "extractCss": true,
                             "namedChunks": false,
                             "extractLicenses": true,
@@ -61,6 +68,22 @@
                                     "maximumError": "10kb"
                                 }
                             ]
+                        },
+                        "it": {
+                            "fileReplacements": [{
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.it.prod.ts"
+                            }],
+                            "index": {
+                                "input": "src/index.it.prod.html",
+                                "output": "index.html"
+                            },
+                            "outputPath": "dist/prod/COVID-19/it",
+                            "aot": true,
+                            "i18nFile": "src/locale/messages.it.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "it",
+                            "i18nMissingTranslation": "error"
                         }
                     }
                 },
@@ -70,6 +93,9 @@
                         "browserTarget": "ng-covid19ita:build"
                     },
                     "configurations": {
+                        "it": {
+                            "browserTarget": "ng-covid19ita:build:it"
+                        },
                         "production": {
                             "browserTarget": "ng-covid19ita:build:production"
                         }

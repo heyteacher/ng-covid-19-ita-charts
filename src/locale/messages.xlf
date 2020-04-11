@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="2631358795215683497" datatype="html">
+        <source>Infected</source>
+      </trans-unit>
+      <trans-unit id="1075774765835115578" datatype="html">
+        <source>COVID-19 Italy</source>
+      </trans-unit>
+      <trans-unit id="6178592563873545786" datatype="html">
+        <source>Healed/Released</source>
+      </trans-unit>
+      <trans-unit id="8615366077520977995" datatype="html">
+        <source>Intensive Care</source>
+      </trans-unit>
+      <trans-unit id="8658515443308158959" datatype="html">
+        <source>Deaths</source>
+      </trans-unit>
+      <trans-unit id="2001900165427656301" datatype="html">
+        <source>COVID-19 Italy Charts per region and province</source>
+      </trans-unit>
+      <trans-unit id="4600427393258973565" datatype="html">
+        <source>AWS Forecast QLoss 0.5</source>
+      </trans-unit>
+      <trans-unit id="3844920811361480358" datatype="html">
+        <source>Tests</source>
+      </trans-unit>
+      <trans-unit id="2121125723134857542" datatype="html">
+        <source>Total Infected</source>
+      </trans-unit>
+      <trans-unit id="2872317389757916525" datatype="html">
+        <source>New Infected</source>
+      </trans-unit>
+      <trans-unit id="1752445013258609371" datatype="html">
+        <source>New Infected Rate</source>
+      </trans-unit>
+
+      <trans-unit id="6441dea9eb52d42530be66bc18471202649aeaad" datatype="html">
+        <source>Click to select regions and provinces</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="21e9e152decd31995c8ad5656727e577baf14473" datatype="html">
+        <source>Copy in Clipboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c636cdca29278f7b066007a06c70f5526a883d12" datatype="html">
+        <source>Reps</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2d24d1eb8d295534d8669dbeaf56201c141285af" datatype="html">
+        <source>Credits</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="548080372d453a3c0f6480522a5a20e680f8a242" datatype="html">
+        <source>Italy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1d4da0f99939cca6eb2566bdd3f2ea33b30cfd9d" datatype="html">
+        <source>Trend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0a45c933b5e09723dcda1018fb9bd6278de5c426" datatype="html">
+        <source>Daily Trend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e25cb8f0f5d413d796d7d48ef98ed1e4321a99e2" datatype="html">
+        <source>Daily Rate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="22ac7d91a66d496e551d35358899d3fec163005e" datatype="html">
+        <source>Daily Tests</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dfccef6d82e12581c2a80595f7900f1b8bd929c4" datatype="html">
+        <source>Daily Infected Rate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f4f5abf9c693029a755f002f632b2e51778ac322" datatype="html">
+        <source>Daily Infected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="225a69decf4ac490f4898bf960b41084cf39f33d" datatype="html">
+        <source>Total Infected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3e2ba8abdb40b8d3310200087940b7a21ed32471" datatype="html">
+        <source>Lethality</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="404882bf6ec548938a93a94288b7e4ed2a52c848" datatype="html">
+        <source>Intensive Care</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3514a17a0ae2dbe2f23e30bc02a6097be1187e07" datatype="html">
+        <source>Infected by Province</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5b2b252ad3e4154c0a46b0fc0c5151c0208c36cb" datatype="html">
+        <source>Total Tests</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ade5cc3adb6506f39e5fff8448cb124870d40485" datatype="html">
+        <source>Infected per Tests Rate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e944c08b4d54f444e9f2140da153a6420184ee69" datatype="html">
+        <source>Infected Trend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8eb8f806e49b14e8f73e93aff8641bb74614820f" datatype="html">
+        <source>
+                Log
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/series-control/series-control.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="44164f3681420d0015a27b1c285360d9d981c7d7" datatype="html">
+        <source>
+                Linear
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/series-control/series-control.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="59ebd062a524783b281c9ecc39932a12c477fbb1" datatype="html">
+        <source>
+                Day
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/series-control/series-control.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f195b9ce10426bcc3853f2f40eb8ec1910f958a8" datatype="html">
+        <source>
+                Week
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/series-control/series-control.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e3a655f6a2bb708a63acc3c3ab638adc8dad9b6a" datatype="html">
+        <source>
+                Month
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/series-control/series-control.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

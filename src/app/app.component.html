@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <span class="d-block d-lg-none">
-        <button mat-icon-button [matMenuTriggerFor]="menu" title="Clicca per selezionare regioni e province">
+        <button mat-icon-button [matMenuTriggerFor]="menu" i18n-title title="Click to select regions and provinces">
             <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu" [overlapTrigger]="false">
@@ -12,51 +12,12 @@
     </span>
     <span class="toolbar-spacer"></span>
     <span>
-        <a target="_blank" href="{{twitterLink()}}" title="Twitter" >
-            <fa-icon [icon]="faTwitter"></fa-icon>
-        </a>&nbsp;&nbsp;
-    </span>
-    <span>
-        <a target="_blank" href="{{whatsappLink()}}" data-action="share/whatsapp/share" title="whatsapp" >
-            <fa-icon [icon]="faWhatsapp"></fa-icon>
-        </a>&nbsp;&nbsp;
-    </span>
-    <span>
-        <a target="_blank" href="{{facebookLink()}}" title="Facebook">
-            <fa-icon [icon]="faFacebook"></fa-icon>
-        </a>&nbsp;&nbsp;
-    </span>
-    <span>
-        <a target="_blank" href="{{linkedinLink()}}" title="Linkedin">
-            <fa-icon [icon]="faLinkedin"></fa-icon>
-        </a>&nbsp;&nbsp;
-    </span>
-    <span>
-        <a href="#" (click)="copyMessage(shareUrl)" title="Copia in Clipboard" >
-            <fa-icon [icon]="faCopy"></fa-icon>    
+        <a target="_blank" href="https://liberapay.com/heyteacher/donate">
+            <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
         </a>
     </span>
     <span>
-        <a target="_blank" href="{{donateUrl}}">
-            &nbsp;&nbsp;<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
-        </a>
-    </span>
-    <span>
-        <button mat-button [matMenuTriggerFor]="repsMenu"><fa-icon [icon]="faGithub"></fa-icon> Reps</button>
-        <mat-menu #repsMenu="matMenu">
-            <a mat-menu-item href="https://github.com/heyteacher/COVID-19" target="_blank" title="COVID-19 Datasets & Forecasts">
-                <fa-icon [icon]="faGithub"></fa-icon> Datasets & Forecasts
-            </a>     
-            <a mat-menu-item href="https://github.com/heyteacher/ng-covid-19-ita-charts" target="_blank" title="Angular Source Code ">
-                <fa-icon [icon]="faGithub"></fa-icon> Angular Source Code 
-            </a>     
-            <a mat-menu-item href="https://github.com/heyteacher/sam-forecast-automation-covid-19-ita" target="_blank" title="AWS SAM Template Project">
-                <fa-icon [icon]="faGithub"></fa-icon> AWS SAM Template Project
-            </a>     
-        </mat-menu>
-    </span>
-    <span>
-        <button mat-button [matMenuTriggerFor]="creditMenu">Credits</button>
+        <button mat-button [matMenuTriggerFor]="creditMenu" i18n>Credits</button>
         <mat-menu #creditMenu="matMenu">
             <a mat-menu-item href="https://github.com/pcm-dpc/COVID-19" target="_blank" title="Dati Ufficiali della Protezione Civile">
                 <fa-icon [icon]="faGithub"></fa-icon> pcm-dpc/COVID-19
@@ -77,6 +38,45 @@
                 <fa-icon [icon]="faFontAwesome"></fa-icon> Font Awesome
             </a>            
         </mat-menu>
+    </span>
+    <span>
+        <button mat-button [matMenuTriggerFor]="repsMenu"><fa-icon [icon]="faGithub"></fa-icon></button>
+        <mat-menu #repsMenu="matMenu">
+            <a mat-menu-item href="https://github.com/heyteacher/COVID-19" target="_blank" title="COVID-19 Datasets & Forecasts">
+                <fa-icon [icon]="faGithub"></fa-icon> Datasets & Forecasts
+            </a>     
+            <a mat-menu-item href="https://github.com/heyteacher/ng-covid-19-ita-charts" target="_blank" title="Angular Source Code ">
+                <fa-icon [icon]="faGithub"></fa-icon> Angular Source Code 
+            </a>     
+            <a mat-menu-item href="https://github.com/heyteacher/sam-forecast-automation-covid-19-ita" target="_blank" title="AWS SAM Template Project">
+                <fa-icon [icon]="faGithub"></fa-icon> AWS SAM Template Project
+            </a>     
+        </mat-menu>
+    </span>
+    <span>
+        <button mat-button [matMenuTriggerFor]="shareMenu">
+            <fa-icon [icon]="faShareAlt"></fa-icon>
+        </button>
+        <mat-menu #shareMenu="matMenu">
+            <a mat-menu-item target="_blank" [href]="twitterLink()" title="Twitter" >
+                <fa-icon [icon]="faTwitter"></fa-icon> Twitter
+            </a>
+            <a mat-menu-item target="_blank" [href]="whatsappLink()" data-action="share/whatsapp/share" title="Whatsapp" >
+                <fa-icon [icon]="faWhatsapp"></fa-icon> Whatsapp
+            </a>
+            <a mat-menu-item target="_blank" [href]="facebookLink()" title="Facebook">
+                <fa-icon [icon]="faFacebook"></fa-icon> Facebook
+            </a>
+            <a mat-menu-item target="_blank" [href]="linkedinLink()" title="Linkedin">
+                <fa-icon [icon]="faLinkedin"></fa-icon> Linkedin
+            </a>
+            <a mat-menu-item href="#" (click)="copyMessage(shareUrl)" i18n-title title="Copy in Clipboard" >
+                <fa-icon [icon]="faCopy"></fa-icon> Copy
+            </a>
+        </mat-menu>
+    </span>
+    <span>
+        <a mat-button [href]="otherLang.url">{{otherLang.label}}</a>
     </span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">

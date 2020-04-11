@@ -82,8 +82,13 @@ Replace <gitub-user> with your account
 
 1. run locally prod environment
    ```
-   ng serve --base-href='/COVID-19/' --prod=true
+   ng serve --base-href='/COVID-19/' --configuration=production
    ```
+   or italian localization
+   ```
+   ng serve --base-href='/COVID-19/it' --configuration=production,it
+   ```
+
 1. test locally prod environment at http://localhost:4200/COVID-19
 
 1. release in github.io
@@ -94,7 +99,6 @@ Replace <gitub-user> with your account
 1. browser `https://<gitub-user>.github.io/COVID-19`
    
 #### Release Command
-
 
 ```
 ng run release

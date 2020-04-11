@@ -5,7 +5,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { faTwitter, faWhatsapp, faGithub, 
          faAngular, faFacebook, faBootstrap,
          faLinkedin, faFontAwesome} from '@fortawesome/free-brands-svg-icons';
-import {faCopy } from '@fortawesome/free-solid-svg-icons';
+import {faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import { environment } from './../environments/environment';
  
 @Component({
@@ -15,9 +15,10 @@ import { environment } from './../environments/environment';
 })
 
 export class AppComponent {
-  title = environment.siteTitle
+  title = $localize`COVID-19 Italy`
+  shareMessage = $localize`COVID-19 Italy Charts per region and province`
   shareUrl = environment.shareUrl
-  donateUrl = environment.donateUrl
+  otherLang = environment.otherLang
 
   faTwitter = faTwitter
   faWhatsapp = faWhatsapp
@@ -28,18 +29,19 @@ export class AppComponent {
   faLinkedin = faLinkedin
   faCopy = faCopy
   faFontAwesome = faFontAwesome
+  faShareAlt = faShareAlt
  
   twitterLink() {
-    return `https://twitter.com/intent/tweet?source=tweetbutton&text=${environment.shareMessage}&url=${this.shareUrl}&${environment.shareTags}`
+    return `https://twitter.com/intent/tweet?source=tweetbutton&text=${this.shareMessage}&url=${this.shareUrl}&${environment.shareTags}`
   }
   whatsappLink() {
-    return `https://web.whatsapp.com/send?text=${environment.shareMessage} ${this.shareUrl}`
+    return `https://web.whatsapp.com/send?text=${this.shareMessage} ${this.shareUrl}`
   }
   facebookLink() {
     return `https://www.facebook.com/sharer/sharer.php?u=${this.shareUrl}`
   }
   linkedinLink() {
-    return `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareUrl}&title=${environment.shareMessage}`
+    return `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareUrl}&title=${this.shareMessage}`
   }
 
   copyMessage(val: string){

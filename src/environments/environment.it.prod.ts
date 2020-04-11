@@ -11,11 +11,9 @@ export const environment = {
   baseHref: "/",
 
   otherLang: {
-    url: "/it/",
-    label: "IT"
+    url: "/COVID-19/",
+    label: "EN"
   },
-
-
 
   countryDataSetURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json',
   regionalDataSetUrl: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json',

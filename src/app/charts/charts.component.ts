@@ -77,26 +77,26 @@ export class ChartsComponent {
   private async setCountryData() {
     const fn = this.log10? this.formatLog10: null
     this.seriesData = [
-      await this.seriesService.getCountrySeries('totale_casi', 'Casi', null, fn),
-      await this.seriesService.getCountrySeries("dimessi_guariti", 'Dimessi Guariti', null, fn),
-      await this.seriesService.getCountrySeries('terapia_intensiva', 'Intensiva', null, fn),
-      await this.seriesService.getCountrySeries('deceduti', 'Deceduti', null, fn),
+      await this.seriesService.getCountrySeries('totale_casi', $localize`Infected`, null, fn),
+      await this.seriesService.getCountrySeries("dimessi_guariti", $localize`Healed/Released`, null, fn),
+      await this.seriesService.getCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
+      await this.seriesService.getCountrySeries('deceduti', $localize`Deaths`, null, fn),
     ]
     this.seriesDailyData = [
-      await this.seriesService.getCountrySeries("totale_nuovi_casi", 'Casi'),
-      await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', 'Dimessi Guariti'),
-      await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', 'Intensiva'),
-      await this.seriesService.getCountrySeries('nuovi_deceduti', 'Deceduti'),
-      await this.seriesService.getCountryForecastSeries('p50', 'AWS Forecast Quantile Loss 50%')
+      await this.seriesService.getCountrySeries("totale_nuovi_casi", $localize`Infected`),
+      await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', $localize`Healed/Released`),
+      await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
+      await this.seriesService.getCountrySeries('nuovi_deceduti', $localize`Deaths`),
+      await this.seriesService.getCountryForecastSeries('p50', $localize`AWS Forecast QLoss 0.5`)
     ]
     this.seriesPercData = [
-      await this.seriesService.getCountrySeries('totale_nuovi_casi', '% Casi', 'totale_casi_ieri'),
-      await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', '% Dimessi Guariti', 'dimessi_guariti_ieri'),
-      await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', '% Intensiva ', 'terapia_intensiva_ieri'),
-      await this.seriesService.getCountrySeries('nuovi_deceduti', '% Deceduti ', 'deceduti_ieri'),
+      await this.seriesService.getCountrySeries('totale_nuovi_casi', $localize`Infected`, 'totale_casi_ieri'),
+      await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', $localize`Healed/Released`, 'dimessi_guariti_ieri'),
+      await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
+      await this.seriesService.getCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
     ]
     this.seriesSwabData = [
-      await this.seriesService.getCountrySeries('nuovi_tamponi', 'Tamponi'),
+      await this.seriesService.getCountrySeries('nuovi_tamponi', $localize`Tests`),
     ]
     await this.getIntensiveBarsData()
     await this.getNewPositiveBarsData()
@@ -114,26 +114,26 @@ export class ChartsComponent {
   private async setRegionalData(region: string) {
     const fn = this.log10? this.formatLog10: null
     this.seriesData = [
-      await this.seriesService.getRegionalSeries(region, 'totale_casi', 'Casi', null, fn),
-      await this.seriesService.getRegionalSeries(region, "dimessi_guariti", 'Dimessi Guariti', null, fn),
-      await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', 'Intensiva', null, fn),
-      await this.seriesService.getRegionalSeries(region, 'deceduti', 'Deceduti', null, fn),
+      await this.seriesService.getRegionalSeries(region, 'totale_casi', $localize`Infected`, null, fn),
+      await this.seriesService.getRegionalSeries(region, "dimessi_guariti", $localize`Healed/Released`, null, fn),
+      await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
+      await this.seriesService.getRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
     ]
     this.seriesDailyData = [
-      await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", 'Casi'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti'),
-      await this.seriesService.getRegionalForecastSeries(region, 'p50', 'AWS Forecast Quantile Loss 50%'),
+      await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", `Infected`),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Healed/Released`),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
+      await this.seriesService.getRegionalForecastSeries(region, 'p50', $localize`AWS Forecast QLoss 0.5`),
     ]
     this.seriesPercData = [
-      await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', 'Casi', 'totale_casi_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', 'Dimessi Guariti', 'dimessi_guariti_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', 'Intensiva ', 'terapia_intensiva_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', 'Deceduti ', 'deceduti_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', $localize`Infected`, 'totale_casi_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Healed/Released`, 'dimessi_guariti_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
     ]
     this.seriesSwabData = [
-      await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', 'Tamponi'),
+      await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
     ]
     await this.getTotalCasesBarsData()
     await this.getNewCasesPercBarsData()
@@ -142,11 +142,11 @@ export class ChartsComponent {
 
   private async setProvincialData(region: string, province: string) {
     this.seriesData = [
-      await this.seriesService.getProvincialSeries(region, province, 'totale_casi', 'Totale Casi'),
-      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', 'Nuovi  Casi')
+      await this.seriesService.getProvincialSeries(region, province, 'totale_casi', $localize`Total Infected`),
+      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Infected`)
     ]
     this.seriesPercData = [
-      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', '% Nuovi Casi', 'totale_casi_ieri'),
+      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Infected Rate`, 'totale_casi_ieri'),
     ]
   }
 
@@ -213,7 +213,6 @@ export class ChartsComponent {
     this.initData()
   }
   
-
   private getMaxValue(barsData: Bar[], maxValue = null): number {
     return maxValue? maxValue: barsData[0].value
   }
