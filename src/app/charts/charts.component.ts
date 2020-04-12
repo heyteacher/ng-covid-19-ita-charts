@@ -218,7 +218,7 @@ export class ChartsComponent {
   }
 
   public formatPercentage(input) {
-    return `${input} %`
+    return `${input}%`
   }
 
   public formatRound(input) {
