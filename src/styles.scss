@@ -36,6 +36,11 @@ mat-button-toggle-group {
     margin: 0px 10px;
 }
 
+.mat-button {
+    min-width: 0px !important;
+    margin: 0px 0px !important;
+}
+
 
 /**
        * Backgrounds
