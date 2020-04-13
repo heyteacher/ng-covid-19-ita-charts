@@ -37,6 +37,9 @@ src/
     │ 
     └─── charts/ main component with bars and series charts
     │ 
+    └─── series-control/ component on header of series charts 
+    │                  with Log/Linear view  
+    │ 
     └─── tree-menu/ component tree in the left side with
     │               levels contry -> region -> province
     │ 
@@ -55,6 +58,11 @@ src/
     |
     └─── series.service.ts prepare data to series and bar 
     |                      charts    
+└───locale/
+    └─── messages.it.xlf italian translations 
+    |
+    └─── messages.xlf default translation (en)
+
 ```
 
 ## Localizzation
@@ -112,15 +120,19 @@ Replace <gitub-user> with your account
 
 1. test locally prod environment at http://localhost:4200/COVID-19
 
-1. release in github.io
+1. run locally prod italian environment 
+   ```
+   npm run serve-prod-it
+   ```
+
+1. test locally prod environment at http://localhost:4200/COVID-19/it
+
+   
+#### Release Command
+
+1. run script
    ```
    ng run release
    ```
 
 1. browser `https://<gitub-user>.github.io/COVID-19`
-   
-#### Release Command
-
-```
-ng run release
-```
