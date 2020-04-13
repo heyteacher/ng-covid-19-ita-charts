@@ -3,11 +3,15 @@
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "serve": "ng serve",
+        "serve-prod": "ng serve --base-href='/COVID-19' --configuration=production",
+        "serve-it": "ng serve --base-href='/COVID-19/it' --configuration=it",
+        "serve-prod-it": "ng serve --base-href='/COVID-19/it' --configuration=production,it",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
+        "i18n": "ng xi18n --output-path src/locale && xliffmerge --profile xliffmerge.json en it",
         "release": "./release.sh"
     },
     "private": true,

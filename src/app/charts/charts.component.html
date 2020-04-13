@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-6 chart-container text-center">
             <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Trend</span>
+                <span class="legend-title" i18n>Daily Variations</span>
             </div>
             <ngx-charts-line-chart [results]="seriesDailyData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
@@ -28,7 +28,7 @@
 
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
             <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Rate</span>
+                <span class="legend-title" i18n>Daily Variations Rate</span>
             </div>
             <ngx-charts-line-chart [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-lg-4 chart-container text-center">
-            <app-bars-control (change)="getNewCasesPercBarsData($event)" i18n-title title="Daily Infected Rate" playLastDays="15">
+            <app-bars-control (change)="getNewCasesPercBarsData($event)" i18n-title title="Daily Confirmed Rate" playLastDays="15">
             </app-bars-control>
             <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="newCasesPercBarsData" [scheme]="colorScheme" [xScaleMax]="newCasesPercBarsMax" showDataLabel="true" legendTitle="Nuovi Casi %" showXAxisLabel="true" showYAxisLabel="true" yAxis="true"
                 showGridLines="true">
@@ -50,13 +50,13 @@
         </div>
 
         <div class="col-lg-4 chart-container text-center">
-            <app-bars-control (change)="getNewPositiveBarsData($event)" i18n-title title="Daily Infected">
+            <app-bars-control (change)="getNewPositiveBarsData($event)" i18n-title title="Daily Confirmed">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="newPositiveBarsData" [scheme]="colorScheme" [xScaleMax]="newPositiveBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
             </ngx-charts-bar-horizontal>
         </div>
         <div class="col-lg-4 chart-container text-center">
-            <app-bars-control (change)="getTotalCasesBarsData($event)" i18n-title title="Total Infected">
+            <app-bars-control (change)="getTotalCasesBarsData($event)" i18n-title title="Total Confirmed">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="totalCasesBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
             </ngx-charts-bar-horizontal>
@@ -76,7 +76,7 @@
             </ngx-charts-bar-horizontal>
         </div>
         <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
-            <app-bars-control (change)="getTotalCasesPerProvinceBarsData($event)" i18n-title title="Infected by Province">
+            <app-bars-control (change)="getTotalCasesPerProvinceBarsData($event)" i18n-title title="Confirmed by Province">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="totalCasesPerProvinceBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesPerProvinceBarsMax" showDataLabel="true" legendTitle="Terapia Intensiva" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
@@ -95,7 +95,7 @@
             </ngx-charts-bar-horizontal>
         </div>
         <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
-            <app-bars-control (change)="getPositivePerSwabBarsData($event)" i18n-title title="Infected per Tests Rate">
+            <app-bars-control (change)="getPositivePerSwabBarsData($event)" i18n-title title="Confirmed per Tests Rate">
             </app-bars-control>
             <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="positivePerSwabBarsData" [scheme]="colorScheme" [xScaleMax]="positivePerSwabBarsMax" showDataLabel="true" legendTitle="Positivi per Tamponi" showXAxisLabel="true" showYAxisLabel="true"
                 yAxis="true" showGridLines="true">
@@ -108,14 +108,14 @@
     <div class="row">
         <div class="col-lg-6 chart-container-single text-center">
             <div class="chart-legend">
-                <span class="legend-title" i18n>Infected Trend</span>
+                <span class="legend-title" i18n>Confirmed Trend</span>
             </div>
             <ngx-charts-line-chart timeline="false" [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center">
             <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Infected Rate</span>
+                <span class="legend-title" i18n>Daily Confirmed Rate</span>
             </div>
             <ngx-charts-line-chart [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showLegend="false" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>

@@ -23,10 +23,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BarsControlComponent } from './bars-control/bars-control.component';
 import { SeriesControlComponent } from './series-control/series-control.component';
 
-import { registerLocaleData } from '@angular/common';
-import localeIt from '@angular/common/locales/it';
-registerLocaleData(localeIt);
-
 @NgModule({
   declarations: [
     AppComponent,

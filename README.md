@@ -57,6 +57,27 @@ src/
     |                      charts    
 ```
 
+## Localizzation
+
+1. first time install `xliffmerge` and `virtaal`
+
+   ```
+   sudo npm install -g ngx-i18nsupport
+   sudo apt install virtaal
+   ```
+
+1. merge new strings to be traslated in `src/locale/messages.it.xlf`
+   ```
+   npm run i18n
+   ```
+
+1. run `virtaal` and fix missin translations in `src/locale/messages.it.xlf`
+
+1. test missing traslation `$localize` in `*.ts` (not discovered by `ng xi18n`) 
+   ```
+   npm run serve-prod-it
+   ```
+
 ## Release
 
 Dashboard can be released in github.io pages (i.e. https://\<gitub-user\>.github.io/COVID-19) 
@@ -82,11 +103,11 @@ Replace <gitub-user> with your account
 
 1. run locally prod environment
    ```
-   ng serve --base-href='/COVID-19/' --configuration=production
+   npm run serve-prod
    ```
    or italian localization
    ```
-   ng serve --base-href='/COVID-19/it' --configuration=production,it
+   npm run serve-prod-it
    ```
 
 1. test locally prod environment at http://localhost:4200/COVID-19

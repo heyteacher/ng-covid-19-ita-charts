@@ -1,47 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="it-IT" datatype="plaintext" original="ng2.template">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="2631358795215683497" datatype="html">
-        <source>Infected</source>
-      </trans-unit>
-      <trans-unit id="1075774765835115578" datatype="html">
-        <source>COVID-19 Italy</source>
-      </trans-unit>
-      <trans-unit id="6178592563873545786" datatype="html">
-        <source>Healed/Released</source>
-      </trans-unit>
-      <trans-unit id="8615366077520977995" datatype="html">
-        <source>Intensive Care</source>
-      </trans-unit>
-      <trans-unit id="8658515443308158959" datatype="html">
-        <source>Deaths</source>
-      </trans-unit>
-      <trans-unit id="4316707328830883056" datatype="html">
-        <source>NOT ATTRIBUTED YET</source>
-      </trans-unit>
-      <trans-unit id="2001900165427656301" datatype="html">
-        <source>COVID-19 Italy Charts per region and province</source>
-      </trans-unit>
-      <trans-unit id="4600427393258973565" datatype="html">
-        <source>AWS Forecast QLoss 0.5</source>
-      </trans-unit>
-      <trans-unit id="3844920811361480358" datatype="html">
-        <source>Tests</source>
-      </trans-unit>
-      <trans-unit id="2121125723134857542" datatype="html">
-        <source>Total Infected</source>
-      </trans-unit>
-      <trans-unit id="2872317389757916525" datatype="html">
-        <source>New Infected</source>
-      </trans-unit>
-      <trans-unit id="2427223107800831324" datatype="html">
-        <source>Italy</source>
-      </trans-unit>
-      <trans-unit id="1752445013258609371" datatype="html">
-        <source>New Infected Rate</source>
-      </trans-unit>
-
       <trans-unit id="6441dea9eb52d42530be66bc18471202649aeaad" datatype="html">
         <source>Click to select regions and provinces</source>
         <context-group purpose="location">
@@ -77,15 +37,15 @@
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="0a45c933b5e09723dcda1018fb9bd6278de5c426" datatype="html">
-        <source>Daily Trend</source>
+      <trans-unit id="b9099f7e47f64fea9032904206789e9fec2c06ab" datatype="html">
+        <source>Daily Variations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="e25cb8f0f5d413d796d7d48ef98ed1e4321a99e2" datatype="html">
-        <source>Daily Rate</source>
+      <trans-unit id="e1f0991026fff1625463b48a3e89d8519f84dc86" datatype="html">
+        <source>Daily Variations Rate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">31</context>
@@ -99,74 +59,74 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dfccef6d82e12581c2a80595f7900f1b8bd929c4" datatype="html">
-        <source>Daily Infected Rate</source>
+      <trans-unit id="0b299ce81fc1b8d78e9e112c62bd8a194225bfbf" datatype="html">
+        <source>Daily Confirmed Rate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">45</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">115</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="f4f5abf9c693029a755f002f632b2e51778ac322" datatype="html">
-        <source>Daily Infected</source>
+      <trans-unit id="4509adab816e7575022aca7b74a271c70e16df08" datatype="html">
+        <source>Daily Confirmed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="225a69decf4ac490f4898bf960b41084cf39f33d" datatype="html">
-        <source>Total Infected</source>
+      <trans-unit id="4e083fccf902bee897ca099dbaa11222398eddde" datatype="html">
+        <source>Total Confirmed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3e2ba8abdb40b8d3310200087940b7a21ed32471" datatype="html">
         <source>Lethality</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="404882bf6ec548938a93a94288b7e4ed2a52c848" datatype="html">
         <source>Intensive Care</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">71</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3514a17a0ae2dbe2f23e30bc02a6097be1187e07" datatype="html">
-        <source>Infected by Province</source>
+      <trans-unit id="e581581a31c8b066d65a85fa2fd80c0524f2df2d" datatype="html">
+        <source>Confirmed by Province</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5b2b252ad3e4154c0a46b0fc0c5151c0208c36cb" datatype="html">
         <source>Total Tests</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ade5cc3adb6506f39e5fff8448cb124870d40485" datatype="html">
-        <source>Infected per Tests Rate</source>
+      <trans-unit id="4ad1640a30820dd1a47cd3ea0c541f21e03c9f00" datatype="html">
+        <source>Confirmed per Tests Rate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="e944c08b4d54f444e9f2140da153a6420184ee69" datatype="html">
-        <source>Infected Trend</source>
+      <trans-unit id="8bac997b4cd20f2928b5846122553f2c0c24e572" datatype="html">
+        <source>Confirmed Trend</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">108</context>
+          <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8eb8f806e49b14e8f73e93aff8641bb74614820f" datatype="html">
