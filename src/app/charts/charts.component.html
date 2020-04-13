@@ -14,7 +14,7 @@
         <div class="col-lg-6 chart-container text-center">
             <app-series-control (changeLog10)="changeLog10($event)" (changeAggregate)="changeAggregate($event)" aggregateDisabled="true" i18n-title title="Trend">
             </app-series-control>
-            <ngx-charts-line-chart [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true" showGridLines="true"
+            <ngx-charts-line-chart [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true" showGridLines="true"
                 legendPosition="right">
             </ngx-charts-line-chart>
         </div>
@@ -22,7 +22,7 @@
             <div class="chart-legend">
                 <span class="legend-title" i18n>Daily Trend</span>
             </div>
-            <ngx-charts-line-chart [results]="seriesDailyData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            <ngx-charts-line-chart [results]="seriesDailyData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
 

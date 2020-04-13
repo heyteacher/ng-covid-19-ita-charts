@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
-import { APP_BASE_HREF } from '@angular/common';
 import { faTwitter, faWhatsapp, faGithub, 
          faAngular, faFacebook, faBootstrap,
          faLinkedin, faFontAwesome} from '@fortawesome/free-brands-svg-icons';

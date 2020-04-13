@@ -3,6 +3,7 @@ import { ChartsComponent } from './charts/charts.component';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { NgxChartsModule } from '@heyteacher/ngx-charts';
@@ -36,6 +37,7 @@ registerLocaleData(localeIt);
   ],
   imports: [
     BrowserModule,
+    LayoutModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatButtonModule,

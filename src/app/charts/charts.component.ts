@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { SeriesService } from '../series.service';
 import { ActivatedRoute } from '@angular/router';
 import { Bar, Series } from '../app.model';
 import { BarsService } from '../bars.service';
 import { DataService } from '../data.service';
-import moment from 'moment';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-charts',
@@ -12,7 +12,7 @@ import moment from 'moment';
   styleUrls: ['./charts.component.css']
 })
 
-export class ChartsComponent {
+export class ChartsComponent implements OnInit{
   breadcrumbs: any;
 
   colorScheme = {
@@ -50,16 +50,21 @@ export class ChartsComponent {
   
   newSwabBarsData: Bar[] = [];
   newSwabBarsMax: number;
+  showLegend: boolean
 
   constructor(
     private seriesService: SeriesService,
     private barsService: BarsService,
     public dataService: DataService,
-    activateRoute: ActivatedRoute) {
+    activateRoute: ActivatedRoute,
+    public breakpointObserver: BreakpointObserver) {
     activateRoute.params.subscribe(params => {
       this.breadcrumbs = params
       this.initData()
     })
+  }
+  ngOnInit(): void {
+    this.onResize();
   }
 
   private initData() {
@@ -231,5 +236,14 @@ export class ChartsComponent {
 
   public formatLog10(input) {
     return input && input > 0? Math.log10(input): input
+  }
+
+  @HostListener("window:resize", [])
+  private onResize() {
+       this.breakpointObserver
+      .observe(['(min-width: 540px)'])
+      .subscribe((state: BreakpointState) => {
+        this.showLegend = state.matches
+      });
   }
 }
