@@ -5,6 +5,7 @@ import { Bar, Series } from '../app.model';
 import { BarsService } from '../bars.service';
 import { DataService } from '../data.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import moment from 'moment';
 
 @Component({
   selector: 'app-charts',
@@ -236,6 +237,12 @@ export class ChartsComponent implements OnInit{
 
   public formatLog10(input) {
     return input && input > 0? Math.log10(input): input
+  }
+
+  public xAxisTickClassByTick(tick) {
+    var day = moment(tick,'DD/MM').day();
+    var isWeekend = (day === 6) || (day === 0);
+    return isWeekend? "grid-line-path-weekend": ""
   }
 
   @HostListener("window:resize", [])
