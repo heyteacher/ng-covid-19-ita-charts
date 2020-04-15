@@ -4,7 +4,7 @@ import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { faTwitter, faWhatsapp, faGithub, 
          faAngular, faFacebook, faBootstrap,
          faLinkedin, faFontAwesome} from '@fortawesome/free-brands-svg-icons';
-import {faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import {faCopy, faShareAlt, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { environment } from './../environments/environment';
  
 @Component({
@@ -29,6 +29,7 @@ export class AppComponent {
   faCopy = faCopy
   faFontAwesome = faFontAwesome
   faShareAlt = faShareAlt
+  faHeart = faHeart
  
   twitterLink() {
     return `https://twitter.com/intent/tweet?source=tweetbutton&text=${this.shareMessage}&url=${this.shareUrl}&${environment.shareTags}`

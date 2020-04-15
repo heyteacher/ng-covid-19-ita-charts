@@ -12,11 +12,6 @@
     </span>
     <span class="toolbar-spacer"></span>
     <span>
-        <a target="_blank" href="https://liberapay.com/heyteacher/donate">
-            <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
-        </a>
-    </span>
-    <span>
         <button mat-button [matMenuTriggerFor]="creditMenu" i18n>Credits</button>
         <mat-menu #creditMenu="matMenu">
             <a mat-menu-item href="https://github.com/pcm-dpc/COVID-19" target="_blank" title="Dati Ufficiali della Protezione Civile">
@@ -38,6 +33,11 @@
                 <fa-icon [icon]="faFontAwesome"></fa-icon> Font Awesome
             </a>            
         </mat-menu>
+    </span>
+    <span>
+        <a mat-button target="_blank" href="https://github.com/sponsors/heyteacher">
+            <fa-icon [icon]="faHeart"></fa-icon> 
+        </a>
     </span>
     <span>
         <button mat-button [matMenuTriggerFor]="repsMenu"><fa-icon [icon]="faGithub"></fa-icon></button>
