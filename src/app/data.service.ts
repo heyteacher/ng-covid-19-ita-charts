@@ -83,7 +83,7 @@ export class DataService {
    * singleton get regional forecast data
    */
   async getRegionalForecastDeepARPlusData(): Promise<any[]> {
-    if (!this.regionalForecastData) {
+    if (!this.regionalForecastDeepARPlusData) {
       this.regionalForecastDeepARPlusData = await this.getJson(environment.regionalForecastDeepARPlusDataURL)
     }
     return this.regionalForecastDeepARPlusData
