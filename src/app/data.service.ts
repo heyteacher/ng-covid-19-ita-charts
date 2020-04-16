@@ -15,6 +15,8 @@ export class DataService {
   private provincialData: any[]
   private regionalForecastData: any[]
   private countryForecastData: any[]
+  private regionalForecastDeepARPlusData: any[]
+  private countryForecastDeepARPlusData: any[]
 
   private days: string[]
 
@@ -54,17 +56,7 @@ export class DataService {
     return this.countryForecastData
   }
 
-  /**
-   * singleton get regional data
-   */
-  async getRegionalData(): Promise<any[]> {
-    this.getCountryData()
-    if (!this.regionalData) {
-      this.regionalData = await this.getJson(environment.regionalDataSetUrl)
-    }
-    return this.regionalData
-  }
-
+ 
   /**
    * singleton get regional forecast data
    */
@@ -73,6 +65,39 @@ export class DataService {
       this.regionalForecastData = await this.getJson(environment.regionalForecastDataURL)
     }
     return this.regionalForecastData
+  }
+
+
+    /**
+   * singleton get regional forecast data
+   */
+  async getCountryForecastDeepARPlusData(): Promise<any[]> {
+    if (!this.countryForecastDeepARPlusData) {
+      this.countryForecastDeepARPlusData = await this.getJson(environment.countryForecastDeepARPlusDataURL)
+    }
+    return this.countryForecastDeepARPlusData
+  }
+
+ 
+  /**
+   * singleton get regional forecast data
+   */
+  async getRegionalForecastDeepARPlusData(): Promise<any[]> {
+    if (!this.regionalForecastData) {
+      this.regionalForecastDeepARPlusData = await this.getJson(environment.regionalForecastDeepARPlusDataURL)
+    }
+    return this.regionalForecastDeepARPlusData
+  }
+
+   /**
+   * singleton get regional data
+   */
+  async getRegionalData(): Promise<any[]> {
+    this.getCountryData()
+    if (!this.regionalData) {
+      this.regionalData = await this.getJson(environment.regionalDataSetUrl)
+    }
+    return this.regionalData
   }
 
   /**

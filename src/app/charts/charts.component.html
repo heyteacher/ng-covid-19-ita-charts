@@ -22,7 +22,8 @@
             <div class="chart-legend">
                 <span class="legend-title" i18n>Daily Variations</span>
             </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesDailyData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesDailyData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true"
+                xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
 
@@ -30,8 +31,8 @@
             <div class="chart-legend">
                 <span class="legend-title" i18n>Daily Variations Rate</span>
             </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true"
-                timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50" showLegend="false" legendTitle=""
+                showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">

@@ -20,7 +20,10 @@ export const environment = {
   provincialDataSetUrl: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-province.json',
 
   countryForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-andamento-nazionale-forecast.json',
-  regionalForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-regioni-forecast.json'
+  regionalForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-regioni-forecast.json',
+
+  countryForecastDeepARPlusDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-andamento-nazionale-forecast-Deep_AR_Plus.json',
+  regionalForecastDeepARPlusDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-regioni-forecast-Deep_AR_Plus.json',
 };
 
 /*

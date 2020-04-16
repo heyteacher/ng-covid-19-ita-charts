@@ -17,7 +17,7 @@ export class ChartsComponent implements OnInit{
   breadcrumbs: any;
 
   colorScheme = {
-    domain: ['#CFC0BB', '#5AA454', '#7aa3e5', '#E44D25', '#a8385d', '#aae3f5']
+    domain: ['#CFC0BB', '#5AA454', '#7aa3e5', '#E44D25', '#a8385d', '#aae3f5','#aFb325']
   };
 
   seriesData: Series[] = [];
@@ -87,19 +87,23 @@ export class ChartsComponent implements OnInit{
       await this.seriesService.getCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, fn),
       await this.seriesService.getCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
       await this.seriesService.getCountrySeries('deceduti', $localize`Deaths`, null, fn),
+      await this.seriesService.getCountrySeries('totale_positivi', $localize`Current Positive`, null, fn),
     ]
     this.seriesDailyData = [
       await this.seriesService.getCountrySeries("totale_nuovi_casi", $localize`Confirmed`),
       await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`),
       await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
       await this.seriesService.getCountrySeries('nuovi_deceduti', $localize`Deaths`),
-      await this.seriesService.getCountryForecastSeries('p50', $localize`AWS Forecast QLoss 0.5`)
+      await this.seriesService.getCountrySeries('variazione_totale_positivi', $localize`Current Positive`),
+      await this.seriesService.getCountryForecastSeries('p50', `AWS Forecast ARIMA`),
+      await this.seriesService.getCountryForecastDeepARPlusSeries('p50', `AWS Forecast Deep AR+`)
     ]
     this.seriesPercData = [
       await this.seriesService.getCountrySeries('totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
       await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
       await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
       await this.seriesService.getCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
+      await this.seriesService.getCountrySeries('variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
     ]
     this.seriesSwabData = [
       await this.seriesService.getCountrySeries('nuovi_tamponi', $localize`Tests`),
@@ -124,19 +128,23 @@ export class ChartsComponent implements OnInit{
       await this.seriesService.getRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
       await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
       await this.seriesService.getRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
+      await this.seriesService.getRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, fn),
     ]
     this.seriesDailyData = [
       await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", `Confirmed`),
       await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`),
       await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
       await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
-      await this.seriesService.getRegionalForecastSeries(region, 'p50', $localize`AWS Forecast QLoss 0.5`),
+      await this.seriesService.getRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`),
+      await this.seriesService.getRegionalForecastSeries(region, 'p50', `AWS Forecast ARIMA`),
+      await this.seriesService.getRegionalForecastDeepARPlusSeries(region, 'p50', `AWS Forecast Deep AR+`),
     ]
     this.seriesPercData = [
       await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
       await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
+      await this.seriesService.getRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
     ]
     this.seriesSwabData = [
       await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
@@ -243,6 +251,10 @@ export class ChartsComponent implements OnInit{
     var day = moment(tick,'DD/MM').day();
     var isWeekend = (day === 6) || (day === 0);
     return isWeekend? "grid-line-path-weekend": ""
+  }
+
+  public yAxisTickClassByTick(tick) {
+    return tick == 0? "grid-line-path-zero": ""
   }
 
   @HostListener("window:resize", [])

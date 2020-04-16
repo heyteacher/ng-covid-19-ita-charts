@@ -31,14 +31,13 @@
         <source>Italy</source>
         <target state="translated">Italia</target>
       </trans-unit>
-
+      <trans-unit id="2115906324746807112" datatype="html">
+        <source>Current Positive</source>
+        <target state="translated">Attualmente Positivi</target>
+      </trans-unit>
       <trans-unit id="2001900165427656301" datatype="html" approved="yes">
         <source>COVID-19 Italy Charts per region and province</source>
         <target state="translated">COVID-19 Italia, grafici per regione e provincia</target>
-      </trans-unit>
-      <trans-unit id="4600427393258973565" datatype="html" approved="yes">
-        <source>AWS Forecast QLoss 0.5</source>
-        <target state="translated">AWS Forecast QLoss 0.5</target>
       </trans-unit>
       <trans-unit id="3844920811361480358" datatype="html" approved="yes">
         <source>Tests</source>
@@ -56,6 +55,7 @@
         <source>New Confirmed Rate</source>
         <target state="translated">Tasso Nuovi Infettati</target>
       </trans-unit>
+      
       <trans-unit id="6441dea9eb52d42530be66bc18471202649aeaad" datatype="html" approved="yes">
         <source>Click to select regions and provinces</source>
         <target state="translated">Clicca per selezionare regioni e province</target>

@@ -51,3 +51,5 @@ src/index.prod.html
 src/environments/environment.prod.ts
 TODO.md
 install_ngx_charts.sh
+install_ngx_charts_local.sh
+install_ngx_charts_remote.sh

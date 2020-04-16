@@ -55,7 +55,7 @@ export class SeriesService {
     return this.buildSeries(provincialData, key, label, denomKey,'data',fn);
   }
 
-    /**
+  /**
    * array dati regionali filtrati per regione
    * @param region  regione
    */
@@ -72,6 +72,25 @@ export class SeriesService {
     let regionalForecastData = await this.dataService.getRegionalForecastData();
     regionalForecastData = this.dataService.filterData(regionalForecastData, 'item_id', region)
     return this.buildSeries(regionalForecastData, quantile, label, null, 'date');
+  }
+
+    /**
+   * array dati regionali filtrati per regione
+   * @param region  regione
+   */
+  async getCountryForecastDeepARPlusSeries(quantile: string, label: string): Promise<Series> {
+    let countryForecastDeepARPlusData = await this.dataService.getCountryForecastDeepARPlusData();
+    return this.buildSeries(countryForecastDeepARPlusData, quantile, label, null, 'date');
+  }
+  
+  /**
+   * array dati regionali filtrati per regione
+   * @param region  regione
+   */
+  async getRegionalForecastDeepARPlusSeries(region: string, quantile:string, label: string): Promise<Series> {
+    let regionalForecastDeepARPlusData = await this.dataService.getRegionalForecastDeepARPlusData();
+    regionalForecastDeepARPlusData = this.dataService.filterData(regionalForecastDeepARPlusData, 'item_id', region)
+    return this.buildSeries(regionalForecastDeepARPlusData, quantile, label, null, 'date');
   }
 
    /**
