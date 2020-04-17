@@ -26,7 +26,7 @@ export class SeriesControlComponent  {
   }
 
   constructor() {
-    console.log(this.aggregateDisabled)
+
   }
  
  

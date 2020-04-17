@@ -1,19 +1,22 @@
 import { Component, Inject } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
-import { faTwitter, faWhatsapp, faGithub, 
-         faAngular, faFacebook, faBootstrap,
-         faLinkedin, faFontAwesome} from '@fortawesome/free-brands-svg-icons';
-import {faCopy, faShareAlt, faHeart } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTwitter, faWhatsapp, faGithub,
+  faAngular, faFacebook, faBootstrap,
+  faLinkedin, faFontAwesome
+} from '@fortawesome/free-brands-svg-icons';
+import { faCopy, faShareAlt, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { environment } from './../environments/environment';
- 
+import { GoogleAnalyticsComponent } from './google-analytics/google-analytics.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent extends GoogleAnalyticsComponent {
   title = $localize`COVID-19 Italy`
   shareMessage = $localize`COVID-19 Italy Charts per region and province`
   shareUrl = environment.shareUrl
@@ -30,7 +33,7 @@ export class AppComponent {
   faFontAwesome = faFontAwesome
   faShareAlt = faShareAlt
   faHeart = faHeart
- 
+
   twitterLink() {
     return `https://twitter.com/intent/tweet?source=tweetbutton&text=${this.shareMessage}&url=${this.shareUrl}&${environment.shareTags}`
   }
@@ -44,7 +47,7 @@ export class AppComponent {
     return `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareUrl}&title=${this.shareMessage}`
   }
 
-  copyMessage(val: string){
+  copyMessage(val: string) {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -58,13 +61,12 @@ export class AppComponent {
     document.body.removeChild(selBox);
   }
 
-  constructor(
-    matIconRegistry: MatIconRegistry,
-    domSanitizer: DomSanitizer)
-  {
+  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
+    super()
+    super.subscribeEventsProvider()
     matIconRegistry.addSvgIcon(
       "ngx-charts",
       domSanitizer.bypassSecurityTrustResourceUrl(`${environment.baseHref}assets/icon/ngx-charts.svg`)
     );
-  } 
+  }
 }

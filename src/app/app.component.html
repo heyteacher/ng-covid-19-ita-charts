@@ -14,42 +14,45 @@
     <span>
         <button mat-button [matMenuTriggerFor]="creditMenu" i18n>Credits</button>
         <mat-menu #creditMenu="matMenu">
-            <a mat-menu-item href="https://github.com/pcm-dpc/COVID-19" target="_blank" title="Dati Ufficiali della Protezione Civile">
+            <a mat-menu-item (click)="sendEvent('pcm-dpc','credits')" href="https://github.com/pcm-dpc/COVID-19" target="_blank" rel="noopener" title="Dati Ufficiali della Protezione Civile">
                 <fa-icon [icon]="faGithub"></fa-icon> pcm-dpc/COVID-19
             </a>
-            <a mat-menu-item href="https://swimlane.gitbook.io/ngx-charts/" target="_blank" title="ngx-charts">
+            <a mat-menu-item (click)="sendEvent('ngx-charts','credits')" href="https://swimlane.gitbook.io/ngx-charts/" target="_blank"  rel="noopener" title="ngx-charts">
                 <img style="height: 18px;" src="./assets/icon/ngx-charts.svg"/> ngx-charts
             </a>
-            <a mat-menu-item href="https://angular.io" target="_blank" title="Angular">
+            <a mat-menu-item (click)="sendEvent('angular','credits')" href="https://angular.io" target="_blank" title="Angular">
                 <fa-icon [icon]="faAngular"></fa-icon> Angular
             </a>
-            <a mat-menu-item href="https://material.angular.io" target="_blank" title="Angular Material UI">
+            <a mat-menu-item (click)="sendEvent('angular-material','credits')" href="https://material.angular.io" target="_blank" rel="noopener" title="Angular Material UI">
                 <fa-icon [icon]="faAngular"></fa-icon> Material UI Library
             </a>
-            <a mat-menu-item href="https://getbootstrap.com/" target="_blank" title="Bootstrap">
+            <a mat-menu-item (click)="sendEvent('bootstrap','credits')" href="https://getbootstrap.com/" target="_blank" rel="noopener"title="Bootstrap">
                 <fa-icon [icon]="faBootstrap"></fa-icon> Bootstrap
             </a>
-            <a mat-menu-item href="https://fontawesome.com/" target="_blank" title="Font Awesome">
+            <a mat-menu-item (click)="sendEvent('fontawesome','credits')" href="https://fontawesome.com/" target="_blank" rel="noopener" title="Font Awesome">
                 <fa-icon [icon]="faFontAwesome"></fa-icon> Font Awesome
             </a>            
         </mat-menu>
     </span>
     <span>
-        <a mat-button target="_blank" href="https://github.com/sponsors/heyteacher">
+        <a mat-button (click)="sendEvent('github','sponsor')" href="https://github.com/sponsors/heyteacher" target="_blank" rel="noopener" title="Github Sponsor" >
             <fa-icon [icon]="faHeart"></fa-icon> 
         </a>
     </span>
     <span>
         <button mat-button [matMenuTriggerFor]="repsMenu"><fa-icon [icon]="faGithub"></fa-icon></button>
         <mat-menu #repsMenu="matMenu">
-            <a mat-menu-item href="https://github.com/heyteacher/COVID-19" target="_blank" title="COVID-19 Datasets & Forecasts">
-                <fa-icon [icon]="faGithub"></fa-icon> Datasets & Forecasts
+            <a mat-menu-item (click)="sendEvent('COVID-19','heyteacher')" href="https://github.com/heyteacher/COVID-19" target="_blank" rel="noopener" title="COVID-19 Datasets & Forecasts">
+                <fa-icon [icon]="faGithub"></fa-icon> @heyteacher/COVID-19
             </a>     
-            <a mat-menu-item href="https://github.com/heyteacher/ng-covid-19-ita-charts" target="_blank" title="Angular Source Code ">
-                <fa-icon [icon]="faGithub"></fa-icon> Angular Source Code 
+            <a mat-menu-item (click)="sendEvent('ng-covid-19-ita-charts','heyteacher')" href="https://github.com/heyteacher/ng-covid-19-ita-charts" target="_blank" rel="noopener" title="Angular Source Code ">
+                <fa-icon [icon]="faGithub"></fa-icon> @heyteacher/ng-covid-19-ita-charts
             </a>     
-            <a mat-menu-item href="https://github.com/heyteacher/sam-forecast-automation-covid-19-ita" target="_blank" title="AWS SAM Template Project">
-                <fa-icon [icon]="faGithub"></fa-icon> AWS SAM Template Project
+            <a mat-menu-item (click)="sendEvent('sam-forecast-automation-covid-19-ita','heyteacher')" href="https://github.com/heyteacher/sam-forecast-automation-covid-19-ita" target="_blank" rel="noopener" title="AWS SAM Template Project">
+                <fa-icon [icon]="faGithub"></fa-icon> @heyteacher/sam-forecast-automation-covid-19-ita
+            </a>     
+            <a mat-menu-item (click)="sendEvent('ngx-charts','heyteacher')" href="https://github.com/heyteacher/ngx-charts" target="_blank" rel="noopener" title="AWS SAM Template Project">
+                <fa-icon [icon]="faGithub"></fa-icon> @heyteacher/ngx-charts (Fork)
             </a>     
         </mat-menu>
     </span>
@@ -58,19 +61,19 @@
             <fa-icon [icon]="faShareAlt"></fa-icon>
         </button>
         <mat-menu #shareMenu="matMenu">
-            <a mat-menu-item target="_blank" [href]="twitterLink()" title="Twitter" >
+            <a mat-menu-item (click)="sendShare('Twitter')" target="_blank" rel="noopener" [href]="twitterLink()" title="Twitter" >
                 <fa-icon [icon]="faTwitter"></fa-icon> Twitter
             </a>
-            <a mat-menu-item target="_blank" [href]="whatsappLink()" data-action="share/whatsapp/share" title="Whatsapp" >
+            <a mat-menu-item (click)="sendShare('Whatsapp')" target="_blank" rel="noopener" [href]="whatsappLink()" data-action="share/whatsapp/share" title="Whatsapp" >
                 <fa-icon [icon]="faWhatsapp"></fa-icon> Whatsapp
             </a>
-            <a mat-menu-item target="_blank" [href]="facebookLink()" title="Facebook">
+            <a mat-menu-item (click)="sendShare('Facebook')" target="_blank" rel="noopener" [href]="facebookLink()" title="Facebook">
                 <fa-icon [icon]="faFacebook"></fa-icon> Facebook
             </a>
-            <a mat-menu-item target="_blank" [href]="linkedinLink()" title="Linkedin">
+            <a mat-menu-item (click)="sendShare('Linkedin')" target="_blank" rel="noopener" [href]="linkedinLink()" title="Linkedin">
                 <fa-icon [icon]="faLinkedin"></fa-icon> Linkedin
             </a>
-            <a mat-menu-item href="#" (click)="copyMessage(shareUrl)" i18n-title title="Copy in Clipboard" >
+            <a mat-menu-item (click)="sendShare('Copy')" href="#" (click)="copyMessage(shareUrl)" i18n-title title="Copy in Clipboard" >
                 <fa-icon [icon]="faCopy"></fa-icon> Copy
             </a>
         </mat-menu>

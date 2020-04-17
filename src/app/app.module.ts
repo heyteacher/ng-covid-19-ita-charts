@@ -22,6 +22,7 @@ import { AppRoutingModule } from './app-rounting.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BarsControlComponent } from './bars-control/bars-control.component';
 import { SeriesControlComponent } from './series-control/series-control.component';
+import { GoogleAnalyticsModule } from './google-analytics/google-analytics.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SeriesControlComponent } from './series-control/series-control.componen
     AppRoutingModule,
     FontAwesomeModule,
     MatSelectModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    GoogleAnalyticsModule
   ],
   bootstrap: [AppComponent]
 })
