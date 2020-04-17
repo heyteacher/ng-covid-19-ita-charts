@@ -47,7 +47,6 @@ testem.log
 Thumbs.db
 
 # Project ignore 
-src/index.prod.html
 src/environments/environment.prod.ts
 TODO.md
 install_ngx_charts.sh

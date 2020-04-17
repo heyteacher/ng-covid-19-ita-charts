@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Node } from "./app.model";
 import moment from 'moment';
 import { environment } from './../environments/environment';
+import { AppConfigService } from './app-config.service';
 
 
 @Injectable({
@@ -20,7 +21,7 @@ export class DataService {
 
   private days: string[]
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private appConfigService: AppConfigService) {
 
   }
 
@@ -29,7 +30,7 @@ export class DataService {
    */
   async getCountryData(): Promise<any[]> {
     if (!this.countryData) {
-      this.countryData = await this.getJson(environment.countryDataSetURL)
+      this.countryData = await this.getJson(this.appConfigService.countryDataSetURL)
       this.days = this.countryData.map(e => moment(e.data).format('YYYY-MM-DD')).sort(this.orderDesc)
     }
     return this.countryData
@@ -51,7 +52,7 @@ export class DataService {
    */
   async getCountryForecastData(): Promise<any[]> {
     if (!this.countryForecastData) {
-      this.countryForecastData = await this.getJson(environment.countryForecastDataURL)
+      this.countryForecastData = await this.getJson(this.appConfigService.countryForecastDataURL)
     }
     return this.countryForecastData
   }
@@ -62,7 +63,7 @@ export class DataService {
    */
   async getRegionalForecastData(): Promise<any[]> {
     if (!this.regionalForecastData) {
-      this.regionalForecastData = await this.getJson(environment.regionalForecastDataURL)
+      this.regionalForecastData = await this.getJson(this.appConfigService.regionalForecastDataURL)
     }
     return this.regionalForecastData
   }
@@ -73,7 +74,7 @@ export class DataService {
    */
   async getCountryForecastDeepARPlusData(): Promise<any[]> {
     if (!this.countryForecastDeepARPlusData) {
-      this.countryForecastDeepARPlusData = await this.getJson(environment.countryForecastDeepARPlusDataURL)
+      this.countryForecastDeepARPlusData = await this.getJson(this.appConfigService.countryForecastDeepARPlusDataURL)
     }
     return this.countryForecastDeepARPlusData
   }
@@ -84,7 +85,7 @@ export class DataService {
    */
   async getRegionalForecastDeepARPlusData(): Promise<any[]> {
     if (!this.regionalForecastDeepARPlusData) {
-      this.regionalForecastDeepARPlusData = await this.getJson(environment.regionalForecastDeepARPlusDataURL)
+      this.regionalForecastDeepARPlusData = await this.getJson(this.appConfigService.regionalForecastDeepARPlusDataURL)
     }
     return this.regionalForecastDeepARPlusData
   }
@@ -95,7 +96,7 @@ export class DataService {
   async getRegionalData(): Promise<any[]> {
     this.getCountryData()
     if (!this.regionalData) {
-      this.regionalData = await this.getJson(environment.regionalDataSetUrl)
+      this.regionalData = await this.getJson(this.appConfigService.regionalDataSetUrl)
     }
     return this.regionalData
   }
@@ -105,7 +106,7 @@ export class DataService {
    */
   async getProvincialData(): Promise<any[]> {
     if (!this.provincialData) {
-      this.provincialData = await this.getJson(environment.provincialDataSetUrl)
+      this.provincialData = await this.getJson(this.appConfigService.provincialDataSetUrl)
     }
     return this.provincialData
   }
@@ -119,7 +120,7 @@ export class DataService {
       uri: '/',
       children: []
     }];
-    let data = await this.getJson(environment.provincialDataSetUrl);
+    let data = await this.getJson(this.appConfigService.provincialDataSetUrl);
     data = this.getDailyRows(data);
     let regions = {}
     for (const row of data) {

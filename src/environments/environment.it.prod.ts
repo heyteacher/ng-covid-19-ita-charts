@@ -1,36 +1,15 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false,
+  production: true,
 
-  shareUrl: "http://localhost:4200",
-  shareTags: "SHARE TAGS",
-  
-  baseHref: "/",
+  shareUrl : "https://heyteacher.github.io/COVID-19/it",
+  baseHref: "/COVID-19/it",
+
+  shareTags : "#coronavirus #coronavirus",
+
+  gTagConfig: 'UA-160361420-1',
 
   otherLang: {
     url: "/COVID-19/",
     label: "EN"
-  },
-
-  countryDataSetURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json',
-  regionalDataSetUrl: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json',
-  provincialDataSetUrl: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json/dpc-covid19-ita-province.json',
-
-  countryForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-andamento-nazionale-forecast.json',
-  regionalForecastDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-regioni-forecast.json',
-
-  countryForecastDeepARPlusDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-andamento-nazionale-forecast-Deep_AR_Plus.json',
-  regionalForecastDeepARPlusDataURL: 'https://raw.githubusercontent.com/heyteacher/COVID-19/master/dati-json-forecast/covid19-ita-regioni-forecast-Deep_AR_Plus.json',
+  }
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
