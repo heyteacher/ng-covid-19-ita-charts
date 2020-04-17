@@ -17,7 +17,7 @@ export class SeriesService {
       key: string, 
       label: string, 
       denomKey: string = null, 
-      fn:any = null): Promise<Series> {
+      fn:Function = null): Promise<Series> {
     const countryData = await this.dataService.getCountryData();
     return this.buildSeries(countryData, key, label, denomKey, 'data', fn)
   }
@@ -32,7 +32,7 @@ export class SeriesService {
     key: string, 
     label: string, 
     denomKey: string = null,
-    fn:any = null): Promise<Series> {
+    fn:Function = null): Promise<Series> {
     let regionalData = await this.dataService.getRegionalData();
     regionalData = this.dataService.filterData(regionalData, 'denominazione_regione', region)
     return this.buildSeries(regionalData, key, label, denomKey,'data',fn);
@@ -48,7 +48,7 @@ export class SeriesService {
     key: string, 
     label: string, 
     denomKey: string = null,
-    fn:any = null): Promise<Series> {
+    fn:Function = null): Promise<Series> {
     let provincialData = await this.dataService.getProvincialData();
     provincialData = this.dataService.filterData(provincialData, 'denominazione_provincia', this.dataService.decode(province))
     provincialData = this.dataService.filterData(provincialData, 'denominazione_regione', region)
@@ -99,7 +99,7 @@ export class SeriesService {
    * @param key chiave per estrarre il valore
    * @param label descrizione della chiava
    */
-  private buildSeries(data: any[], key: string, label: string, denomKey: string = null, date:string = 'data', fn:any = null): Series {
+  private buildSeries(data: any[], key: string, label: string, denomKey: string = null, date:string = 'data', fn:Function = null): Series {
     const daySeries = (input) => {
       const denomValue = denomKey && input[denomKey] > 0 && input[key] != 0 ? input[denomKey] : 0
       let value = denomKey == null ? 

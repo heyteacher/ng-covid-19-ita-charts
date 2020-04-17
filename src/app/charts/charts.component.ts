@@ -52,6 +52,7 @@ export class ChartsComponent implements OnInit{
   newSwabBarsData: Bar[] = [];
   newSwabBarsMax: number;
   showLegend: boolean
+  log10:boolean = true
 
   constructor(
     private seriesService: SeriesService,
@@ -64,6 +65,7 @@ export class ChartsComponent implements OnInit{
       this.initData()
     })
   }
+
   ngOnInit(): void {
     this.onResize();
   }
@@ -120,9 +122,8 @@ export class ChartsComponent implements OnInit{
     await this.getNewSwabBarsData()
   }
 
-
   private async setRegionalData(region: string) {
-    const fn = this.log10? this.formatLog10: null
+    const fn:Function = this.log10? this.formatLog10: null
     this.seriesData = [
       await this.seriesService.getRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, fn),
       await this.seriesService.getRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
@@ -220,8 +221,7 @@ export class ChartsComponent implements OnInit{
     console.log($event)
   }
 
-  log10:boolean = true
-
+ 
   changeLog10($event) {
     this.log10 = $event
     this.initData()
