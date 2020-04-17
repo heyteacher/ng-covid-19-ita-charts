@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="4ad1640a30820dd1a47cd3ea0c541f21e03c9f00" datatype="html" approved="yes">
         <source>Confirmed per Tests Rate</source>
-        <target state="translated">Tasso Infettati per Tampon</target>
+        <target state="translated">Tasso Infettati per Tamponi</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">98</context>
