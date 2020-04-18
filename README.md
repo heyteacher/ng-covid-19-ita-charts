@@ -4,8 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/heyteacher/ng-covid-19-ita-charts)](https://github.com/heyteacher/ng-covid-19-ita-charts/blob/master/LICENSE)
 [![GitHub commit](https://img.shields.io/github/last-commit/heyteacher/ng-covid-19-ita-charts)](https://github.com/heyteacher/ng-covid-19-ita-charts/commits/master)
 
-__Angular 9__ didactic project of https://heyteacher.github.io/COVID-19/ 
-a COVID-19 Italy Charts based on dataset https://github.com/heyteacher/COVID-19. 
+__Angular 9__  project of https://heyteacher.github.io/COVID-19/ a COVID-19 Italy Charts based on dataset https://github.com/heyteacher/COVID-19. 
 
 Developed with: 
 
@@ -15,7 +14,7 @@ Developed with:
 * `Bootstrap 4`
 * `Font Awasome`
 
-Datasources JSON are downloaded directly in raw mode from https://github.com/heyteacher/COVID-19 , no backend is needed.
+Datasources JSON are downloaded directly in raw mode from https://github.com/heyteacher/COVID-19, no backend is needed.
 
 ## Quickstart
 
@@ -39,6 +38,9 @@ src/
     │ 
     └─── series-control/ component on header of series charts 
     │                  with Log/Linear view  
+    │ 
+    └─── google-analytics/ module for track pages and event 
+    │                      in Google Analytics  
     │ 
     └─── tree-menu/ component tree in the left side with
     │               levels contry -> region -> province
@@ -67,16 +69,35 @@ src/
 
 ## Localizzation
 
-1. first time install `xliffmerge` and `virtaal`
+Localization  is implemented via `ng xi18n`, `xliffmerge` (https://github.com/martinroob/ngx-i18nsupport) and `virtaal` (https://github.com/translate/virtaal)
+
+Default language is `English` and is supported only `Italian` language
+
+### Installation
+
+1. install `xliffmerge` and `virtaal`
 
    ```
    sudo npm install -g ngx-i18nsupport
    sudo apt install virtaal
    ```
 
+1. load `$localize` onto the global scope in `polifills.ts` adding:
+   ```
+   import '@angular/localize/init';
+   ```
+
+### Usage
+
+1. use `i18n`, `i18n-title` HTML attributes and `$localize` as described in https://angular.io/guide/i18n
+
 1. merge new strings to be traslated in `src/locale/messages.it.xlf`
    ```
    npm run i18n
+   ```
+   alias of:
+   ```
+   ng xi18n --output-path src/locale && xliffmerge --profile xliffmerge.json en it
    ```
 
 1. run `virtaal` and fix missin translations in `src/locale/messages.it.xlf`
@@ -85,6 +106,12 @@ src/
    ```
    npm run serve-prod-it
    ```
+
+1. insert missing `$localize` translations in: 
+   ```
+   locale/messages.it.xlf
+   ```
+   and translate them
 
 ## Release
 
