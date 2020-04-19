@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { Bar, getDailyRows, filterData, orderValueDesc } from "./app.model";
-import { encode } from 'punycode';
+import { Bar, getDailyRows, filterData, orderValueDesc, encode } from "./app.model";
 
 @Injectable({
   providedIn: 'root'
