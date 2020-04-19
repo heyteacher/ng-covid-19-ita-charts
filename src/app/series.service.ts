@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { Series } from "./app.model";
+import { Series, filterData } from "./app.model";
 import { DataService } from './data.service';
+import { decode } from 'punycode';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class SeriesService {
     denomKey: string = null,
     fn:Function = null): Promise<Series> {
     let regionalData = await this.dataService.getRegionalData();
-    regionalData = this.dataService.filterData(regionalData, 'denominazione_regione', region)
+    regionalData = filterData(regionalData, 'denominazione_regione', region)
     return this.buildSeries(regionalData, key, label, denomKey,'data',fn);
   }
 
@@ -50,8 +51,8 @@ export class SeriesService {
     denomKey: string = null,
     fn:Function = null): Promise<Series> {
     let provincialData = await this.dataService.getProvincialData();
-    provincialData = this.dataService.filterData(provincialData, 'denominazione_provincia', this.dataService.decode(province))
-    provincialData = this.dataService.filterData(provincialData, 'denominazione_regione', region)
+    provincialData = filterData(provincialData, 'denominazione_provincia', decode(province))
+    provincialData = filterData(provincialData, 'denominazione_regione', region)
     return this.buildSeries(provincialData, key, label, denomKey,'data',fn);
   }
 
@@ -70,7 +71,7 @@ export class SeriesService {
    */
   async getRegionalForecastSeries(region: string, quantile:string, label: string): Promise<Series> {
     let regionalForecastData = await this.dataService.getRegionalForecastData();
-    regionalForecastData = this.dataService.filterData(regionalForecastData, 'item_id', region)
+    regionalForecastData = filterData(regionalForecastData, 'item_id', region)
     return this.buildSeries(regionalForecastData, quantile, label, null, 'date');
   }
 
@@ -89,7 +90,7 @@ export class SeriesService {
    */
   async getRegionalForecastDeepARPlusSeries(region: string, quantile:string, label: string): Promise<Series> {
     let regionalForecastDeepARPlusData = await this.dataService.getRegionalForecastDeepARPlusData();
-    regionalForecastDeepARPlusData = this.dataService.filterData(regionalForecastDeepARPlusData, 'item_id', region)
+    regionalForecastDeepARPlusData = filterData(regionalForecastDeepARPlusData, 'item_id', region)
     return this.buildSeries(regionalForecastDeepARPlusData, quantile, label, null, 'date');
   }
 

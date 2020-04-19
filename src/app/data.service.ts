@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Node } from "./app.model";
+import { Node, getDailyRows, getTree, orderDesc } from "./app.model";
 import moment from 'moment';
-import { environment } from './../environments/environment';
 import { AppConfigService } from './app-config.service';
 
 
@@ -31,7 +30,7 @@ export class DataService {
   async getCountryData(): Promise<any[]> {
     if (!this.countryData) {
       this.countryData = await this.getJson(this.appConfigService.countryDataSetURL)
-      this.days = this.countryData.map(e => moment(e.data).format('YYYY-MM-DD')).sort(this.orderDesc)
+      this.days = this.countryData.map(e => moment(e.data).format('YYYY-MM-DD')).sort(orderDesc)
     }
     return this.countryData
   }
@@ -115,69 +114,8 @@ export class DataService {
    * albero anagrafica regioni province generato dai dati per provincia
    */
   public async getTree(): Promise<Node[]> {
-    const tree: Node[] = [{
-      name: $localize`Italy`,
-      uri: '/',
-      children: []
-    }];
     let data = await this.getJson(this.appConfigService.provincialDataSetUrl);
-    data = this.getDailyRows(data);
-    let regions = {}
-    for (const row of data) {
-      const region = row.denominazione_regione
-      if (!regions[region]) {
-        // aggiungo nuova regione (gestione Bolzano e Trento)
-        regions[region] = {
-          uri: `/${region}`,
-          name: region,
-          children: []
-        }
-        tree[0].children.push(regions[region])
-      }
-      // aggiungo provincia, gestendo i Non Assegnati (gigla vuota)
-      const province = this.encode(row.denominazione_provincia)
-      regions[region].children.push({
-        uri: `/${region}/${province}`,
-        name: province
-      });
-    }
-    return tree
-  }
-
-  /**
-   * filtro dei dati per il valore della chiave selezionata
-   * @param data[] array dei dati 
-   * @param key la chiave 
-   * @param value il valore da filtrare
-   */
-  filterData(data: any[], key: string, value: string) {
-    const filterSeries = (input) => {
-      return input[key].match(new RegExp('^'+value, 'i'));
-    }
-    return data.filter(filterSeries)
-  }
-
-  getDailyRows(data: any[], day: string = null): any[] {
-    if (day) {
-      return this.filterData(data, 'data', day)
-    }
-    return this.filterData(data, 'data', data[data.length - 1].data)
-  }
-
-  encode(province) {
-    return province == 'In fase di definizione/aggiornamento' ? $localize`NOT ATTRIBUTED YET` : province
-  }
-
-  decode(province) {
-    return province == $localize`NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
-  }
-
-  orderValueDesc = (a, b) => {
-    return a.value > b.value ? -1 : 1
-
-  }
-  orderDesc = (a,b) => {
-    return a > b ? -1 : 1
+    return getTree(data)
   }
 
   /**
@@ -187,7 +125,4 @@ export class DataService {
   private async getJson(url: string): Promise<any[]> {
     return await this.http.get(url).toPromise() as Promise<any[]>;
   }
-
-
-
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { Bar } from "./app.model";
+import { Bar, getDailyRows, filterData, orderValueDesc } from "./app.model";
+import { encode } from 'punycode';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class BarsService {
   public async getRegionalBars(keyValue: string, day: string = null, denomKey: string = null): Promise<Bar[]> {
     const data = await this.dataService.getRegionalData();
     return this.buildBars(
-      this.dataService.getDailyRows(data,day),
+      getDailyRows(data,day),
       'denominazione_regione',
       keyValue,
       20,
@@ -27,10 +28,10 @@ export class BarsService {
   public async getProvincialBars(keyValue: string, day: string = null, region: string = null, denomKey: string = null): Promise<Bar[]> {
     let data = await this.dataService.getProvincialData();
     if (region) {
-      data = this.dataService.filterData(data, 'denominazione_regione', region)
+      data = filterData(data, 'denominazione_regione', region)
     }
     return this.buildBars(
-      this.dataService.getDailyRows(data, day),
+      getDailyRows(data, day),
       'denominazione_provincia',
       keyValue,
       20,
@@ -52,10 +53,10 @@ export class BarsService {
           Math.min((Math.floor((input[keyValue] / denomValue) * 10000) / 100), 100):
           0
       return {
-        name: this.dataService.encode(input[keyName]),
+        name: encode(input[keyName]),
         value: value,
       }
     }
-    return data.map(bar).filter(greaterThanZero).sort(this.dataService.orderValueDesc).slice(0, max)
+    return data.map(bar).filter(greaterThanZero).sort(orderValueDesc).slice(0, max)
   }
 }

@@ -12,7 +12,8 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "i18n": "ng xi18n --output-path src/locale && xliffmerge --profile xliffmerge.json en it",
-        "release": "./release.sh"
+        "release": "./release.sh",
+        "gensitemap": "tsc -p tsconfig.gensitemap.json && node dist/gensitemap/gensitemap.js"
     },
     "private": true,
     "dependencies": {
@@ -50,6 +51,7 @@
         "@types/jasmine": "~3.5.0",
         "@types/jasminewd2": "~2.0.3",
         "@types/node": "^12.12.35",
+        "axios": "^0.19.2",
         "codelyzer": "^5.2.2",
         "jasmine-core": "~3.5.0",
         "jasmine-spec-reporter": "~4.2.1",

@@ -23,6 +23,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BarsControlComponent } from './bars-control/bars-control.component';
 import { SeriesControlComponent } from './series-control/series-control.component';
 import { GoogleAnalyticsModule } from './google-analytics/google-analytics.module';
+import { AppConfigService } from './app-config.service';
+import {DataService} from './data.service'
 
 @NgModule({
   declarations: [
@@ -31,6 +33,10 @@ import { GoogleAnalyticsModule } from './google-analytics/google-analytics.modul
     TreeMenuComponent,
     BarsControlComponent,
     SeriesControlComponent,
+  ],
+  providers: [
+    AppConfigService,
+    DataService
   ],
   imports: [
     BrowserModule,

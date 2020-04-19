@@ -174,8 +174,8 @@ export class ChartsComponent implements OnInit {
 
   async getNewCasesPercBarsData($event = { value: null }) {
     this.newCasesPercBarsData = this.breadcrumbs["region"] != null ?
-      await this.barsService.getProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi') :
-      await this.barsService.getRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi')
+      await this.barsService.getProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
+      await this.barsService.getRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
     this.newCasesPercBarsMax = this.getMaxValue(this.newCasesPercBarsData, this.newCasesPercBarsMax)
   }
 
