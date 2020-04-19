@@ -22,7 +22,6 @@ export class GoogleAnalyticsComponent {
   protected subscribeEventsProvider() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        console.log('page_path', event.urlAfterRedirects)
         gtag('config', environment.gTagConfig,
           {
             'page_path': event.urlAfterRedirects
