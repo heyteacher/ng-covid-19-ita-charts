@@ -12,7 +12,9 @@ export class SeriesControlComponent  {
   @Input() log10:string = "log10"
   @Input() aggregate:string = "daily"
 
-  @Input() aggregateDisabled:boolean = false
+  @Input() aggregateEnabled:boolean = false
+  @Input() log10Enabled:boolean = false
+  
 
   @Output() changeLog10 = new EventEmitter<any>();
   @Output() changeAggregate = new EventEmitter<any>();

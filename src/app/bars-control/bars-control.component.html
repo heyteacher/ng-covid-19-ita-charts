@@ -1,25 +1,27 @@
-<div class="chart-legend">
-    <span class="legend-title">{{title}}</span>
-    <span>
-        <mat-button-toggle-group>
-            <mat-button-toggle (click)="play()" *ngIf="!isPlaying">
-                <fa-icon [icon]="faPlay" size="xs"></fa-icon>
-            </mat-button-toggle>
-            <mat-button-toggle (click)="pause()" *ngIf="isPlaying">
-                <fa-icon [icon]="faPause" size="xs"></fa-icon>
-            </mat-button-toggle>
-            <mat-button-toggle (click)="stop()">
-                <fa-icon [icon]="faStop" size="xs"></fa-icon>
-            </mat-button-toggle>
-        </mat-button-toggle-group>
-    </span>
-    <span>
-        <mat-form-field>
-            <mat-select (selectionChange)="onSelectionChange($event)" [value]="day()">
-                <mat-option *ngFor="let day of dataService.getDays()" [value]="day">
-                    {{day | date:'dd/MM' }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </span>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col control-title text-left">{{title}}</div>
+        <div class="col text-right">
+            <div class="d-inline align-top">
+                <a class="bar-control-action" (click)="play()" *ngIf="!isPlaying">
+                    <fa-icon [icon]="faPlay" size="xs"></fa-icon>
+                </a>
+                <a class="bar-control-action" (click)="pause()" *ngIf="isPlaying">
+                    <fa-icon [icon]="faPause" size="xs"></fa-icon>
+                </a>
+                <a class="bar-control-action" (click)="stop()">
+                    <fa-icon [icon]="faStop" size="xs"></fa-icon>
+                </a>
+            </div>
+            <div class="d-inline align-top">
+                <mat-form-field>
+                    <mat-select (selectionChange)="onSelectionChange($event)" [value]="day()">
+                        <mat-option *ngFor="let day of dataService.getDays()" [value]="day">
+                            {{day | date:'dd/MM' }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
 </div>

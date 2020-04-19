@@ -24,7 +24,12 @@ a:hover {
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: 24px !important;
-    padding: 0px 7px !important;
+    padding: 0px 10px !important;
+}
+
+.mat-form-field-infix {
+    border-top: none !important;
+    padding: 0px !important;
 }
 
 .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
@@ -33,7 +38,7 @@ a:hover {
 }
 
 mat-button-toggle-group {
-    margin: 0px 10px;
+    margin: 10px 10px;
 }
 
 .mat-button {
@@ -47,6 +52,13 @@ mat-button-toggle-group {
 
 .grid-line-path-zero {
     stroke: #9A9 !important;
+}
+
+.control-title {
+    margin-left: 30px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 

@@ -1,5 +1,9 @@
 mat-form-field {
     width: 60px;
-    margin: 0px 0px;
+    margin: 0px 0px 0px 10px;
     font-size: 14px;
+}
+
+.bar-control-action {
+    padding-left: 10px;
 }

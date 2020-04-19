@@ -24,7 +24,8 @@ import { BarsControlComponent } from './bars-control/bars-control.component';
 import { SeriesControlComponent } from './series-control/series-control.component';
 import { GoogleAnalyticsModule } from './google-analytics/google-analytics.module';
 import { AppConfigService } from './app-config.service';
-import {DataService} from './data.service'
+import { DataService} from './data.service'
+import { GoogleAnalyticsComponent } from './google-analytics/google-analytics.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {DataService} from './data.service'
     TreeMenuComponent,
     BarsControlComponent,
     SeriesControlComponent,
+    GoogleAnalyticsComponent
   ],
   providers: [
     AppConfigService,

@@ -12,42 +12,64 @@
     </div>
     <div class="row" *ngIf="!breadcrumbs['province']; else provinceTemplate">
         <div class="col-lg-6 chart-container text-center">
-            <app-series-control (changeLog10)="changeLog10($event)" (changeAggregate)="changeAggregate($event)" aggregateDisabled="true" i18n-title title="Trend">
+            <app-series-control (changeLog10)="changeLog10($event)" [log10Enabled]="true" (changeAggregate)="changeAggregate($event)" i18n-title title="Trend">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel"
-                timeline="true" xAxis="true" yAxis="true" showGridLines="true" legendPosition="right">
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true"
+                showGridLines="true">
             </ngx-charts-line-chart>
+        </div>
+        <div class="col-12 d-block d-lg-none">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col" *ngFor="let label of labels; let i = index">
+                        <span class="legend-label-color" style="background-color: {{colorScheme.domain[i]}};"></span>
+                        <span class="legend-label-text">{{label}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-lg-6 chart-container text-center">
-            <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Variations</span>
-            </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesDailyData" [scheme]="colorScheme" [legend]="showLegend" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true"
-                xAxis="true" yAxis="true" showGridLines="true">
+            <app-series-control i18n-title title="Daily Variations">
+            </app-series-control>
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesDailyData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true"
+                showGridLines="true">
             </ngx-charts-line-chart>
         </div>
+    </div>
+    <div class="row" *ngIf="!breadcrumbs['province']">
+        <div class="col">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col" *ngFor="let label of labels; let i = index">
+                        <span class="legend-label-color" style="background-color: {{colorScheme.domain[i]}};"></span>
+                        <span class="legend-label-text">{{label}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
-            <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Variations Rate</span>
-            </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50" showLegend="false" legendTitle=""
-                showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+    <div class="row" *ngIf="!breadcrumbs['province']">
+        <div class=" col-lg-6 chart-container text-center" style="padding-top:13px">
+            <app-series-control i18n-title title="Daily Variations Rate">
+            </app-series-control>
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50
+" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
-            <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Tests</span>
-            </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesSwabData" [scheme]="colorScheme" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
+            <app-series-control i18n-title title="Daily Tests">
+            </app-series-control>
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesSwabData" [scheme]="colorScheme" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true
+" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
 
         <div class="col-lg-4 chart-container text-center">
             <app-bars-control (change)="getNewCasesPercBarsData($event)" i18n-title title="Daily Confirmed Rate" playLastDays="15">
             </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="newCasesPercBarsData" [scheme]="colorScheme" [xScaleMax]="newCasesPercBarsMax" showDataLabel="true" legendTitle="Nuovi Casi %" showXAxisLabel="true" showYAxisLabel="true" yAxis="true"
-                showGridLines="true">
+            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="newCasesPercBarsData" [scheme]="colorScheme" [xScaleMax]="newCasesPercBarsMax" showDataLabel="true" legendTitle="Nuovi Casi %" showXAxisLabel="true
+" showYAxisLabel="true" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
         </div>
 
@@ -64,43 +86,44 @@
             </ngx-charts-bar-horizontal>
         </div>
 
-        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
             <app-bars-control (change)="getLethalityBarsData($event)" i18n-title title="Lethality" playLastDays="20">
             </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="lethalityBarsData" [scheme]="colorScheme" [xScaleMax]="lethalityBarsMax" showDataLabel="true" legendTitle="Letalità" showXAxisLabel="true" showYAxisLabel="true" yAxis="true"
-                showGridLines="true">
+            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="lethalityBarsData" [scheme]="colorScheme" [xScaleMax]="lethalityBarsMax" showDataLabel="true" legendTitle="Letalità" showXAxisLabel="true
+" showYAxisLabel="true" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
         </div>
-        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
             <app-bars-control (change)="getIntensiveBarsData($event)" i18n-title title="Intensive Care">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="intensiveBarsData" [scheme]="colorScheme" [xScaleMax]="intensiveBarsMax" showDataLabel="true" showXAxisLabel="true" showYAxisLabel="true" yAxis="true">
             </ngx-charts-bar-horizontal>
         </div>
-        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
             <app-bars-control (change)="getTotalCasesPerProvinceBarsData($event)" i18n-title title="Confirmed by Province">
             </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="totalCasesPerProvinceBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesPerProvinceBarsMax" showDataLabel="true" legendTitle="Terapia Intensiva" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
+            <ngx-charts-bar-horizontal [results]="totalCasesPerProvinceBarsData" [scheme]="colorScheme" [xScaleMax]="totalCasesPerProvinceBarsMax" showDataLabel="true" legendTitle="Terapia Intensiva" showXAxisLabel="true" showYAxisLabel="true
+" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
         </div>
 
-        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
             <app-bars-control (change)="getTotalSwabBarsData($event)" i18n-title title="Total Tests">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="totalSwabBarsData" [scheme]="colorScheme" [xScaleMax]="totalSwabBarsMax" showDataLabel="true" legendTitle="Tamponi" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
         </div>
-        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
             <app-bars-control (change)="getNewSwabBarsData($event)" i18n-title title="Daily Tests">
             </app-bars-control>
             <ngx-charts-bar-horizontal [results]="newSwabBarsData" [scheme]="colorScheme" [xScaleMax]="newSwabBarsMax" showDataLabel="true" legendTitle="Nuovi Tamponi" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
         </div>
-        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs['region']">
+        <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
             <app-bars-control (change)="getPositivePerSwabBarsData($event)" i18n-title title="Confirmed per Tests Rate">
             </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="positivePerSwabBarsData" [scheme]="colorScheme" [xScaleMax]="positivePerSwabBarsMax" showDataLabel="true" legendTitle="Positivi per Tamponi" showXAxisLabel="true" showYAxisLabel="true"
-                yAxis="true" showGridLines="true">
+            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="positivePerSwabBarsData" [scheme]="colorScheme" [xScaleMax]="positivePerSwabBarsMax" showDataLabel="true" legendTitle="Positivi per Tamponi
+" showXAxisLabel="true" showYAxisLabel="true" yAxis="true" showGridLines="true">
             </ngx-charts-bar-horizontal>
         </div>
     </div>
@@ -112,16 +135,29 @@
             <div class="chart-legend">
                 <span class="legend-title" i18n>Confirmed Trend</span>
             </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" timeline="false" [results]="seriesData" [scheme]="colorScheme" legend="true" legendTitle="" showXAxisLabel="true" showYAxisLabel="truel" xAxis="true" yAxis="true" showGridLines="true">
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" timeline="false" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" xAxis="true" yAxis="true
+" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center">
             <div class="chart-legend">
                 <span class="legend-title" i18n>Daily Confirmed Rate</span>
             </div>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showLegend="false" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true"
-                yAxis="true" showGridLines="true">
+            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true
+" showGridLines="true">
             </ngx-charts-line-chart>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col" *ngFor="let label of provLabels; let i = index">
+                        <span class="legend-label-color" style="background-color: {{colorScheme.domain[i]}};"></span>
+                        <span class="legend-label-text">{{label}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>
