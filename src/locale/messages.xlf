@@ -41,92 +41,92 @@
         <source>Daily Variations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="e1f0991026fff1625463b48a3e89d8519f84dc86" datatype="html">
         <source>Daily Variations Rate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="22ac7d91a66d496e551d35358899d3fec163005e" datatype="html">
         <source>Daily Tests</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">117</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="0b299ce81fc1b8d78e9e112c62bd8a194225bfbf" datatype="html">
         <source>Daily Confirmed Rate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">55</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4509adab816e7575022aca7b74a271c70e16df08" datatype="html">
         <source>Daily Confirmed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4e083fccf902bee897ca099dbaa11222398eddde" datatype="html">
         <source>Total Confirmed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3e2ba8abdb40b8d3310200087940b7a21ed32471" datatype="html">
         <source>Lethality</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="404882bf6ec548938a93a94288b7e4ed2a52c848" datatype="html">
         <source>Intensive Care</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">97</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="e581581a31c8b066d65a85fa2fd80c0524f2df2d" datatype="html">
         <source>Confirmed by Province</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5b2b252ad3e4154c0a46b0fc0c5151c0208c36cb" datatype="html">
         <source>Total Tests</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">111</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4ad1640a30820dd1a47cd3ea0c541f21e03c9f00" datatype="html">
         <source>Confirmed per Tests Rate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8bac997b4cd20f2928b5846122553f2c0c24e572" datatype="html">
         <source>Confirmed Trend</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="efffb64bda94fa4f4493322c5e3717e845d5dc30" datatype="html">
