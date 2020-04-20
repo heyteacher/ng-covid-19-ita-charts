@@ -36,11 +36,13 @@ src/
     │ 
     └─── charts/ main component with bars and series charts
     │ 
-    └─── series-control/ component on header of series charts 
-    │                  with Log/Linear view  
+    └─── legend/ generic legend component for series chart 
     │ 
     └─── google-analytics/ module for track pages and event 
     │                      in Google Analytics  
+    │ 
+    └─── series-control/ component on header of series charts 
+    │                  with Log/Linear view  
     │ 
     └─── tree-menu/ component tree in the left side with
     │               levels contry -> region -> province
@@ -64,8 +66,17 @@ src/
     └─── messages.it.xlf italian translations 
     |
     └─── messages.xlf default translation (en)
-
 ```
+
+## ngx-charts fork
+
+This project use `@heyteacher/ngx-charts` my fork of official repository `@swimlane/ngx-charts` which introduce these changes:
+
+* branch [format-tooltip-bar-charts](https://github.com/heyteacher/ngx-charts/tree/format-tooltip-bar-charts): apply `dataLabelFormatting` to tooltip value in bar charts
+* branch [format-tooltip-line-area-charts](https://github.com/heyteacher/ngx-charts/tree/format-tooltip-line-area-charts): apply `yAxisTickFormatting` to toolptip value in line and area charts
+* branch [adding-axisTickClassByTick-line-area-charts](https://github.com/heyteacher/ngx-charts/tree/adding-axisTickClassByTick-line-area-charts): introduce `xAxisTickClassByTick` and `xAxisTickClassByTick` in order to customize grid line depenting tick value (e.g. weekend x-axis, zero y-axis)
+
+These branches are constantly updated with official repository `@swimlane/ngx-chart` and menged into a release branch [heyteacher-release](https://github.com/heyteacher/ngx-charts/tree/heyteacher-release) which is published in `npmjs.com`: https://www.npmjs.com/package/@heyteacher/ngx-charts 
 
 ## Localizzation
 
