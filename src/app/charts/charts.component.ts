@@ -20,21 +20,6 @@ export class ChartsComponent implements OnInit {
     domain: ['#CFC0BB', '#5AA454', '#7aa3e5', '#E44D25', '#aae3f5', '#a8385d', '#aFb3F5']
   };
 
-  labels = [
-      $localize`Confirmed`, 
-      $localize`Recovered/Released`, 
-      $localize`Intensive Care`, 
-      $localize`Deaths`, 
-      $localize`Current Positive`, 
-      `AWS Forecast ARIMA`, 
-      `AWS Forecast Deep AR+`
-  ];
-
-  provLabels = [
-    $localize`Confirmed`, 
-    $localize`New Confirmed`, 
-];
-
 
   seriesData: Series[] = [];
   seriesDailyData: Series[] = [];

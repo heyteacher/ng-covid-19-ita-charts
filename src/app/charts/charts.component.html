@@ -19,14 +19,7 @@
             </ngx-charts-line-chart>
         </div>
         <div class="col-12 d-block d-lg-none">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col" *ngFor="let label of labels; let i = index">
-                        <span class="legend-label-color" style="background-color: {{colorScheme.domain[i]}};"></span>
-                        <span class="legend-label-text">{{label}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </div>
-                </div>
-            </div>
+            <app-legend [colorScheme]="colorScheme"></app-legend>
         </div>
         <div class="col-lg-6 chart-container text-center">
             <app-series-control i18n-title title="Daily Variations">
@@ -38,14 +31,7 @@
     </div>
     <div class="row" *ngIf="!breadcrumbs['province']">
         <div class="col">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col" *ngFor="let label of labels; let i = index">
-                        <span class="legend-label-color" style="background-color: {{colorScheme.domain[i]}};"></span>
-                        <span class="legend-label-text">{{label}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </div>
-                </div>
-            </div>
+            <app-legend [colorScheme]="colorScheme"></app-legend>
         </div>
     </div>
 
@@ -132,17 +118,15 @@
 <ng-template #provinceTemplate>
     <div class="row">
         <div class="col-lg-6 chart-container-single text-center">
-            <div class="chart-legend">
-                <span class="legend-title" i18n>Confirmed Trend</span>
-            </div>
+            <app-series-control i18n-title title="Confirmed Trend">
+            </app-series-control>
             <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" timeline="false" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" xAxis="true" yAxis="true
 " showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center">
-            <div class="chart-legend">
-                <span class="legend-title" i18n>Daily Confirmed Rate</span>
-            </div>
+            <app-series-control i18n-title title="Daily Confirmed Rate">
+            </app-series-control>
             <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true
 " showGridLines="true">
             </ngx-charts-line-chart>
@@ -150,14 +134,7 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col" *ngFor="let label of provLabels; let i = index">
-                        <span class="legend-label-color" style="background-color: {{colorScheme.domain[i]}};"></span>
-                        <span class="legend-label-text">{{label}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </div>
-                </div>
-            </div>
+            <app-legend [colorScheme]="colorScheme" [isProvince]="true"></app-legend>
         </div>
     </div>
 </ng-template>

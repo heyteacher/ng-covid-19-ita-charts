@@ -1,0 +1,8 @@
+<div class="container-fluid legend-labels">
+    <div class="row">
+        <div class="col-lg col-md-3 col-sm-6 col-xs-12" *ngFor="let label of getLabels(); let i = index">
+            <span class="legend-label-color" [style]="backGroundColorStyle(colorScheme.domain[i])"></span>
+            <span class="legend-label-text">{{label}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+.legend-labels {
+    background-color: rgba(80, 92, 117, .3);
+}
+
+.legend-label-color {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
+    margin-top: 5px;
+    color: #5b646b;
+    border-radius: 3px;
+}
+
+.legend-label-text {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 25px;
+    font-size: 12px;
+    width: calc(100% - 20px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

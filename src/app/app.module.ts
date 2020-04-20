@@ -26,6 +26,7 @@ import { GoogleAnalyticsModule } from './google-analytics/google-analytics.modul
 import { AppConfigService } from './app-config.service';
 import { DataService} from './data.service'
 import { GoogleAnalyticsComponent } from './google-analytics/google-analytics.component';
+import { LegendComponent } from './legend/legend.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { GoogleAnalyticsComponent } from './google-analytics/google-analytics.co
     TreeMenuComponent,
     BarsControlComponent,
     SeriesControlComponent,
-    GoogleAnalyticsComponent
+    GoogleAnalyticsComponent,
+    LegendComponent
   ],
   providers: [
     AppConfigService,
