@@ -7,3 +7,10 @@ mat-form-field {
 .bar-control-action {
     padding-left: 10px;
 }
+
+.control-title {
+    margin-left: 30px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 700;
+}

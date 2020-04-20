@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col control-title text-left">{{title}}</div>
         <div class="col text-right">
-            <div class="d-inline align-top" *ngIf="aggregateEnabled==true">
+            <div class="d-inline" *ngIf="aggregateEnabled==true">
                 <mat-button-toggle-group [value]="aggregate" (change)="newAggregate($event)">
                     <mat-button-toggle value="daily" i18n>Day</mat-button-toggle>
                     <mat-button-toggle value="weekly" i18n>Week</mat-button-toggle>
                     <mat-button-toggle value="montly" i18n>Month</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
-            <div class="d-inline align-top" *ngIf="log10Enabled==true">
+            <div class="d-inline" *ngIf="log10Enabled==true">
                 <mat-button-toggle-group [value]="log10" (change)="newLog10($event)">
                     <mat-button-toggle value="log10" i18n>Log</mat-button-toggle>
                     <mat-button-toggle value="linear" i18n>Linear</mat-button-toggle>

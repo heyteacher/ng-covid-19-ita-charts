@@ -1,3 +1,10 @@
 mat-button-toggle {
     font-size: 12px;
 }
+
+.control-title {
+    margin-left: 30px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 700;
+}
