@@ -248,14 +248,14 @@ export class ChartsComponent implements OnInit {
     return input && input > 0 ? Math.log10(input) : input
   }
 
-  public xAxisTickClassByTick(tick) {
+  public gridLineNgStyleByXAxisTick(tick) {
     var day = moment(tick, 'DD/MM').day();
     var isWeekend = (day === 6) || (day === 0);
-    return isWeekend ? "grid-line-path-weekend" : ""
+    return isWeekend ? {stroke: '#999'} : null
   }
 
-  public yAxisTickClassByTick(tick) {
-    return tick == 0 ? "grid-line-path-zero" : ""
+  public gridLineNgStyleByYAxisTick(tick) {
+    return tick == 0 ? {stroke: '#999'}: null
   }
 
   @HostListener("window:resize", [])

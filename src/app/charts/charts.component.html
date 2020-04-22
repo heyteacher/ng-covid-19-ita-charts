@@ -14,8 +14,8 @@
         <div class="col-lg-6 chart-container text-center">
             <app-series-control (changeLog10)="changeLog10($event)" [log10Enabled]="true" (changeAggregate)="changeAggregate($event)" i18n-title title="Trend">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true"
-                showGridLines="true">
+            <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true"
+                yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-12 d-block d-lg-none">
@@ -24,8 +24,8 @@
         <div class="col-lg-6 chart-container text-center">
             <app-series-control i18n-title title="Daily Variations">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesDailyData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true"
-                showGridLines="true">
+            <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [gridLineNgStyleByYAxisTick]="gridLineNgStyleByYAxisTick" [results]="seriesDailyData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true"
+                yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
     </div>
@@ -39,14 +39,14 @@
         <div class=" col-lg-6 chart-container text-center" style="padding-top:13px">
             <app-series-control i18n-title title="Daily Variations Rate">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [yAxisTickClassByTick]="yAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50
+            <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [gridLineNgStyleByYAxisTick]="gridLineNgStyleByYAxisTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50
 " showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
             <app-series-control i18n-title title="Daily Tests">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesSwabData" [scheme]="colorScheme" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true
+            <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [results]="seriesSwabData" [scheme]="colorScheme" showLegend="false" legendTitle="" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true
 " yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
@@ -120,15 +120,14 @@
         <div class="col-lg-6 chart-container-single text-center">
             <app-series-control i18n-title title="Confirmed Trend">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" timeline="false" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" xAxis="true" yAxis="true
+            <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" timeline="false" [results]="seriesData" [scheme]="colorScheme" showXAxisLabel="true" showYAxisLabel="true" xAxis="true" yAxis="true
 " showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center">
             <app-series-control i18n-title title="Daily Confirmed Rate">
             </app-series-control>
-            <ngx-charts-line-chart [xAxisTickClassByTick]="xAxisTickClassByTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true
-" showGridLines="true">
+            <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [results]="seriesPercData" [scheme]="colorScheme" [yAxisTickFormatting]="formatPercentage" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
     </div>
