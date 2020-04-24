@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export interface Node {
   name: string;
   uri: string;
@@ -38,15 +40,15 @@ export function getDailyRows(data: any[], day: string = null): any[] {
   return filterData(data, 'data', data[data.length - 1].data)
 }
 
-export function encode(province:string): string {
+export function encode(province: string): string {
   return province == 'In fase di definizione/aggiornamento' ? `NOT ATTRIBUTED YET` : province
 }
 
-export function decode(province:string): string {
+export function decode(province: string): string {
   return province == `NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
 }
 
-export function getTree(data:any[]): Node[] {
+export function getTree(data: any[]): Node[] {
   const tree: Node[] = [{
     name: `Italy`,
     uri: '/',
@@ -74,11 +76,73 @@ export function getTree(data:any[]): Node[] {
 }
 
 
-export function orderValueDesc (a, b)  {
+export function orderValueDesc(a, b) {
   return a.value > b.value ? -1 : 1
 
 }
 
-export function orderDesc (a,b) {
+export function orderDesc(a, b) {
   return a > b ? -1 : 1
+}
+
+export function getValue(input: any, keyValue: string, denomKey: string) {
+  const denomValue = denomKey && input[denomKey] >= 0 ? input[denomKey] : 0;
+  const value = denomKey == null ?
+    parseFloat(input[keyValue]) :
+    denomValue > 0 ?
+      Math.min((Math.floor((input[keyValue] / denomValue) * 10000) / 100), 100) :
+      0;
+  return value;
+}
+
+/**
+ * Calculate the max value of last data days
+ * @param inputData the input data
+ * @param keyValue the key of value
+ * @param denominatorKey the key of denominator
+ * @param lastDays the number of last days to consider
+ * @return the max value of last data days
+ */
+export function getMaxValue(
+  inputData: any[],
+  keyValue: string,
+  denominatorKey: string,
+  lastDays: number
+): number {
+  const findMaxBar = (previous: any, current: any, currentIdx: number, array: any[]): Bar => {
+    // ignore days not showed
+    if (moment(current.data).isBefore(moment().subtract(lastDays, 'day'))) {
+      return current
+    }
+    if (currentIdx == 0) {
+      return current
+    }
+    if (getValue(current, keyValue, denominatorKey) > getValue(previous, keyValue, denominatorKey)) {
+      return current
+    }
+    else {
+      return previous
+    }
+  }
+  const maxRow: any = inputData.reduce(findMaxBar)
+  return maxRow ? getValue(maxRow, keyValue, denominatorKey) : null
+}
+
+
+/**
+ * calculate the percentage value
+ * @param input the input value
+ * @param keyValue the key of value
+ * @param denominatorKey the key of denominator
+ * @param maxValue the maximum value returned
+ * @return the percentage value
+ */
+export function getPercentageValue(input: any, valueKey: string, denominatorKey: string, maxValue: number = 100) {
+  const denomValue = denominatorKey && input[denominatorKey] > 0 ? input[denominatorKey] : 0;
+  let value = denominatorKey == null ?
+    input[valueKey] :
+    denomValue > 0 ?
+      Math.min((Math.floor((input[valueKey] / denomValue) * 10000) / 100), maxValue) :
+      0;
+  return value;
 }

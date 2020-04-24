@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { Series, filterData,decode } from "./app.model";
+import { Series, filterData, decode, getPercentageValue } from "./app.model";
 import { DataService } from './data.service';
 
 @Injectable({
@@ -11,111 +11,148 @@ export class SeriesService {
   constructor(private dataService: DataService) { }
 
   /**
-   * array dati nazionali
+   * generate series from country data
+   * @param valueKey the key of value
+   * @param label the series label
+   * @param denominatorKey the key of denominator
+   * @param fnValue the function to apply to value
    */
-  async getCountrySeries(
-      key: string, 
-      label: string, 
-      denomKey: string = null, 
-      fn:Function = null): Promise<Series> {
+  async generateCountrySeries(
+    valueKey: string,
+    label: string,
+    denominatorKey: string = null,
+    fnValue: Function = null)
+    : Promise<Series> {
     const countryData = await this.dataService.getCountryData();
-    return this.buildSeries(countryData, key, label, denomKey, 'data', fn)
+    return this.generateSeries(countryData, valueKey, label, denominatorKey, 'data', fnValue)
   }
 
-
   /**
-   * array dati regionali filtrati per regione
-   * @param region  regione
+   * generate series from regional data data
+   * @param regionFilter the region filter applied to data 
+   * @param valueKey the key of value
+   * @param label the series label
+   * @param denominatorKey the key of denominator
+   * @param fnValue the function to apply to value
    */
-  async getRegionalSeries(
-    region: string, 
-    key: string, 
-    label: string, 
-    denomKey: string = null,
-    fn:Function = null): Promise<Series> {
+  async generateRegionalSeries(
+    regionFilter: string,
+    valueKey: string,
+    label: string,
+    denominatorKey: string = null,
+    fnValue: Function = null): Promise<Series> {
     let regionalData = await this.dataService.getRegionalData();
-    regionalData = filterData(regionalData, 'denominazione_regione', region)
-    return this.buildSeries(regionalData, key, label, denomKey,'data',fn);
+    regionalData = filterData(regionalData, 'denominazione_regione', regionFilter)
+    return this.generateSeries(regionalData, valueKey, label, denominatorKey, 'data', fnValue);
   }
 
   /**
-   * array dati provinciali filtrati per provincia
-   * @param province provincia
+   * generate series from provincial data data
+   * @param regionFilter the region filter applied to data 
+   * @param provinceFilter the province filter applied to data 
+   * @param valueKey the key of value
+   * @param label the series label
+   * @param denominatorKey the key of denominator
+   * @param fnValue the function to apply to value
    */
-  async getProvincialSeries(
-    region: string, 
-    province: string, 
-    key: string, 
-    label: string, 
-    denomKey: string = null,
-    fn:Function = null): Promise<Series> {
+  async generateProvincialSeries(
+    regionFilter: string,
+    provinceFilter: string,
+    valueKey: string,
+    label: string,
+    denominatorKey: string = null,
+    fnValue: Function = null
+    ): Promise<Series> {
     let provincialData = await this.dataService.getProvincialData();
-    provincialData = filterData(provincialData, 'denominazione_provincia', decode(province))
-    provincialData = filterData(provincialData, 'denominazione_regione', region)
-    return this.buildSeries(provincialData, key, label, denomKey,'data',fn);
+    provincialData = filterData(provincialData, 'denominazione_provincia', decode(provinceFilter))
+    provincialData = filterData(provincialData, 'denominazione_regione', regionFilter)
+    return this.generateSeries(provincialData, valueKey, label, denominatorKey, 'data', fnValue);
   }
 
   /**
-   * array dati regionali filtrati per regione
-   * @param region  regione
+   * generate che country ARIMA Forecast
+   * @param quantileKey the quantile key
+   * @param label the series label
    */
-  async getCountryForecastSeries(quantile: string, label: string): Promise<Series> {
-    let countryForecastData = await this.dataService.getCountryForecastData();
-    return this.buildSeries(countryForecastData, quantile, label, null, 'date');
-  }
-  
-  /**
-   * array dati regionali filtrati per regione
-   * @param region  regione
-   */
-  async getRegionalForecastSeries(region: string, quantile:string, label: string): Promise<Series> {
-    let regionalForecastData = await this.dataService.getRegionalForecastData();
-    regionalForecastData = filterData(regionalForecastData, 'item_id', region)
-    return this.buildSeries(regionalForecastData, quantile, label, null, 'date');
+  async generateCountryARIMAForecastSeries(
+    quantileKey: string, 
+    label: string
+    ): Promise<Series> {
+    let countryForecastData = await this.dataService.getCountryARIMAForecastData();
+    return this.generateSeries(countryForecastData, quantileKey, label, null, 'date');
   }
 
-    /**
-   * array dati regionali filtrati per regione
-   * @param region  regione
-   */
-  async getCountryForecastDeepARPlusSeries(quantile: string, label: string): Promise<Series> {
-    let countryForecastDeepARPlusData = await this.dataService.getCountryForecastDeepARPlusData();
-    return this.buildSeries(countryForecastDeepARPlusData, quantile, label, null, 'date');
-  }
-  
   /**
-   * array dati regionali filtrati per regione
-   * @param region  regione
+   * generate che regional ARIMA Forecast
+   * @param regionFilter  the region filter applied to forecast data
+   * @param quantileKey the quantile key
+   * @param label the series label
    */
-  async getRegionalForecastDeepARPlusSeries(region: string, quantile:string, label: string): Promise<Series> {
-    let regionalForecastDeepARPlusData = await this.dataService.getRegionalForecastDeepARPlusData();
-    regionalForecastDeepARPlusData = filterData(regionalForecastDeepARPlusData, 'item_id', region)
-    return this.buildSeries(regionalForecastDeepARPlusData, quantile, label, null, 'date');
+  async generateRegionalARIMAForecastSeries(
+    regionFilter: string, 
+    quantileKey: string, 
+    label: string
+    ): Promise<Series> {
+    let regionalForecastData = await this.dataService.getRegionalARIMAForecastData();
+    regionalForecastData = filterData(regionalForecastData, 'item_id', regionFilter)
+    return this.generateSeries(regionalForecastData, quantileKey, label, null, 'date');
   }
 
-   /**
-   * genera ila serie nel formato richiesto da ngx-charts
-   * @param data array dei dati
-   * @param key chiave per estrarre il valore
-   * @param label descrizione della chiava
+  /**
+   * generate che country DeepAR+ Forecast
+   * @param quantileKey the quantile key
+   * @param label the series label
    */
-  private buildSeries(data: any[], key: string, label: string, denomKey: string = null, date:string = 'data', fn:Function = null): Series {
+  async generateCountryForecastDeepARPlusSeries(
+    quantileKey: string, 
+    label: string
+    ): Promise<Series> {
+    let countryForecastDeepARPlusData = await this.dataService.getCountryDeepARPlusForecastData();
+    return this.generateSeries(countryForecastDeepARPlusData, quantileKey, label, null, 'date');
+  }
+
+  /**
+   * generate che regional DeepAR+ Forecast
+   * @param regionFilter  the region filter applied to forecast data
+   * @param quantileKey the quantile key
+   * @param label the series label
+   */
+  async generateRegionalForecastDeepARPlusSeries(
+    regionFilter: string, 
+    quantile: string, 
+    label: string): Promise<Series> {
+    let regionalForecastDeepARPlusData = await this.dataService.getRegionalDeepARPlusForecastData();
+    regionalForecastDeepARPlusData = filterData(regionalForecastDeepARPlusData, 'item_id', regionFilter)
+    return this.generateSeries(regionalForecastDeepARPlusData, quantile, label, null, 'date');
+  }
+
+  /**
+   * generate a deries from input data
+   * @param inputData the input data array
+   * @param valueKey the key of value
+   * @param label the series label
+   * @param denominatorKey the key of denominator
+   * @param dateKey the key of date 
+   * @param fnValue the function to apply to value
+   */
+  private generateSeries(
+    inputData: any[], 
+    valueKey: string, 
+    label: string, 
+    denominatorKey: string = null, 
+    dateKey: string = 'data', 
+    fnValue: Function = null
+    ): Series {
     const daySeries = (input) => {
-      const denomValue = denomKey && input[denomKey] > 0 && input[key] != 0 ? input[denomKey] : 0
-      let value = denomKey == null ? 
-        input[key] : 
-        denomValue > 0?
-          Math.min((Math.floor((input[key] / denomValue) * 10000) / 100), 100):
-          0
-      value = fn? fn(value): value
+      let value = getPercentageValue(input, valueKey, denominatorKey);
       return {
-        value: value,
-        name: moment(input[date]).format('DD/MM')
+        value: fnValue ? fnValue(value) : value,
+        name: moment(input[dateKey]).format('DD/MM')
       }
     }
     return {
       name: label,
-      series: data.map(daySeries)
+      series: inputData.map(daySeries)
     }
   }
 }

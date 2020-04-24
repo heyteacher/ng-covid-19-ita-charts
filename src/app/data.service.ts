@@ -13,10 +13,10 @@ export class DataService {
   private countryData: any[]
   private regionalData: any[]
   private provincialData: any[]
-  private regionalForecastData: any[]
-  private countryForecastData: any[]
-  private regionalForecastDeepARPlusData: any[]
-  private countryForecastDeepARPlusData: any[]
+  private regionalARIMAForecastData: any[]
+  private countryARIMAForecastData: any[]
+  private regionalDeepARPlusForecastData: any[]
+  private countryDeepARPlusForecastData: any[]
 
   private days: string[]
 
@@ -36,10 +36,10 @@ export class DataService {
   }
 
 
-  getDay(index:number): string {
-    return this.days && this.days.length > 0? this.days[index % this.days.length]: null
+  getDay(index: number): string {
+    return this.days && this.days.length > 0 ? this.days[index % this.days.length] : null
   }
-  
+
   getDays(): string[] {
     if (!this.days) this.countryData
     return this.days
@@ -49,49 +49,48 @@ export class DataService {
   /**
    * singleton get regional forecast data
    */
-  async getCountryForecastData(): Promise<any[]> {
-    if (!this.countryForecastData) {
-      this.countryForecastData = await this.getJson(this.appConfigService.countryForecastDataURL)
+  async getCountryARIMAForecastData(): Promise<any[]> {
+    if (!this.countryARIMAForecastData) {
+      this.countryARIMAForecastData = await this.getJson(this.appConfigService.countryARIMAForecastDataURL)
     }
-    return this.countryForecastData
+    return this.countryARIMAForecastData
   }
 
- 
+
   /**
    * singleton get regional forecast data
    */
-  async getRegionalForecastData(): Promise<any[]> {
-    if (!this.regionalForecastData) {
-      this.regionalForecastData = await this.getJson(this.appConfigService.regionalForecastDataURL)
+  async getRegionalARIMAForecastData(): Promise<any[]> {
+    if (!this.regionalARIMAForecastData) {
+      this.regionalARIMAForecastData = await this.getJson(this.appConfigService.regionalARIMAForecastDataURL)
     }
-    return this.regionalForecastData
+    return this.regionalARIMAForecastData
+  }
+
+  /**
+  * singleton get regional forecast data
+  */
+  async getCountryDeepARPlusForecastData(): Promise<any[]> {
+    if (!this.countryDeepARPlusForecastData) {
+      this.countryDeepARPlusForecastData = await this.getJson(this.appConfigService.countryDeepARPlusForecastDataURL)
+    }
+    return this.countryDeepARPlusForecastData
   }
 
 
-    /**
-   * singleton get regional forecast data
-   */
-  async getCountryForecastDeepARPlusData(): Promise<any[]> {
-    if (!this.countryForecastDeepARPlusData) {
-      this.countryForecastDeepARPlusData = await this.getJson(this.appConfigService.countryForecastDeepARPlusDataURL)
-    }
-    return this.countryForecastDeepARPlusData
-  }
-
- 
   /**
    * singleton get regional forecast data
    */
-  async getRegionalForecastDeepARPlusData(): Promise<any[]> {
-    if (!this.regionalForecastDeepARPlusData) {
-      this.regionalForecastDeepARPlusData = await this.getJson(this.appConfigService.regionalForecastDeepARPlusDataURL)
+  async getRegionalDeepARPlusForecastData(): Promise<any[]> {
+    if (!this.regionalDeepARPlusForecastData) {
+      this.regionalDeepARPlusForecastData = await this.getJson(this.appConfigService.regionalDeepARPlusForecastDataURL)
     }
-    return this.regionalForecastDeepARPlusData
+    return this.regionalDeepARPlusForecastData
   }
 
-   /**
-   * singleton get regional data
-   */
+  /**
+  * singleton get regional data
+  */
   async getRegionalData(): Promise<any[]> {
     this.getCountryData()
     if (!this.regionalData) {
@@ -110,9 +109,9 @@ export class DataService {
     return this.provincialData
   }
 
-    /**
-   * albero anagrafica regioni province generato dai dati per provincia
-   */
+  /**
+ * albero anagrafica regioni province generato dai dati per provincia
+ */
   public async getTree(): Promise<Node[]> {
     let data = await this.getJson(this.appConfigService.provincialDataSetUrl);
     return getTree(data)

@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Bar, Series } from '../app.model';
 import { BarsService } from '../bars.service';
 import { DataService } from '../data.service';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import moment from 'moment';
 
 @Component({
@@ -13,13 +12,12 @@ import moment from 'moment';
   styleUrls: ['./charts.component.css']
 })
 
-export class ChartsComponent implements OnInit {
+export class ChartsComponent {
   breadcrumbs: any;
 
   colorScheme = {
     domain: ['#CFC0BB', '#5AA454', '#7aa3e5', '#E44D25', '#aae3f5', '#a8385d', '#aFb3F5']
   };
-
 
   seriesData: Series[] = [];
   seriesDailyData: Series[] = [];
@@ -59,16 +57,11 @@ export class ChartsComponent implements OnInit {
     private seriesService: SeriesService,
     private barsService: BarsService,
     public dataService: DataService,
-    activateRoute: ActivatedRoute,
-    public breakpointObserver: BreakpointObserver) {
+    activateRoute: ActivatedRoute) {
     activateRoute.params.subscribe(params => {
       this.breadcrumbs = params
       this.initData()
     })
-  }
-
-  ngOnInit(): void {
-    this.onResize();
   }
 
   private initData() {
@@ -86,30 +79,30 @@ export class ChartsComponent implements OnInit {
   private async setCountryData() {
     const fn = this.log10 ? this.formatLog10 : null
     this.seriesData = [
-      await this.seriesService.getCountrySeries('totale_casi', $localize`Confirmed`, null, fn),
-      await this.seriesService.getCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, fn),
-      await this.seriesService.getCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
-      await this.seriesService.getCountrySeries('deceduti', $localize`Deaths`, null, fn),
-      await this.seriesService.getCountrySeries('totale_positivi', $localize`Current Positive`, null, fn),
+      await this.seriesService.generateCountrySeries('totale_casi', $localize`Confirmed`, null, fn),
+      await this.seriesService.generateCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, fn),
+      await this.seriesService.generateCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
+      await this.seriesService.generateCountrySeries('deceduti', $localize`Deaths`, null, fn),
+      await this.seriesService.generateCountrySeries('totale_positivi', $localize`Current Positive`, null, fn),
     ]
     this.seriesDailyData = [
-      await this.seriesService.getCountrySeries("totale_nuovi_casi", $localize`Confirmed`),
-      await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`),
-      await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
-      await this.seriesService.getCountrySeries('nuovi_deceduti', $localize`Deaths`),
-      await this.seriesService.getCountrySeries('variazione_totale_positivi', $localize`Current Positive`),
-      await this.seriesService.getCountryForecastSeries('p50', `AWS Forecast ARIMA`),
-      await this.seriesService.getCountryForecastDeepARPlusSeries('p50', `AWS Forecast Deep AR+`)
+      await this.seriesService.generateCountrySeries("totale_nuovi_casi", $localize`Confirmed`),
+      await this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`),
+      await this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
+      await this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`),
+      await this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`),
+      await this.seriesService.generateCountryARIMAForecastSeries('p50', `AWS Forecast ARIMA`),
+      await this.seriesService.generateCountryForecastDeepARPlusSeries('p50', `AWS Forecast Deep AR+`)
     ]
     this.seriesPercData = [
-      await this.seriesService.getCountrySeries('totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
-      await this.seriesService.getCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
-      await this.seriesService.getCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
-      await this.seriesService.getCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
-      await this.seriesService.getCountrySeries('variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
+      await this.seriesService.generateCountrySeries('totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
+      await this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
+      await this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
+      await this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
+      await this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
     ]
     this.seriesSwabData = [
-      await this.seriesService.getCountrySeries('nuovi_tamponi', $localize`Tests`),
+      await this.seriesService.generateCountrySeries('nuovi_tamponi', $localize`Tests`),
     ]
     await this.getIntensiveBarsData()
     await this.getNewPositiveBarsData()
@@ -126,30 +119,30 @@ export class ChartsComponent implements OnInit {
   private async setRegionalData(region: string) {
     const fn: Function = this.log10 ? this.formatLog10 : null
     this.seriesData = [
-      await this.seriesService.getRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, fn),
-      await this.seriesService.getRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
-      await this.seriesService.getRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
-      await this.seriesService.getRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
-      await this.seriesService.getRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, fn),
+      await this.seriesService.generateRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, fn),
+      await this.seriesService.generateRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
+      await this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
+      await this.seriesService.generateRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
+      await this.seriesService.generateRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, fn),
     ]
     this.seriesDailyData = [
-      await this.seriesService.getRegionalSeries(region, "totale_nuovi_casi", `Confirmed`),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
-      await this.seriesService.getRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`),
-      await this.seriesService.getRegionalForecastSeries(region, 'p50', `AWS Forecast ARIMA`),
-      await this.seriesService.getRegionalForecastDeepARPlusSeries(region, 'p50', `AWS Forecast Deep AR+`),
+      await this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", `Confirmed`),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
+      await this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`),
+      await this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', `AWS Forecast ARIMA`),
+      await this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', `AWS Forecast Deep AR+`),
     ]
     this.seriesPercData = [
-      await this.seriesService.getRegionalSeries(region, 'totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
-      await this.seriesService.getRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
+      await this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
+      await this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
     ]
     this.seriesSwabData = [
-      await this.seriesService.getRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
     ]
     await this.getTotalCasesBarsData()
     await this.getNewCasesPercBarsData()
@@ -158,64 +151,54 @@ export class ChartsComponent implements OnInit {
 
   private async setProvincialData(region: string, province: string) {
     this.seriesData = [
-      await this.seriesService.getProvincialSeries(region, province, 'totale_casi', $localize`Total Confirmed`),
-      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed`)
+      await this.seriesService.generateProvincialSeries(region, province, 'totale_casi', $localize`Total Confirmed`),
+      await this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed`)
     ]
     this.seriesPercData = [
-      await this.seriesService.getProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed Rate`, 'totale_casi_ieri'),
+      await this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed Rate`, 'totale_casi_ieri'),
     ]
   }
 
   async getTotalCasesBarsData($event = { value: null }) {
-    this.totalCasesBarsData = this.breadcrumbs["region"] != null ?
-      await this.barsService.getProvincialBars('totale_casi', $event.value, this.breadcrumbs["region"]) :
-      await this.barsService.getRegionalBars('totale_casi', $event.value)
-    this.totalCasesBarsMax = this.getMaxValue(this.totalCasesBarsData, this.totalCasesBarsMax)
+    [this.totalCasesBarsData,this.totalCasesBarsMax] = this.breadcrumbs["region"] != null ?
+      await this.barsService.generateProvincialBars('totale_casi', $event.value, this.breadcrumbs["region"]) :
+      await this.barsService.generateRegionalBars('totale_casi', $event.value)
   }
 
   async getNewCasesPercBarsData($event = { value: null }) {
-    this.newCasesPercBarsData = this.breadcrumbs["region"] != null ?
-      await this.barsService.getProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
-      await this.barsService.getRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
-    this.newCasesPercBarsMax = this.getMaxValue(this.newCasesPercBarsData, this.newCasesPercBarsMax)
-  }
+    [this.newCasesPercBarsData,this.newCasesPercBarsMax] = this.breadcrumbs["region"] != null ?
+      await this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
+      await this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
+    }
 
   async getNewPositiveBarsData($event = { value: null }) {
-    this.newPositiveBarsData = this.breadcrumbs["region"] != null ?
-      await this.barsService.getProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"]) :
-      await this.barsService.getRegionalBars('totale_nuovi_casi', $event.value)
-    this.newPositiveBarsMax = this.getMaxValue(this.newPositiveBarsData, this.newPositiveBarsMax)
+    [this.newPositiveBarsData,this.newPositiveBarsMax]= this.breadcrumbs["region"] != null ?
+      await this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"]) :
+      await this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value)
   }
 
   async getIntensiveBarsData($event = { value: null }) {
-    this.intensiveBarsData = await this.barsService.getRegionalBars('terapia_intensiva', $event.value)
-    this.intensiveBarsMax = this.getMaxValue(this.intensiveBarsData, this.intensiveBarsMax)
+    [this.intensiveBarsData, this.intensiveBarsMax]= await this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
   }
 
   async getLethalityBarsData($event = { value: null }) {
-    this.lethalityBarsData = await this.barsService.getRegionalBars('deceduti', $event.value, 'totale_casi')
-    this.lethalityBarsMax = this.getMaxValue(this.lethalityBarsData, this.lethalityBarsMax)
+    [this.lethalityBarsData,this.lethalityBarsMax] = await this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
   }
 
   async getTotalCasesPerProvinceBarsData($event = { value: null }) {
-    this.totalCasesPerProvinceBarsData = await this.barsService.getProvincialBars('totale_casi', $event.value)
-    this.totalCasesPerProvinceBarsMax = this.getMaxValue(this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax)
+    [this.totalCasesPerProvinceBarsData,this.totalCasesPerProvinceBarsMax] = await this.barsService.generateProvincialBars('totale_casi', $event.value)
   }
 
   async getTotalSwabBarsData($event = { value: null }) {
-    this.totalSwabBarsData = await this.barsService.getRegionalBars('tamponi', $event.value)
-    this.totalSwabBarsMax = this.getMaxValue(this.totalCasesBarsData, this.totalSwabBarsMax)
+    [this.totalSwabBarsData,this.totalSwabBarsMax] = await this.barsService.generateRegionalBars('tamponi', $event.value)
   }
 
   async getNewSwabBarsData($event = { value: null }) {
-    this.newSwabBarsData = await this.barsService.getRegionalBars('nuovi_tamponi', $event.value)
-    this.newSwabBarsMax = this.getMaxValue(this.newSwabBarsData, this.newSwabBarsMax)
-    return this.newSwabBarsData
+    [this.newSwabBarsData,this.newSwabBarsMax] = await this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
   }
 
   async getPositivePerSwabBarsData($event = { value: null }) {
-    this.positivePerSwabBarsData = await this.barsService.getRegionalBars('totale_casi', $event.value, 'tamponi')
-    this.positivePerSwabBarsMax = this.getMaxValue(this.positivePerSwabBarsData, this.positivePerSwabBarsMax)
+    [this.positivePerSwabBarsData,this.positivePerSwabBarsMax] = await this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
   }
 
   changeAggregate($event) {
@@ -226,10 +209,6 @@ export class ChartsComponent implements OnInit {
   changeLog10($event) {
     this.log10 = $event
     this.initData()
-  }
-
-  private getMaxValue(barsData: Bar[], maxValue = null): number {
-    return maxValue ? maxValue : barsData[0].value
   }
 
   public formatPercentage(input) {
@@ -251,19 +230,10 @@ export class ChartsComponent implements OnInit {
   public gridLineNgStyleByXAxisTick(tick) {
     var day = moment(tick, 'DD/MM').day();
     var isWeekend = (day === 6) || (day === 0);
-    return isWeekend ? {stroke: '#999'} : null
+    return isWeekend ? { stroke: '#999' } : null
   }
 
   public gridLineNgStyleByYAxisTick(tick) {
-    return tick == 0 ? {stroke: '#999'}: null
-  }
-
-  @HostListener("window:resize", [])
-  onResize() {
-    this.breakpointObserver
-      .observe(['(min-width: 540px)'])
-      .subscribe((state: BreakpointState) => {
-        this.showLegend = state.matches
-      });
+    return tick == 0 ? { stroke: '#999' } : null
   }
 }

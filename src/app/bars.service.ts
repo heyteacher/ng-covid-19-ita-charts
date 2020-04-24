@@ -1,61 +1,93 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { Bar, getDailyRows, filterData, orderValueDesc, encode } from "./app.model";
+import { Bar, getDailyRows, filterData, orderValueDesc, encode, getValue, getMaxValue } from "./app.model";
+import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BarsService {
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private appConfigService: AppConfigService) { }
 
-   
   /**
-   * array dati nazionali
+   * generate bars with `keyValue` from regional data filtered by `day` (if set), divided by `denominatorKey` value (if set)
+   * @param keyValue the key of value to extract
+   * @param filterDay the filter day
+   * @param denominatorKey the key of denominator
+   * @returns promise of tuple with bar array and max value
    */
-  public async getRegionalBars(keyValue: string, day: string = null, denomKey: string = null): Promise<Bar[]> {
+  public async generateRegionalBars(
+    keyValue: string,
+    filterDay: string = null,
+    denominatorKey: string = null
+  ): Promise<[Bar[], number]> {
     const data = await this.dataService.getRegionalData();
-    return this.buildBars(
-      getDailyRows(data,day),
+    const bars = this.generateBars(
+      getDailyRows(data, filterDay),
       'denominazione_regione',
       keyValue,
       20,
-      denomKey
+      denominatorKey
     )
+    const max: number = getMaxValue(data, keyValue, denominatorKey,this.appConfigService.daysToShowInBars)
+    return [bars, max]
   }
 
-  public async getProvincialBars(keyValue: string, day: string = null, region: string = null, denomKey: string = null): Promise<Bar[]> {
+  /**
+   * generate bars with `keyValue` from provincial data filtered by `day` (if set) and `region` (if set), divided by `denominatorKey` value (if set)
+   * @param keyValue the key of value to extract
+   * @param filterDay the filter day
+   * @param filterRegion the filter region
+   * @param denominatorKey the key of denominator
+   * @returns promise of tuple with bar array and max value
+   */
+  public async generateProvincialBars(
+    keyValue: string,
+    filterDay: string = null,
+    filterRegion: string = null,
+    denomKey: string = null
+  ): Promise<[Bar[], number]> {
     let data = await this.dataService.getProvincialData();
-    if (region) {
-      data = filterData(data, 'denominazione_regione', region)
+    if (filterRegion) {
+      data = filterData(data, 'denominazione_regione', filterRegion)
     }
-    return this.buildBars(
-      getDailyRows(data, day),
+    const bars: Bar[] = this.generateBars(
+      getDailyRows(data, filterDay),
       'denominazione_provincia',
       keyValue,
       20,
       denomKey
     )
+    const max: number = getMaxValue(data, keyValue, denomKey,this.appConfigService.daysToShowInBars)
+    return [bars, max]
   }
 
-
-  private buildBars(data: any[], keyName: string, keyValue: string, max: number = 20, denomKey:string = null): Bar[] {
-
+  /**
+   * generate bars from `data`, skipping zero values, desc ordered limited to `limit`
+   * @param inputData the inputData
+   * @param keyName the bar name
+   * @param keyValue the bar value
+   * @param limit the bar limit
+   * @param denomKey the denominator key of value
+   * @returns Bar array generated
+   */
+  private generateBars(
+    inputData: any[],
+    keyName: string,
+    keyValue: string,
+    limit: number = 20,
+    denomKey: string = null
+  ): Bar[] {
     const greaterThanZero = (input) => {
-      return input && input.value && input.value > 0
+      return input && input.value && input.value != 0
     }
     const bar = (input) => {
-      const denomValue = denomKey && input[keyValue] > 0 && input[denomKey] >= 0 ? input[denomKey] : 0
-      const value = denomKey == null ? 
-        parseFloat(input[keyValue]) : 
-        denomValue > 0?
-          Math.min((Math.floor((input[keyValue] / denomValue) * 10000) / 100), 100):
-          0
       return {
         name: encode(input[keyName]),
-        value: value,
+        value: getValue(input, keyValue, denomKey),
       }
     }
-    return data.map(bar).filter(greaterThanZero).sort(orderValueDesc).slice(0, max)
+    return inputData.map(bar).filter(greaterThanZero).sort(orderValueDesc).slice(0, limit)
   }
 }

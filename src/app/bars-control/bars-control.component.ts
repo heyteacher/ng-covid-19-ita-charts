@@ -1,6 +1,7 @@
 import { Component, OnInit,  EventEmitter, Input, Output } from '@angular/core';
 import { DataService } from '../data.service';
 import {faPlay, faPause, faStop } from '@fortawesome/free-solid-svg-icons';
+import { AppConfigService } from '../app-config.service';
 
 @Component({
   selector: 'app-bars-control',
@@ -15,7 +16,6 @@ export class BarsControlComponent  {
   faStop = faStop
 
   @Input() title: string;
-  @Input() playLastDays: number = 30;
   @Output() change = new EventEmitter<any>();
 
   isPlaying: boolean = false
@@ -23,7 +23,7 @@ export class BarsControlComponent  {
   private index:number = 0
   private interval = null
 
-  constructor(public dataService:DataService) {
+  constructor(public dataService:DataService, private appConfigService: AppConfigService) {
   }
  
   day(): string {
@@ -61,7 +61,7 @@ export class BarsControlComponent  {
 
   private resetIndex(){
     if (this.index <= 0) {
-      this.index = this.playLastDays
+      this.index = this.appConfigService.daysToShowInBars
     }
   }
 

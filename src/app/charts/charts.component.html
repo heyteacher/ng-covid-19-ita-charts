@@ -52,7 +52,7 @@
         </div>
 
         <div class="col-lg-4 chart-container text-center">
-            <app-bars-control (change)="getNewCasesPercBarsData($event)" i18n-title title="Daily Confirmed Rate" playLastDays="15">
+            <app-bars-control (change)="getNewCasesPercBarsData($event)" i18n-title title="Daily Confirmed Rate">
             </app-bars-control>
             <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="newCasesPercBarsData" [scheme]="colorScheme" [xScaleMax]="newCasesPercBarsMax" showDataLabel="true" legendTitle="Nuovi Casi %" showXAxisLabel="true
 " showYAxisLabel="true" yAxis="true" showGridLines="true">
@@ -73,7 +73,7 @@
         </div>
 
         <div class="col-lg-4 chart-container margin-top text-center" *ngIf="!breadcrumbs[ 'region']">
-            <app-bars-control (change)="getLethalityBarsData($event)" i18n-title title="Lethality" playLastDays="20">
+            <app-bars-control (change)="getLethalityBarsData($event)" i18n-title title="Lethality">
             </app-bars-control>
             <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage" [results]="lethalityBarsData" [scheme]="colorScheme" [xScaleMax]="lethalityBarsMax" showDataLabel="true" legendTitle="Letalità" showXAxisLabel="true
 " showYAxisLabel="true" yAxis="true" showGridLines="true">
@@ -124,6 +124,9 @@
 " showGridLines="true">
             </ngx-charts-line-chart>
         </div>
+        <div class="col-12 d-block d-lg-none">
+            <app-legend [colorScheme]="colorScheme" [isProvince]="true"></app-legend>
+        </div>
         <div class="col-lg-6 chart-container text-center">
             <app-series-control i18n-title title="Daily Confirmed Rate">
             </app-series-control>
@@ -132,7 +135,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 d-none d-lg-block">
             <app-legend [colorScheme]="colorScheme" [isProvince]="true"></app-legend>
         </div>
     </div>
