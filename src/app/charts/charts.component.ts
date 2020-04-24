@@ -103,6 +103,7 @@ export class ChartsComponent {
     ]
     this.seriesSwabData = [
       await this.seriesService.generateCountrySeries('nuovi_tamponi', $localize`Tests`),
+      await this.seriesService.generateCountrySeries('nuovi_casi_testati', $localize`People Tested`)
     ]
     await this.getIntensiveBarsData()
     await this.getNewPositiveBarsData()
@@ -143,6 +144,7 @@ export class ChartsComponent {
     ]
     this.seriesSwabData = [
       await this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
+      await this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', $localize`People Tested`)
     ]
     await this.getTotalCasesBarsData()
     await this.getNewCasesPercBarsData()
