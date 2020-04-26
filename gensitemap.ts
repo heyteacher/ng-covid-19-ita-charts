@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {AppConfigService} from './src/app/app-config.service'
-import {getTree} from './src/app/app.model'
+import {generateRegionProvinceTree} from './src/app/app.model'
 import { environment as environmentEn } from './src/environments/environment.prod';
 import { environment as environmentIt } from './src/environments/environment.it.prod';
 import * as fs from "fs";
@@ -22,7 +22,7 @@ function generateSitemap(response, shareUrl) {
     let sitemap = `<?xml version='1.0' encoding='UTF-8'?>\n`;
     sitemap += `<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n`;
     sitemap += ` <url><loc>${shareUrl}</loc></url>\n`;
-    for (let region of getTree(response.data)[0].children) {
+    for (let region of generateRegionProvinceTree(response.data)[0].children) {
         sitemap += ` <url><loc>${shareUrl}/#/${encodeURIComponent(region.name)}</loc></url>\n`;
         for (let province of region.children) {
             sitemap += ` <url><loc>${shareUrl}/#/${encodeURIComponent(region.name)}/${encodeURIComponent(province.name)}</loc></url>\n`;

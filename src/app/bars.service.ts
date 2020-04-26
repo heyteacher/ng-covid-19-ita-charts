@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { Bar, getDailyRows, filterData, orderValueDesc, encode, getValue, getMaxValue } from "./app.model";
+import { Bar, filterByDay, filterByKey, orderValueDesc, encodeNAYProvince, getValue, getMaxValue } from "./app.model";
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class BarsService {
   ): Promise<[Bar[], number]> {
     const data = await this.dataService.getRegionalData();
     const bars = this.generateBars(
-      getDailyRows(data, filterDay),
+      filterByDay(data, filterDay),
       'denominazione_regione',
       keyValue,
       20,
@@ -50,10 +50,10 @@ export class BarsService {
   ): Promise<[Bar[], number]> {
     let data = await this.dataService.getProvincialData();
     if (filterRegion) {
-      data = filterData(data, 'denominazione_regione', filterRegion)
+      data = filterByKey(data, 'denominazione_regione', filterRegion)
     }
     const bars: Bar[] = this.generateBars(
-      getDailyRows(data, filterDay),
+      filterByDay(data, filterDay),
       'denominazione_provincia',
       keyValue,
       20,
@@ -84,7 +84,7 @@ export class BarsService {
     }
     const bar = (input) => {
       return {
-        name: encode(input[keyName]),
+        name: encodeNAYProvince(input[keyName]),
         value: getValue(input, keyValue, denomKey),
       }
     }

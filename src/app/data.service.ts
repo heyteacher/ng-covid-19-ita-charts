@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Node, getDailyRows, getTree, orderDesc } from "./app.model";
+import { Node, filterByDay, generateRegionProvinceTree, orderDesc } from "./app.model";
 import moment from 'moment';
 import { AppConfigService } from './app-config.service';
 
@@ -114,7 +114,7 @@ export class DataService {
  */
   public async getTree(): Promise<Node[]> {
     let data = await this.getJson(this.appConfigService.provincialDataSetUrl);
-    return getTree(data)
+    return generateRegionProvinceTree(data)
   }
 
   /**

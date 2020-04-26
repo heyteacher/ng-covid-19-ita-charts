@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { Series, filterData, decode, getPercentageValue } from "./app.model";
+import { Series, filterByKey, decodeNAYProvince, getValue } from "./app.model";
 import { DataService } from './data.service';
 
 @Injectable({
@@ -42,7 +42,7 @@ export class SeriesService {
     denominatorKey: string = null,
     fnValue: Function = null): Promise<Series> {
     let regionalData = await this.dataService.getRegionalData();
-    regionalData = filterData(regionalData, 'denominazione_regione', regionFilter)
+    regionalData = filterByKey(regionalData, 'denominazione_regione', regionFilter)
     return this.generateSeries(regionalData, valueKey, label, denominatorKey, 'data', fnValue);
   }
 
@@ -64,8 +64,8 @@ export class SeriesService {
     fnValue: Function = null
     ): Promise<Series> {
     let provincialData = await this.dataService.getProvincialData();
-    provincialData = filterData(provincialData, 'denominazione_provincia', decode(provinceFilter))
-    provincialData = filterData(provincialData, 'denominazione_regione', regionFilter)
+    provincialData = filterByKey(provincialData, 'denominazione_provincia', decodeNAYProvince(provinceFilter))
+    provincialData = filterByKey(provincialData, 'denominazione_regione', regionFilter)
     return this.generateSeries(provincialData, valueKey, label, denominatorKey, 'data', fnValue);
   }
 
@@ -94,7 +94,7 @@ export class SeriesService {
     label: string
     ): Promise<Series> {
     let regionalForecastData = await this.dataService.getRegionalARIMAForecastData();
-    regionalForecastData = filterData(regionalForecastData, 'item_id', regionFilter)
+    regionalForecastData = filterByKey(regionalForecastData, 'item_id', regionFilter)
     return this.generateSeries(regionalForecastData, quantileKey, label, null, 'date');
   }
 
@@ -122,7 +122,7 @@ export class SeriesService {
     quantile: string, 
     label: string): Promise<Series> {
     let regionalForecastDeepARPlusData = await this.dataService.getRegionalDeepARPlusForecastData();
-    regionalForecastDeepARPlusData = filterData(regionalForecastDeepARPlusData, 'item_id', regionFilter)
+    regionalForecastDeepARPlusData = filterByKey(regionalForecastDeepARPlusData, 'item_id', regionFilter)
     return this.generateSeries(regionalForecastDeepARPlusData, quantile, label, null, 'date');
   }
 
@@ -144,7 +144,7 @@ export class SeriesService {
     fnValue: Function = null
     ): Series {
     const daySeries = (input) => {
-      let value = getPercentageValue(input, valueKey, denominatorKey);
+      let value = getValue(input, valueKey, denominatorKey);
       return {
         value: fnValue ? fnValue(value) : value,
         name: moment(input[dateKey]).format('DD/MM')

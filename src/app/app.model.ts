@@ -21,42 +21,59 @@ export interface Bar {
 
 
 /**
- * filtro dei dati per il valore della chiave selezionata
- * @param data[] array dei dati 
- * @param key la chiave 
- * @param value il valore da filtrare
+ * filter data by key starting from value
+ * @param data the data array
+ * @param key the key to filter
+ * @param value the value to filter
  */
-export function filterData(data: any[], key: string, value: string): any[] {
+export function filterByKey(data: any[], key: string, value: string): any[] {
   const filterSeries = (input) => {
     return input[key].match(new RegExp('^' + value, 'i'));
   }
   return data.filter(filterSeries)
 }
 
-export function getDailyRows(data: any[], day: string = null): any[] {
+/**
+ * filter the data by day (starting from)
+ * @param data  the data array
+ * @param day the day to filter in format YYYY-MM-DD
+ */
+export function filterByDay(data: any[], day: string = null): any[] {
   if (day) {
-    return filterData(data, 'data', day)
+    return filterByKey(data, 'data', day)
   }
-  return filterData(data, 'data', data[data.length - 1].data)
+  return filterByKey(data, 'data', data[data.length - 1].data)
 }
 
-export function encode(province: string): string {
+/**
+ * encode NOT ATTRIBUTED YET province
+ * @param province the province to encode
+ */
+export function encodeNAYProvince(province: string): string {
   return province == 'In fase di definizione/aggiornamento' ? `NOT ATTRIBUTED YET` : province
 }
 
-export function decode(province: string): string {
+/**
+ * decode NOT ATTRIBUTED YET province
+ * @param province  the province to encode
+ */
+export function decodeNAYProvince(province: string): string {
   return province == `NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
 }
 
-export function getTree(data: any[]): Node[] {
+/**
+ * generate region/province tree from regional data
+ * @param provincialData the provincial data array 
+ */
+export function generateRegionProvinceTree(provincialData: any[]): Node[] {
   const tree: Node[] = [{
     name: `Italy`,
     uri: '/',
     children: []
   }];
-  data = getDailyRows(data);
+  provincialData = filterByDay(provincialData);
   let regions = {}
-  for (const row of data) {
+  for (const row of provincialData) {
     const region = row.denominazione_regione
     if (!regions[region]) {
       regions[region] = {
@@ -66,7 +83,7 @@ export function getTree(data: any[]): Node[] {
       }
       tree[0].children.push(regions[region])
     }
-    const province = encode(row.denominazione_provincia)
+    const province = encodeNAYProvince(row.denominazione_provincia)
     regions[region].children.push({
       uri: `/${region}/${province}`,
       name: province
@@ -75,74 +92,72 @@ export function getTree(data: any[]): Node[] {
   return tree
 }
 
-
+/**
+ * map function to descendent order an array of value object
+ * @param a first object with value key
+ * @param b second object with value key
+ */
 export function orderValueDesc(a, b) {
   return a.value > b.value ? -1 : 1
 
 }
 
+/**
+ * map function to descending order an array of values
+ * @param a first value
+ * @param b second value
+ */
 export function orderDesc(a, b) {
   return a > b ? -1 : 1
 }
 
-export function getValue(input: any, keyValue: string, denomKey: string) {
-  const denomValue = denomKey && input[denomKey] >= 0 ? input[denomKey] : 0;
-  const value = denomKey == null ?
-    parseFloat(input[keyValue]) :
-    denomValue > 0 ?
-      Math.min((Math.floor((input[keyValue] / denomValue) * 10000) / 100), 100) :
-      0;
-  return value;
-}
-
 /**
- * Calculate the max value of last data days
- * @param inputData the input data
- * @param keyValue the key of value
+ * Calculate the max value of last data days to show
+ * @param data the input data
+ * @param key the key of value
  * @param denominatorKey the key of denominator
- * @param lastDays the number of last days to consider
+ * @param lastDaysToShow the number of last days to show
  * @return the max value of last data days
  */
 export function getMaxValue(
-  inputData: any[],
-  keyValue: string,
+  data: any[],
+  key: string,
   denominatorKey: string,
-  lastDays: number
+  lastDaysToShow: number
 ): number {
   const findMaxBar = (previous: any, current: any, currentIdx: number, array: any[]): Bar => {
     // ignore days not showed
-    if (moment(current.data).isBefore(moment().subtract(lastDays, 'day'))) {
+    if (moment(current.data).isBefore(moment().subtract(lastDaysToShow, 'day'))) {
       return current
     }
     if (currentIdx == 0) {
       return current
     }
-    if (getValue(current, keyValue, denominatorKey) > getValue(previous, keyValue, denominatorKey)) {
+    if (getValue(current, key, denominatorKey) > getValue(previous, key, denominatorKey)) {
       return current
     }
     else {
       return previous
     }
   }
-  const maxRow: any = inputData.reduce(findMaxBar)
-  return maxRow ? getValue(maxRow, keyValue, denominatorKey) : null
+  const maxRow: any = data.reduce(findMaxBar)
+  return maxRow ? getValue(maxRow, key, denominatorKey) : null
 }
 
-
 /**
- * calculate the percentage value
- * @param input the input value
- * @param keyValue the key of value
+ * get the key value in row, if denominatorKey return the percentage
+ * @param row the row
+ * @param key the key of value
  * @param denominatorKey the key of denominator
- * @param maxValue the maximum value returned
- * @return the percentage value
+ * @param percentageLimitValue the percentage limit value
+ * @returns the key value in row, if denominatorKey return the percentage
  */
-export function getPercentageValue(input: any, valueKey: string, denominatorKey: string, maxValue: number = 100) {
-  const denomValue = denominatorKey && input[denominatorKey] > 0 ? input[denominatorKey] : 0;
+export function getValue(row: any, key: string, denominatorKey: string, percentageLimitValue: number = 100) {
+  const denomValue = denominatorKey && row[denominatorKey] > 0 ? row[denominatorKey] : 0;
   let value = denominatorKey == null ?
-    input[valueKey] :
+    row[key] :
     denomValue > 0 ?
-      Math.min((Math.floor((input[valueKey] / denomValue) * 10000) / 100), maxValue) :
+      Math.min((Math.floor((row[key] / denomValue) * 10000) / 100), percentageLimitValue) :
       0;
   return value;
 }
