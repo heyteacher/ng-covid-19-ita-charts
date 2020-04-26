@@ -3,7 +3,7 @@ import { SeriesService } from '../series.service';
 import { ActivatedRoute } from '@angular/router';
 import { Bar, Series } from '../app.model';
 import { BarsService } from '../bars.service';
-import { DataService } from '../data.service';
+import { NumbersService } from '../numbers.service';
 import moment from 'moment';
 
 @Component({
@@ -50,14 +50,18 @@ export class ChartsComponent {
 
   newSwabBarsData: Bar[] = [];
   newSwabBarsMax: number;
+
+  numbersData: Bar[] = [];
+
   showLegend: boolean
   log10: boolean = true
 
   constructor(
     private seriesService: SeriesService,
     private barsService: BarsService,
-    public dataService: DataService,
-    activateRoute: ActivatedRoute) {
+    private numbersService: NumbersService,
+    activateRoute: ActivatedRoute
+  ) {
     activateRoute.params.subscribe(params => {
       this.breadcrumbs = params
       this.initData()
@@ -108,13 +112,17 @@ export class ChartsComponent {
     await this.getIntensiveBarsData()
     await this.getNewPositiveBarsData()
     await this.getLethalityBarsData()
+
     await this.getNewCasesPercBarsData()
     await this.getTotalCasesBarsData()
     await this.getTotalCasesPerProvinceBarsData()
-
+    
     await this.getTotalSwabBarsData()
     await this.getPositivePerSwabBarsData()
     await this.getNewSwabBarsData()
+
+    this.numbersData = await this.numbersService.generateCountryNumbers()
+    console.log(this.numbersData)
   }
 
   private async setRegionalData(region: string) {
@@ -146,9 +154,12 @@ export class ChartsComponent {
       await this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
       await this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', $localize`People Tested`)
     ]
+
     await this.getTotalCasesBarsData()
     await this.getNewCasesPercBarsData()
     await this.getNewPositiveBarsData()
+
+    this.numbersData = await this.numbersService.generateRegionNumbers(region) 
   }
 
   private async setProvincialData(region: string, province: string) {
@@ -162,45 +173,45 @@ export class ChartsComponent {
   }
 
   async getTotalCasesBarsData($event = { value: null }) {
-    [this.totalCasesBarsData,this.totalCasesBarsMax] = this.breadcrumbs["region"] != null ?
+    [this.totalCasesBarsData, this.totalCasesBarsMax] = this.breadcrumbs["region"] != null ?
       await this.barsService.generateProvincialBars('totale_casi', $event.value, this.breadcrumbs["region"]) :
       await this.barsService.generateRegionalBars('totale_casi', $event.value)
   }
 
   async getNewCasesPercBarsData($event = { value: null }) {
-    [this.newCasesPercBarsData,this.newCasesPercBarsMax] = this.breadcrumbs["region"] != null ?
+    [this.newCasesPercBarsData, this.newCasesPercBarsMax] = this.breadcrumbs["region"] != null ?
       await this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
       await this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
-    }
+  }
 
   async getNewPositiveBarsData($event = { value: null }) {
-    [this.newPositiveBarsData,this.newPositiveBarsMax]= this.breadcrumbs["region"] != null ?
+    [this.newPositiveBarsData, this.newPositiveBarsMax] = this.breadcrumbs["region"] != null ?
       await this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"]) :
       await this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value)
   }
 
   async getIntensiveBarsData($event = { value: null }) {
-    [this.intensiveBarsData, this.intensiveBarsMax]= await this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
+    [this.intensiveBarsData, this.intensiveBarsMax] = await this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
   }
 
   async getLethalityBarsData($event = { value: null }) {
-    [this.lethalityBarsData,this.lethalityBarsMax] = await this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
+    [this.lethalityBarsData, this.lethalityBarsMax] = await this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
   }
 
   async getTotalCasesPerProvinceBarsData($event = { value: null }) {
-    [this.totalCasesPerProvinceBarsData,this.totalCasesPerProvinceBarsMax] = await this.barsService.generateProvincialBars('totale_casi', $event.value)
+    [this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax] = await this.barsService.generateProvincialBars('totale_casi', $event.value)
   }
 
   async getTotalSwabBarsData($event = { value: null }) {
-    [this.totalSwabBarsData,this.totalSwabBarsMax] = await this.barsService.generateRegionalBars('tamponi', $event.value)
+    [this.totalSwabBarsData, this.totalSwabBarsMax] = await this.barsService.generateRegionalBars('tamponi', $event.value)
   }
 
   async getNewSwabBarsData($event = { value: null }) {
-    [this.newSwabBarsData,this.newSwabBarsMax] = await this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
+    [this.newSwabBarsData, this.newSwabBarsMax] = await this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
   }
 
   async getPositivePerSwabBarsData($event = { value: null }) {
-    [this.positivePerSwabBarsData,this.positivePerSwabBarsMax] = await this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
+    [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = await this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
   }
 
   changeAggregate($event) {

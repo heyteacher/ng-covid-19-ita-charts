@@ -10,6 +10,12 @@
             </nav>
         </div>
     </div>
+    <div class="row" *ngIf="!breadcrumbs['province']">
+        <div class="col">
+            <ngx-charts-number-card [scheme]="colorScheme" [results]="numbersData">
+            </ngx-charts-number-card>
+        </div>
+    </div>
     <div class="row" *ngIf="!breadcrumbs['province']; else provinceTemplate">
         <div class="col-lg-6 chart-container text-center">
             <app-series-control (changeLog10)="changeLog10($event)" [log10Enabled]="true" (changeAggregate)="changeAggregate($event)" i18n-title title="Trend">
