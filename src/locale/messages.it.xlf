@@ -2,7 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="it" datatype="plaintext" original="ng2.template">
     <body>
-    48769258314623912
+    
+      <trans-unit id="1286983255645370171" datatype="html" approved="yes">
+        <source>Day</source>
+        <target state="translated">Giorno</target>
+      </trans-unit>
       <trans-unit id="48769258314623912" datatype="html" approved="yes">
         <source>People Tested</source>
         <target state="translated">Persone Testate</target>
