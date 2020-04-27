@@ -3,6 +3,10 @@
   <file source-language="it" datatype="plaintext" original="ng2.template">
     <body>
     
+      <trans-unit id="6941553453243567012" datatype="html" approved="yes">
+        <source>Confirmed Rate</source>
+        <target state="translated">Tasso Confermati</target>
+      </trans-unit>
       <trans-unit id="1286983255645370171" datatype="html" approved="yes">
         <source>Day</source>
         <target state="translated">Giorno</target>

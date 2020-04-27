@@ -122,7 +122,6 @@ export class ChartsComponent {
     await this.getNewSwabBarsData()
 
     this.numbersData = await this.numbersService.generateCountryNumbers()
-    console.log(this.numbersData)
   }
 
   private async setRegionalData(region: string) {
@@ -170,6 +169,7 @@ export class ChartsComponent {
     this.seriesPercData = [
       await this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed Rate`, 'totale_casi_ieri'),
     ]
+    this.numbersData = await this.numbersService.generateProvinceNumbers(region, province)
   }
 
   async getTotalCasesBarsData($event = { value: null }) {
