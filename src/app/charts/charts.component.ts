@@ -5,6 +5,7 @@ import { Bar, Series } from '../app.model';
 import { BarsService } from '../bars.service';
 import { NumbersService } from '../numbers.service';
 import moment from 'moment';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-charts',
@@ -80,144 +81,189 @@ export class ChartsComponent {
     }
   }
 
-  private async setCountryData() {
+  private setCountryData() {
     const fn = this.log10 ? this.formatLog10 : null
-    this.seriesData = [
-      await this.seriesService.generateCountrySeries('totale_casi', $localize`Confirmed`, null, fn),
-      await this.seriesService.generateCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, fn),
-      await this.seriesService.generateCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
-      await this.seriesService.generateCountrySeries('deceduti', $localize`Deaths`, null, fn),
-      await this.seriesService.generateCountrySeries('totale_positivi', $localize`Current Positive`, null, fn),
-    ]
-    this.seriesDailyData = [
-      await this.seriesService.generateCountrySeries("totale_nuovi_casi", $localize`Confirmed`),
-      await this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`),
-      await this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
-      await this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`),
-      await this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`),
-      await this.seriesService.generateCountryARIMAForecastSeries('p50', `AWS Forecast ARIMA`),
-      await this.seriesService.generateCountryForecastDeepARPlusSeries('p50', `AWS Forecast Deep AR+`)
-    ]
-    this.seriesPercData = [
-      await this.seriesService.generateCountrySeries('totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
-      await this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
-      await this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
-      await this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
-      await this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
-    ]
-    this.seriesSwabData = [
-      await this.seriesService.generateCountrySeries('nuovi_tamponi', $localize`Tests`),
-      await this.seriesService.generateCountrySeries('nuovi_casi_testati', $localize`People Tested`)
-    ]
-    await this.getIntensiveBarsData()
-    await this.getNewPositiveBarsData()
-    await this.getLethalityBarsData()
+    forkJoin(
+      this.seriesService.generateCountrySeries('totale_casi', $localize`Confirmed`, null, fn),
+      this.seriesService.generateCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
+      this.seriesService.generateCountrySeries('deceduti', $localize`Deaths`, null, fn),
+      this.seriesService.generateCountrySeries('totale_positivi', $localize`Current Positive`, null, fn),
+    )
+      .subscribe(data => this.seriesData = data)
 
-    await this.getNewCasesPercBarsData()
-    await this.getTotalCasesBarsData()
-    await this.getTotalCasesPerProvinceBarsData()
-    
-    await this.getTotalSwabBarsData()
-    await this.getPositivePerSwabBarsData()
-    await this.getNewSwabBarsData()
+    forkJoin(
+      this.seriesService.generateCountrySeries("totale_nuovi_casi", $localize`Confirmed`),
+      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`),
+      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`),
+      this.seriesService.generateCountryARIMAForecastSeries('p50', `AWS Forecast ARIMA`),
+      this.seriesService.generateCountryForecastDeepARPlusSeries('p50', `AWS Forecast Deep AR+`)
+    )
+      .subscribe(data => this.seriesDailyData = data)
 
-    this.numbersData = await this.numbersService.generateCountryNumbers()
+    forkJoin(
+      this.seriesService.generateCountrySeries('totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
+      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
+      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
+    )
+      .subscribe(data => this.seriesPercData = data)
+
+    forkJoin(
+      this.seriesService.generateCountrySeries('nuovi_tamponi', $localize`Tests`),
+      this.seriesService.generateCountrySeries('nuovi_casi_testati', $localize`People Tested`)
+    )
+      .subscribe(data => this.seriesSwabData = data)
+
+    this.getIntensiveBarsData()
+    this.getNewPositiveBarsData()
+    this.getLethalityBarsData()
+
+    this.getNewCasesPercBarsData()
+    this.getTotalCasesBarsData()
+    this.getTotalCasesPerProvinceBarsData()
+
+    this.getTotalSwabBarsData()
+    this.getPositivePerSwabBarsData()
+    this.getNewSwabBarsData()
+
+    this.numbersService.generateCountryNumbers()
+      .subscribe(data => this.numbersData = data)
   }
 
-  private async setRegionalData(region: string) {
+  private setRegionalData(region: string) {
     const fn: Function = this.log10 ? this.formatLog10 : null
-    this.seriesData = [
-      await this.seriesService.generateRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, fn),
-      await this.seriesService.generateRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
-      await this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
-      await this.seriesService.generateRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
-      await this.seriesService.generateRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, fn),
-    ]
-    this.seriesDailyData = [
-      await this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", `Confirmed`),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
-      await this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`),
-      await this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', `AWS Forecast ARIMA`),
-      await this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', `AWS Forecast Deep AR+`),
-    ]
-    this.seriesPercData = [
-      await this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
-      await this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
-    ]
-    this.seriesSwabData = [
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
-      await this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', $localize`People Tested`)
-    ]
+    forkJoin(
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, fn),
+      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, fn),
+    )
+      .subscribe(data => this.seriesData = data)
 
-    await this.getTotalCasesBarsData()
-    await this.getNewCasesPercBarsData()
-    await this.getNewPositiveBarsData()
+    forkJoin(
+      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", `Confirmed`),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`),
+      this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', `AWS Forecast ARIMA`),
+      this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', `AWS Forecast Deep AR+`),
+    )
+      .subscribe(data => this.seriesDailyData = data)
 
-    this.numbersData = await this.numbersService.generateRegionNumbers(region) 
+    forkJoin(
+      this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
+    )
+      .subscribe(data => this.seriesPercData = data)
+
+    forkJoin(
+      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', $localize`People Tested`)
+    )
+      .subscribe(data => this.seriesSwabData = data)
+
+
+    this.getTotalCasesBarsData()
+    this.getNewCasesPercBarsData()
+    this.getNewPositiveBarsData()
+
+    this.numbersService.generateRegionNumbers(region)
+      .subscribe((data) => this.numbersData = data)
   }
 
-  private async setProvincialData(region: string, province: string) {
-    this.seriesData = [
-      await this.seriesService.generateProvincialSeries(region, province, 'totale_casi', $localize`Total Confirmed`),
-      await this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed`)
-    ]
-    this.seriesPercData = [
-      await this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed Rate`, 'totale_casi_ieri'),
-    ]
-    this.numbersData = await this.numbersService.generateProvinceNumbers(region, province)
+  private setProvincialData(region: string, province: string) {
+
+    forkJoin(
+      this.seriesService.generateProvincialSeries(region, province, 'totale_casi', $localize`Total Confirmed`),
+      this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed`)
+    )
+      .subscribe(data => this.seriesData = data)
+
+    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed Rate`, 'totale_casi_ieri')
+      .subscribe(data => this.seriesPercData = [data])
+
+    this.numbersService.generateProvinceNumbers(region, province)
+      .subscribe(data => this.numbersData = data)
   }
 
-  async getTotalCasesBarsData($event = { value: null }) {
-    [this.totalCasesBarsData, this.totalCasesBarsMax] = this.breadcrumbs["region"] != null ?
-      await this.barsService.generateProvincialBars('totale_casi', $event.value, this.breadcrumbs["region"]) :
-      await this.barsService.generateRegionalBars('totale_casi', $event.value)
+  getTotalCasesBarsData($event = { value: null }) {
+    (this.breadcrumbs["region"] != null ?
+      this.barsService.generateProvincialBars('totale_casi', $event.value, this.breadcrumbs["region"]) :
+      this.barsService.generateRegionalBars('totale_casi', $event.value)
+    )
+      .subscribe((data) => [this.totalCasesBarsData, this.totalCasesBarsMax] = data)
   }
 
-  async getNewCasesPercBarsData($event = { value: null }) {
-    [this.newCasesPercBarsData, this.newCasesPercBarsMax] = this.breadcrumbs["region"] != null ?
-      await this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
-      await this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
+  getNewCasesPercBarsData($event = { value: null }) {
+    (this.breadcrumbs["region"] != null ?
+      this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
+      this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
+    )
+      .subscribe((data) => [this.newCasesPercBarsData, this.newCasesPercBarsMax] = data)
   }
 
-  async getNewPositiveBarsData($event = { value: null }) {
-    [this.newPositiveBarsData, this.newPositiveBarsMax] = this.breadcrumbs["region"] != null ?
-      await this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"]) :
-      await this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value)
+  getNewPositiveBarsData($event = { value: null }) {
+    (this.breadcrumbs["region"] != null ?
+      this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"]) :
+      this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value)
+    )
+      .subscribe((data) => [this.newPositiveBarsData, this.newPositiveBarsMax] = data)
   }
 
-  async getIntensiveBarsData($event = { value: null }) {
-    [this.intensiveBarsData, this.intensiveBarsMax] = await this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
+  getIntensiveBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
+      .subscribe((data) => {
+        [this.intensiveBarsData, this.intensiveBarsMax] = data
+      })
   }
 
-  async getLethalityBarsData($event = { value: null }) {
-    [this.lethalityBarsData, this.lethalityBarsMax] = await this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
+  getLethalityBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
+      .subscribe((data) => {
+        [this.lethalityBarsData, this.lethalityBarsMax] = data
+      })
   }
 
-  async getTotalCasesPerProvinceBarsData($event = { value: null }) {
-    [this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax] = await this.barsService.generateProvincialBars('totale_casi', $event.value)
+  getTotalCasesPerProvinceBarsData($event = { value: null }) {
+    this.barsService.generateProvincialBars('totale_casi', $event.value)
+      .subscribe((data) => {
+        [this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax] = data
+      })
   }
 
-  async getTotalSwabBarsData($event = { value: null }) {
-    [this.totalSwabBarsData, this.totalSwabBarsMax] = await this.barsService.generateRegionalBars('tamponi', $event.value)
+  getTotalSwabBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('tamponi', $event.value)
+      .subscribe((data) => {
+        [this.totalSwabBarsData, this.totalSwabBarsMax] = data
+      })
   }
 
-  async getNewSwabBarsData($event = { value: null }) {
-    [this.newSwabBarsData, this.newSwabBarsMax] = await this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
+  getNewSwabBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
+      .subscribe((data) => {
+        [this.newSwabBarsData, this.newSwabBarsMax] = data
+      })
   }
 
-  async getPositivePerSwabBarsData($event = { value: null }) {
-    [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = await this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
+  getPositivePerSwabBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
+      .subscribe((data) => {
+        [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = data
+      })
   }
 
   changeAggregate($event) {
 
   }
-
 
   changeLog10($event) {
     this.log10 = $event

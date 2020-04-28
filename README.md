@@ -72,11 +72,11 @@ src/
 
 This project use `@heyteacher/ngx-charts` my fork of official repository `@swimlane/ngx-charts` which introduce these changes:
 
-* branch [format-tooltip-bar-charts](https://github.com/heyteacher/ngx-charts/tree/format-tooltip-bar-charts): apply `dataLabelFormatting` to tooltip value in bar charts
 * branch [format-tooltip-line-area-charts](https://github.com/heyteacher/ngx-charts/tree/format-tooltip-line-area-charts): apply `yAxisTickFormatting` to toolptip value in line and area charts
+
 * branch [adding-axisTickClassByTick-line-area-charts](https://github.com/heyteacher/ngx-charts/tree/adding-axisTickClassByTick-line-area-charts): introduce `xAxisTickClassByTick` and `xAxisTickClassByTick` in order to customize grid line depenting tick value (e.g. weekend x-axis, zero y-axis)
 
-These branches are constantly updated with official repository `@swimlane/ngx-chart` and menged into a release branch [heyteacher-release](https://github.com/heyteacher/ngx-charts/tree/heyteacher-release) which is published in `npmjs.com`: https://www.npmjs.com/package/@heyteacher/ngx-charts 
+These branches are constantly updated with official repository `@swimlane/ngx-chart` and merged into a release branch [heyteacher-release](https://github.com/heyteacher/ngx-charts/tree/heyteacher-release) which is published in `npmjs.com`: https://www.npmjs.com/package/@heyteacher/ngx-charts 
 
 ## Localizzation
 

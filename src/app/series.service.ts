@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import moment from 'moment';
 import { Series, filterByKey, decodeNAYProvince, getValue } from "./app.model";
 import { DataService } from './data.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +19,15 @@ export class SeriesService {
    * @param denominatorKey the key of denominator
    * @param fnValue the function to apply to value
    */
-  async generateCountrySeries(
+  generateCountrySeries(
     valueKey: string,
     label: string,
     denominatorKey: string = null,
     fnValue: Function = null)
-    : Promise<Series> {
-    const countryData = await this.dataService.getCountryData();
-    return this.generateSeries(countryData, valueKey, label, denominatorKey, 'data', fnValue)
+    : Observable<Series> {
+    return this.dataService.getCountryData().pipe(
+      map(data => this.generateSeries(data, valueKey, label, denominatorKey, 'data', fnValue))
+    )
   }
 
   /**
@@ -35,15 +38,15 @@ export class SeriesService {
    * @param denominatorKey the key of denominator
    * @param fnValue the function to apply to value
    */
-  async generateRegionalSeries(
+  generateRegionalSeries(
     regionFilter: string,
     valueKey: string,
     label: string,
     denominatorKey: string = null,
-    fnValue: Function = null): Promise<Series> {
-    let regionalData = await this.dataService.getRegionalData();
-    regionalData = filterByKey(regionalData, 'denominazione_regione', regionFilter)
-    return this.generateSeries(regionalData, valueKey, label, denominatorKey, 'data', fnValue);
+    fnValue: Function = null): Observable<Series> {
+    return this.dataService.getRegionalData().pipe(
+      map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
+      map(data => this.generateSeries(data, valueKey, label, denominatorKey, 'data', fnValue)))
   }
 
   /**
@@ -55,18 +58,18 @@ export class SeriesService {
    * @param denominatorKey the key of denominator
    * @param fnValue the function to apply to value
    */
-  async generateProvincialSeries(
+  generateProvincialSeries(
     regionFilter: string,
     provinceFilter: string,
     valueKey: string,
     label: string,
     denominatorKey: string = null,
     fnValue: Function = null
-    ): Promise<Series> {
-    let provincialData = await this.dataService.getProvincialData();
-    provincialData = filterByKey(provincialData, 'denominazione_provincia', decodeNAYProvince(provinceFilter))
-    provincialData = filterByKey(provincialData, 'denominazione_regione', regionFilter)
-    return this.generateSeries(provincialData, valueKey, label, denominatorKey, 'data', fnValue);
+    ): Observable<Series> {
+    return this.dataService.getProvincialData().pipe(
+      map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
+      map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
+      map(data => this.generateSeries(data, valueKey, label, denominatorKey, 'data', fnValue)))
   }
 
   /**
@@ -74,12 +77,13 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  async generateCountryARIMAForecastSeries(
+  generateCountryARIMAForecastSeries(
     quantileKey: string, 
     label: string
-    ): Promise<Series> {
-    let countryForecastData = await this.dataService.getCountryARIMAForecastData();
-    return this.generateSeries(countryForecastData, quantileKey, label, null, 'date');
+    ): Observable<Series> {
+    return this.dataService.getCountryARIMAForecastData().pipe(
+      map(data => this.generateSeries(data, quantileKey, label, null, 'date'))
+    )
   }
 
   /**
@@ -88,14 +92,15 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  async generateRegionalARIMAForecastSeries(
+  generateRegionalARIMAForecastSeries(
     regionFilter: string, 
     quantileKey: string, 
     label: string
-    ): Promise<Series> {
-    let regionalForecastData = await this.dataService.getRegionalARIMAForecastData();
-    regionalForecastData = filterByKey(regionalForecastData, 'item_id', regionFilter)
-    return this.generateSeries(regionalForecastData, quantileKey, label, null, 'date');
+    ): Observable<Series> {
+    return this.dataService.getRegionalARIMAForecastData().pipe(
+      map(data => filterByKey(data, 'item_id', regionFilter)),
+      map(data => this.generateSeries(data, quantileKey, label, null, 'date'))
+    )
   }
 
   /**
@@ -103,12 +108,13 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  async generateCountryForecastDeepARPlusSeries(
+  generateCountryForecastDeepARPlusSeries(
     quantileKey: string, 
     label: string
-    ): Promise<Series> {
-    let countryForecastDeepARPlusData = await this.dataService.getCountryDeepARPlusForecastData();
-    return this.generateSeries(countryForecastDeepARPlusData, quantileKey, label, null, 'date');
+    ): Observable<Series> {
+    return this.dataService.getCountryDeepARPlusForecastData().pipe(
+      map(data => this.generateSeries(data, quantileKey, label, null, 'date'))
+    )
   }
 
   /**
@@ -117,13 +123,13 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  async generateRegionalForecastDeepARPlusSeries(
+  generateRegionalForecastDeepARPlusSeries(
     regionFilter: string, 
     quantile: string, 
-    label: string): Promise<Series> {
-    let regionalForecastDeepARPlusData = await this.dataService.getRegionalDeepARPlusForecastData();
-    regionalForecastDeepARPlusData = filterByKey(regionalForecastDeepARPlusData, 'item_id', regionFilter)
-    return this.generateSeries(regionalForecastDeepARPlusData, quantile, label, null, 'date');
+    label: string): Observable<Series> {
+    return this.dataService.getRegionalDeepARPlusForecastData().pipe(
+      map(data => filterByKey(data, 'item_id', regionFilter)),
+      map(data => this.generateSeries(data, quantile, label, null, 'date'))) 
   }
 
   /**

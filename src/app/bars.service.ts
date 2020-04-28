@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { Bar, filterByDay, filterByKey, orderValueDesc, encodeNAYProvince, getValue, getMaxValue } from "./app.model";
 import { AppConfigService } from './app-config.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +17,27 @@ export class BarsService {
    * @param keyValue the key of value to extract
    * @param filterDay the filter day
    * @param denominatorKey the key of denominator
-   * @returns promise of tuple with bar array and max value
+   * @returns tuple with bar array and max value
    */
-  public async generateRegionalBars(
+  public generateRegionalBars(
     keyValue: string,
     filterDay: string = null,
     denominatorKey: string = null
-  ): Promise<[Bar[], number]> {
-    const data = await this.dataService.getRegionalData();
-    const bars = this.generateBars(
-      filterByDay(data, filterDay),
-      'denominazione_regione',
-      keyValue,
-      20,
-      denominatorKey
-    )
-    const max: number = getMaxValue(data, keyValue, denominatorKey,this.appConfigService.daysToShowInBars)
-    return [bars, max]
+  ):Observable<[Bar[], number]> {
+    return this.dataService.getRegionalData()
+    .pipe(
+      map((data: any[]) => filterByDay(data, filterDay)),
+      map((data: any[]) => [
+        this.generateBars(
+          data,
+          'denominazione_regione',
+          keyValue,
+          20,
+          denominatorKey)
+        ,
+        getMaxValue(data, keyValue, denominatorKey,this.appConfigService.daysToShowInBars)
+      ]
+    ))
   }
 
   /**
@@ -40,27 +46,29 @@ export class BarsService {
    * @param filterDay the filter day
    * @param filterRegion the filter region
    * @param denominatorKey the key of denominator
-   * @returns promise of tuple with bar array and max value
+   * @returns tuple with bar array and max value
    */
-  public async generateProvincialBars(
+  public generateProvincialBars(
     keyValue: string,
     filterDay: string = null,
     filterRegion: string = null,
     denomKey: string = null
-  ): Promise<[Bar[], number]> {
-    let data = await this.dataService.getProvincialData();
-    if (filterRegion) {
-      data = filterByKey(data, 'denominazione_regione', filterRegion)
-    }
-    const bars: Bar[] = this.generateBars(
-      filterByDay(data, filterDay),
-      'denominazione_provincia',
-      keyValue,
-      20,
-      denomKey
-    )
-    const max: number = getMaxValue(data, keyValue, denomKey,this.appConfigService.daysToShowInBars)
-    return [bars, max]
+  ): Observable<[Bar[], number]> {
+    return this.dataService.getProvincialData()
+    .pipe(
+      map((data: any[]) => filterRegion?filterByKey(data, 'denominazione_regione', filterRegion): data),
+      map((data: any[]) => filterByDay(data, filterDay)),
+      map((data: any[]) => [
+        this.generateBars(
+          data,
+          'denominazione_provincia',
+          keyValue,
+          20,
+          denomKey)
+        ,
+        getMaxValue(data, keyValue, denomKey,this.appConfigService.daysToShowInBars)
+      ]
+    ))
   }
 
   /**

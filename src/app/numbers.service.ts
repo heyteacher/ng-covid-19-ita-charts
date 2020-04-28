@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { filterByDay, filterByKey, Bar, getValue, encodeNAYProvince, decodeNAYProvince } from './app.model';
+import { filterByDay, filterByKey, Bar, getValue, decodeNAYProvince } from './app.model';
 import moment from 'moment';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,21 +15,23 @@ export class NumbersService {
   /**
    * generate conuntry daily numbers
    */
-  async generateCountryNumbers(): Promise<Bar[]> {
-    let countryData = await this.dataService.getCountryData()
-    countryData = filterByDay(countryData)
-    return this.generateCountryRegionNumbers(countryData[0])
+  generateCountryNumbers(): Observable<Bar[]> {
+    return this.dataService.getCountryData().pipe(
+      map(data => filterByDay(data)),
+      map(data => this.generateCountryRegionNumbers(data[0]))
+    )
   }
 
   /**
    * generate regional daily numbers
    * @param regionFilter the filter region applied to data
    */
-  async generateRegionNumbers(regionFilter: string): Promise<Bar[]> {
-    let regionalData = await this.dataService.getRegionalData()
-    regionalData = filterByDay(regionalData)
-    regionalData = filterByKey(regionalData, 'denominazione_regione', regionFilter)
-    return this.generateCountryRegionNumbers(regionalData[0])
+  generateRegionNumbers(regionFilter: string): Observable<Bar[]> {
+    return this.dataService.getRegionalData().pipe(
+      map(data => filterByDay(data)),
+      map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
+      map(data => this.generateCountryRegionNumbers(data[0]))
+    )
   }
 
   /**
@@ -35,19 +39,19 @@ export class NumbersService {
    * @param regionFilter the filter region applied to data
    * @param provinceFilter the filter region applied to data
    */
-  async generateProvinceNumbers(regionFilter: string, provinceFilter: string): Promise<Bar[]> {
-    let data = await this.dataService.getProvincialData()
-    data = filterByDay(data)
-    data = filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))
-    data = filterByKey(data, 'denominazione_regione', regionFilter)
-    return [
-      {name: $localize`Total Confirmed`, value: data[0].totale_casi},
-      {name: $localize`New Confirmed`, value: data[0].totale_nuovi_casi},
-      {name: $localize`Confirmed Rate`, value: `${getValue(data[0],'totale_nuovi_casi', 'totale_casi')} %` },
-      {name: $localize`Day`, value: moment(data[0].data).format('ddd D MMM')},
-    ]
+  generateProvinceNumbers(regionFilter: string, provinceFilter: string): Observable<Bar[]> {
+    return this.dataService.getProvincialData().pipe(
+      map(data => filterByDay(data)),
+      map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
+      map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
+      map(data => [
+        {name: $localize`Total Confirmed`, value: data[0].totale_casi},
+        {name: $localize`New Confirmed`, value: data[0].totale_nuovi_casi},
+        {name: $localize`Confirmed Rate`, value: `${getValue(data[0],'totale_nuovi_casi', 'totale_casi')} %` },
+        {name: $localize`Day`, value: moment(data[0].data).format('ddd D MMM')},
+      ])
+    )
   }
-
 
   /**
    * generate numbers from country region row data
