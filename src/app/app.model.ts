@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+declare function $localize(params:TemplateStringsArray)
+
 export interface Node {
   name: string;
   uri: string;
@@ -50,7 +52,7 @@ export function filterByDay(data: any[], day: string = null): any[] {
  * @param province the province to encode
  */
 export function encodeNAYProvince(province: string): string {
-  return province == 'In fase di definizione/aggiornamento' ? `NOT ATTRIBUTED YET` : province
+  return province == 'In fase di definizione/aggiornamento' ? $localize? $localize`NOT ATTRIBUTED YET`:`NOT ATTRIBUTED YET` : province
 }
 
 /**
@@ -58,7 +60,7 @@ export function encodeNAYProvince(province: string): string {
  * @param province  the province to encode
  */
 export function decodeNAYProvince(province: string): string {
-  return province == `NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
+  return province == $localize`NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
 }
 
 /**

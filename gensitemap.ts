@@ -5,14 +5,22 @@ import { environment as environmentEn } from './src/environments/environment.pro
 import { environment as environmentIt } from './src/environments/environment.it.prod';
 import * as fs from "fs";
 
+const _global = (global) as any
+
+
 (async () => {
+        
     const appConfigService = new AppConfigService()
     const response = await axios.get(appConfigService.provincialDataSetUrl)
 
+    // set $localize global function for EN translation
+    _global.$localize = () => `NOT ATTRIBUTED YET`
     const sitemap = generateSitemap(response,environmentEn.shareUrl );
     fs.writeFileSync('src/sitemap.xml', sitemap)
     console.log('src/sitemap.xml written')
     
+    // set $localize global function for italian translation
+    _global.$localize = () => `NON ATTRIBUITO`
     const sitemapIt = generateSitemap(response,environmentIt.shareUrl );
     fs.writeFileSync('src/sitemap-it.xml', sitemapIt)
     console.log('src/sitemap-it.xml written')
