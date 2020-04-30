@@ -1,16 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { DataService } from './data.service';
 import { filterByDay, filterByKey, Bar, getValue, decodeNAYProvince } from './app.model';
 import moment from 'moment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { formatNumber } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NumbersService {
 
-  constructor(private dataService: DataService) { }
+  constructor(
+    private dataService: DataService) { 
+      moment.locale(document.documentElement.lang)
+    }
 
   /**
    * generate conuntry daily numbers
@@ -47,8 +51,8 @@ export class NumbersService {
       map(data => [
         {name: $localize`Total Confirmed`, value: data[0].totale_casi},
         {name: $localize`New Confirmed`, value: data[0].totale_nuovi_casi},
-        {name: $localize`Confirmed Rate`, value: `${getValue(data[0],'totale_nuovi_casi', 'totale_casi')} %` },
-        {name: $localize`Day`, value: moment(data[0].data).format('ddd D MMM')},
+        {name: $localize`Confirmed Rate`, value: `${formatNumber(getValue(data[0],'totale_nuovi_casi', 'totale_casi'), document.documentElement.lang)} %` },
+        {name: $localize`Date`, value: moment(data[0].data).format('ddd D MMMM')},
       ])
     )
   }
@@ -64,7 +68,7 @@ export class NumbersService {
       {name: $localize`Intensive Care`, value: row.nuovi_terapia_intensiva},
       {name: $localize`Deaths` , value: row.nuovi_deceduti},
       {name: $localize`Current Positive`, value: row.variazione_totale_positivi},
-      {name: $localize`Day`, value: moment(row.data).format('ddd D MMM')},
+      {name: $localize`Date`, value: moment(row.data).format('ddd D MMMM')},
     ]
   }
 }

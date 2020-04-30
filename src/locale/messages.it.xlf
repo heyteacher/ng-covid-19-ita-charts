@@ -7,9 +7,9 @@
         <source>Confirmed Rate</source>
         <target state="translated">Tasso Confermati</target>
       </trans-unit>
-      <trans-unit id="1286983255645370171" datatype="html" approved="yes">
-        <source>Day</source>
-        <target state="translated">Giorno</target>
+      <trans-unit id="3973931101896534797" datatype="html" approved="yes">
+        <source>Date</source>
+        <target state="translated">Data</target>
       </trans-unit>
       <trans-unit id="48769258314623912" datatype="html" approved="yes">
         <source>People Tested</source>

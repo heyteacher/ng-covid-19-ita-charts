@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { SeriesService } from '../series.service';
 import { ActivatedRoute } from '@angular/router';
 import { Bar, Series } from '../app.model';
@@ -6,6 +6,7 @@ import { BarsService } from '../bars.service';
 import { NumbersService } from '../numbers.service';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
+import { formatNumber } from '@angular/common';
 
 @Component({
   selector: 'app-charts',
@@ -81,14 +82,15 @@ export class ChartsComponent {
     }
   }
 
+  private log10fn = this.log10 ? (n) => n && n > 0 ? Math.log10(n) : n : null
+
   private setCountryData() {
-    const fn = this.log10 ? this.formatLog10 : null
     forkJoin(
-      this.seriesService.generateCountrySeries('totale_casi', $localize`Confirmed`, null, fn),
-      this.seriesService.generateCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, fn),
-      this.seriesService.generateCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, fn),
-      this.seriesService.generateCountrySeries('deceduti', $localize`Deaths`, null, fn),
-      this.seriesService.generateCountrySeries('totale_positivi', $localize`Current Positive`, null, fn),
+      this.seriesService.generateCountrySeries('totale_casi', $localize`Confirmed`, null, this.log10fn),
+      this.seriesService.generateCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, this.log10fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, this.log10fn),
+      this.seriesService.generateCountrySeries('deceduti', $localize`Deaths`, null, this.log10fn),
+      this.seriesService.generateCountrySeries('totale_positivi', $localize`Current Positive`, null, this.log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
@@ -135,13 +137,12 @@ export class ChartsComponent {
   }
 
   private setRegionalData(region: string) {
-    const fn: Function = this.log10 ? this.formatLog10 : null
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, fn),
-      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, fn),
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, fn),
-      this.seriesService.generateRegionalSeries(region, 'deceduti', $localize`Deaths`, null, fn),
-      this.seriesService.generateRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', $localize`Deaths`, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, this.log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
@@ -271,21 +272,22 @@ export class ChartsComponent {
   }
 
   public formatPercentage(input) {
-    return `${input}%`
+    return `${input? formatNumber(input, document.documentElement.lang): input} %`
   }
 
   public formatRound(input) {
-    return Math.round(input).toLocaleString()
+    return input? formatNumber(Math.round(input), document.documentElement.lang): input
   }
 
   public formatPow10(input) {
-    return Math.round(Math.pow(10, input)).toLocaleString()
+    return input? formatNumber(Math.round(Math.pow(10, input)), document.documentElement.lang): input
   }
 
-  public formatLog10(input) {
-    return input && input > 0 ? Math.log10(input) : input
+  public valueFormatting(input) {
+    return typeof input.value  === 'number'? 
+      formatNumber(input.value, document.documentElement.lang): 
+      input.value
   }
-
   public gridLineNgStyleByXAxisTick(tick) {
     var day = moment(tick, 'DD/MM').day();
     var isWeekend = (day === 6) || (day === 0);
