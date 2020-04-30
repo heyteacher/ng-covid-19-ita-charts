@@ -8,6 +8,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faCopy, faShareAlt, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { environment } from './../environments/environment';
+import { environment as environmentProdEn } from './../environments/environment.prod';
+import { environment as environmentProdIt } from './../environments/environment.it.prod';
 import { GoogleAnalyticsComponent } from './google-analytics/google-analytics.component';
 
 @Component({
@@ -63,6 +65,14 @@ export class AppComponent extends GoogleAnalyticsComponent {
 
   constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
     super()
+    if (sessionStorage.getItem('langRedirect') != 'true' &&
+      navigator.language == 'it' &&
+      document.documentElement.lang != 'it'
+    ) {
+      sessionStorage.setItem('langRedirect', 'true');
+      location.href = location.href.replace(environmentProdEn.baseHref, environmentProdIt.baseHref)
+      return
+    }
     super.subscribeEventsProvider()
     matIconRegistry.addSvgIcon(
       "ngx-charts",
