@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import {
@@ -11,6 +11,7 @@ import { environment } from './../environments/environment';
 import { environment as environmentProdEn } from './../environments/environment.prod';
 import { environment as environmentProdIt } from './../environments/environment.it.prod';
 import { GoogleAnalyticsComponent } from './google-analytics/google-analytics.component';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ export class AppComponent extends GoogleAnalyticsComponent {
   title = $localize`COVID-19 Italy`
   shareMessage = $localize`COVID-19 Italy Charts per region and province`
   shareUrl = environment.shareUrl
-  otherLang = environment.otherLang
+  otherLang = Object.assign({},environment.otherLang)
 
   faTwitter = faTwitter
   faWhatsapp = faWhatsapp
@@ -63,8 +64,16 @@ export class AppComponent extends GoogleAnalyticsComponent {
     document.body.removeChild(selBox);
   }
 
-  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
+  constructor(
+    router: Router,
+    matIconRegistry: MatIconRegistry,
+    domSanitizer: DomSanitizer
+  ) {
     super()
+    super.subscribeEventsProvider()
+
+    // if browser language is it and differs from page language
+    // redirect to italian index
     if (sessionStorage.getItem('langRedirect') != 'true' &&
       navigator.language == 'it' &&
       document.documentElement.lang != 'it'
@@ -73,10 +82,27 @@ export class AppComponent extends GoogleAnalyticsComponent {
       location.href = location.href.replace(environmentProdEn.baseHref, environmentProdIt.baseHref)
       return
     }
-    super.subscribeEventsProvider()
+
+    // add ngx-charts icon
     matIconRegistry.addSvgIcon(
       "ngx-charts",
       domSanitizer.bypassSecurityTrustResourceUrl(`${environment.baseHref}assets/icon/ngx-charts.svg`)
     );
+
+    /* this subscription will fire always when the url changes */
+    router.events.subscribe(val => {
+
+      /* the router will fire multiple events */
+      /* we only want to react if it's the final active route */
+      if (val instanceof NavigationEnd) {
+        /* the variable curUrlTree holds all params, queryParams, segments and fragments from the current (active) route */
+        let curUrlTree = router.parseUrl(router.url);
+        this.otherLang.url = environment.otherLang.url
+        if (curUrlTree.root.children['primary']) {
+          this.otherLang.url += '#/' + curUrlTree.root.children.primary.segments.map((segment) => segment.path).join('/');
+        }
+      }
+    });
+
   }
 }
