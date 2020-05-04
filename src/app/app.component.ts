@@ -99,7 +99,13 @@ export class AppComponent extends GoogleAnalyticsComponent {
         let curUrlTree = router.parseUrl(router.url);
         this.otherLang.url = environment.otherLang.url
         if (curUrlTree.root.children['primary']) {
-          this.otherLang.url += '#/' + curUrlTree.root.children.primary.segments.map((segment) => segment.path).join('/');
+          this.otherLang.url += '#/' + curUrlTree.root.children.primary.segments.map(
+            (segment) => {
+              if (segment.path == 'NON ATTRIBUITI') return 'NOT ATTRIBUTED YET'
+              if (segment.path == 'NOT ATTRIBUTED YET') return 'NON ATTRIBUITI'
+              return segment.path 
+            }
+          ).join('/');
         }
       }
     });
