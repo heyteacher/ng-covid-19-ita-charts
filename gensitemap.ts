@@ -20,7 +20,7 @@ const _global = (global) as any
     console.log('src/sitemap.xml written')
     
     // set $localize global function for italian translation
-    _global.$localize = () => `NON ATTRIBUITO`
+    _global.$localize = () => `NON ATTRIBUITI`
     const sitemapIt = generateSitemap(response,environmentIt.shareUrl );
     fs.writeFileSync('src/sitemap-it.xml', sitemapIt)
     console.log('src/sitemap-it.xml written')
