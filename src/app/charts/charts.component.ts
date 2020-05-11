@@ -44,8 +44,17 @@ export class ChartsComponent {
   positivePerSwabBarsData: Bar[] = []
   positivePerSwabBarsMax: number;
 
+  dailyPositivePerSwabBarsData: Bar[] = []
+  dailyPositivePerSwabBarsMax: number;
+
   lethalityBarsData: Bar[] = []
   lethalityBarsMax: number;
+
+  dailyDeathBarsData: Bar[] = []
+  dailyDeathBarsMax: number;
+
+  deathBarsData: Bar[] = []
+  deathBarsMax: number;
 
   newCasesPercBarsData: Bar[] = []
   newCasesPercBarsMax: number;
@@ -122,7 +131,12 @@ export class ChartsComponent {
 
     this.getIntensiveBarsData()
     this.getNewPositiveBarsData()
+
     this.getLethalityBarsData()
+    this.getDailyDeathBarsData()
+    this.getDeathBarsData()
+    
+    this.getDailyPositivePerSwabBarsData()
 
     this.getNewCasesPercBarsData()
     this.getTotalCasesBarsData()
@@ -234,6 +248,21 @@ export class ChartsComponent {
       })
   }
 
+  getDailyDeathBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('nuovi_deceduti', $event.value)
+      .subscribe((data) => {
+        [this.dailyDeathBarsData, this.dailyDeathBarsMax] = data
+      })
+  }
+
+  getDeathBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('deceduti', $event.value)
+      .subscribe((data) => {
+        [this.deathBarsData, this.deathBarsMax] = data
+      })
+  }
+
+
   getTotalCasesPerProvinceBarsData($event = { value: null }) {
     this.barsService.generateProvincialBars('totale_casi', $event.value)
       .subscribe((data) => {
@@ -259,6 +288,12 @@ export class ChartsComponent {
     this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
       .subscribe((data) => {
         [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = data
+      })
+  }
+  getDailyPositivePerSwabBarsData($event = { value: null }) {
+    this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'nuovi_tamponi')
+      .subscribe((data) => {
+        [this.dailyPositivePerSwabBarsData, this.dailyPositivePerSwabBarsMax] = data
       })
   }
 

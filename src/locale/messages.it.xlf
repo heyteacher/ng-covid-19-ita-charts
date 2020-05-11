@@ -2,7 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="it" datatype="plaintext" original="ng2.template">
     <body>
-    
+     <trans-unit id="8558928513634991910" datatype="html" approved="yes">
+        <source>Daily Death</source>
+        <target state="translated">Deceduti Giornalieri</target>
+      </trans-unit>
+      <trans-unit id="751102075175611587" datatype="html" approved="yes">
+        <source>Death</source>
+        <target state="translated">Deceduti</target>
+      </trans-unit>
+      <trans-unit id="787366148535505898" datatype="html" approved="yes">
+        <source>Daily Confirmed per Tests Rate</source>
+        <target state="translated">Tasso Giornaliero Infettati per Tampone</target>
+      </trans-unit>
+
       <trans-unit id="6941553453243567012" datatype="html" approved="yes">
         <source>Confirmed Rate</source>
         <target state="translated">Tasso Confermati</target>
