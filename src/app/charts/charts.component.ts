@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { SeriesService } from '../series.service';
 import { ActivatedRoute } from '@angular/router';
-import { Bar, Series } from '../app.model';
+import { Bar, Series, Legend, objectify } from '../app.model';
 import { BarsService } from '../bars.service';
 import { NumbersService } from '../numbers.service';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { formatNumber } from '@angular/common';
+import { LegendEntryComponent } from '@heyteacher/ngx-charts';
+import { LegendsService } from '../legends.service';
 
 @Component({
   selector: 'app-charts',
@@ -16,10 +18,6 @@ import { formatNumber } from '@angular/common';
 
 export class ChartsComponent {
   breadcrumbs: any;
-
-  colorScheme = {
-    domain: ['#CFC0BB', '#5AA454', '#7aa3e5', '#E44D25', '#aae3f5', '#a8385d', '#aFb3F5']
-  };
 
   seriesData: Series[] = [];
   seriesDailyData: Series[] = [];
@@ -66,17 +64,29 @@ export class ChartsComponent {
 
   showLegend: boolean
   log10: boolean = true
+  legendsService: LegendsService
 
   constructor(
     private seriesService: SeriesService,
     private barsService: BarsService,
     private numbersService: NumbersService,
+    legendsService: LegendsService,
     activateRoute: ActivatedRoute
   ) {
+    this.legendsService = legendsService
     activateRoute.params.subscribe(params => {
       this.breadcrumbs = params
       this.initData()
     })
+  }
+
+  changeLegend(event) {
+    this.legendsService.legendsDict[event.name].checked = event.checked
+    this.initData()
+  }
+  changeProvLegend(event) {
+    this.legendsService.provLegendsDict[event.name].checked = event.checked
+    this.initData()
   }
 
   private initData() {
@@ -95,37 +105,37 @@ export class ChartsComponent {
 
   private setCountryData() {
     forkJoin(
-      this.seriesService.generateCountrySeries('totale_casi', $localize`Confirmed`, null, this.log10fn),
-      this.seriesService.generateCountrySeries("dimessi_guariti", $localize`Recovered/Released`, null, this.log10fn),
-      this.seriesService.generateCountrySeries('terapia_intensiva', $localize`Intensive Care`, null, this.log10fn),
-      this.seriesService.generateCountrySeries('deceduti', $localize`Deaths`, null, this.log10fn),
-      this.seriesService.generateCountrySeries('totale_positivi', $localize`Current Positive`, null, this.log10fn),
+      this.seriesService.generateCountrySeries('totale_casi', this.legendsService.legendsDict.confirmed, null, this.log10fn),
+      this.seriesService.generateCountrySeries("dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.log10fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.log10fn),
+      this.seriesService.generateCountrySeries('deceduti', this.legendsService.legendsDict.deaths, null, this.log10fn),
+      this.seriesService.generateCountrySeries('totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
     forkJoin(
-      this.seriesService.generateCountrySeries("totale_nuovi_casi", $localize`Confirmed`),
-      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`),
-      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`),
-      this.seriesService.generateCountryARIMAForecastSeries('p50', `AWS Forecast ARIMA`),
-      this.seriesService.generateCountryForecastDeepARPlusSeries('p50', `AWS Forecast Deep AR+`)
+      this.seriesService.generateCountrySeries("totale_nuovi_casi", this.legendsService.legendsDict.confirmed),
+      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered),
+      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive),
+      this.seriesService.generateCountryARIMAForecastSeries('p50', this.legendsService.legendsDict.awsForecastARIMA),
+      this.seriesService.generateCountryForecastDeepARPlusSeries('p50', this.legendsService.legendsDict.awsForecastDeepARPlus)
     )
       .subscribe(data => this.seriesDailyData = data)
 
     forkJoin(
-      this.seriesService.generateCountrySeries('totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
-      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
-      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
+      this.seriesService.generateCountrySeries('totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri'),
+      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri'),
+      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri'),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri'),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi'),
     )
       .subscribe(data => this.seriesPercData = data)
 
     forkJoin(
-      this.seriesService.generateCountrySeries('nuovi_tamponi', $localize`Tests`),
-      this.seriesService.generateCountrySeries('nuovi_casi_testati', $localize`People Tested`)
+      this.seriesService.generateCountrySeries('nuovi_tamponi', this.legendsService.legendsDict.tests),
+      this.seriesService.generateCountrySeries('nuovi_casi_testati', this.legendsService.legendsDict.peopleTested)
     )
       .subscribe(data => this.seriesSwabData = data)
 
@@ -135,7 +145,7 @@ export class ChartsComponent {
     this.getLethalityBarsData()
     this.getDailyDeathBarsData()
     this.getDeathBarsData()
-    
+
     this.getDailyPositivePerSwabBarsData()
 
     this.getNewCasesPercBarsData()
@@ -152,37 +162,37 @@ export class ChartsComponent {
 
   private setRegionalData(region: string) {
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_casi', $localize`Confirmed`, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", $localize`Recovered/Released`, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', $localize`Intensive Care`, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, 'deceduti', $localize`Deaths`, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, 'totale_positivi', $localize`Current Positive`, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', this.legendsService.legendsDict.confirmed, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', this.legendsService.legendsDict.deaths, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", `Confirmed`),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`),
-      this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', `AWS Forecast ARIMA`),
-      this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', `AWS Forecast Deep AR+`),
+      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", this.legendsService.legendsDict.confirmed),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive),
+      this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', this.legendsService.legendsDict.awsForecastARIMA),
+      this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', this.legendsService.legendsDict.awsForecastDeepARPlus),
     )
       .subscribe(data => this.seriesDailyData = data)
 
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', $localize`Confirmed`, 'totale_casi_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', $localize`Recovered/Released`, 'dimessi_guariti_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', $localize`Intensive Care`, 'terapia_intensiva_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', $localize`Deaths`, 'deceduti_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', $localize`Current Positive`, 'totale_positivi'),
+      this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri'),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi'),
     )
       .subscribe(data => this.seriesPercData = data)
 
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', $localize`Tests`),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', $localize`People Tested`)
+      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', this.legendsService.legendsDict.tests),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', this.legendsService.legendsDict.peopleTested)
     )
       .subscribe(data => this.seriesSwabData = data)
 
@@ -198,12 +208,12 @@ export class ChartsComponent {
   private setProvincialData(region: string, province: string) {
 
     forkJoin(
-      this.seriesService.generateProvincialSeries(region, province, 'totale_casi', $localize`Total Confirmed`),
-      this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed`)
+      this.seriesService.generateProvincialSeries(region, province, 'totale_casi', this.legendsService.provLegendsDict.confirmed),
+      this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmed)
     )
       .subscribe(data => this.seriesData = data)
 
-    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', $localize`New Confirmed Rate`, 'totale_casi_ieri')
+    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmedRate, 'totale_casi_ieri')
       .subscribe(data => this.seriesPercData = [data])
 
     this.numbersService.generateProvinceNumbers(region, province)
@@ -307,20 +317,20 @@ export class ChartsComponent {
   }
 
   public formatPercentage(input) {
-    return `${input? formatNumber(input, document.documentElement.lang): input} %`
+    return `${input ? formatNumber(input, document.documentElement.lang) : input} %`
   }
 
   public formatRound(input) {
-    return input? formatNumber(Math.round(input), document.documentElement.lang): input
+    return input ? formatNumber(Math.round(input), document.documentElement.lang) : input
   }
 
   public formatPow10(input) {
-    return input? formatNumber(Math.round(Math.pow(10, input)), document.documentElement.lang): input
+    return input ? formatNumber(Math.round(Math.pow(10, input)), document.documentElement.lang) : input
   }
 
   public valueFormatting(input) {
-    return typeof input.value  === 'number'? 
-      formatNumber(input.value, document.documentElement.lang): 
+    return typeof input.value === 'number' ?
+      formatNumber(input.value, document.documentElement.lang) :
       input.value
   }
   public gridLineNgStyleByXAxisTick(tick) {

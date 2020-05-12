@@ -2,6 +2,13 @@ import moment from 'moment';
 
 declare function $localize(params:TemplateStringsArray)
 
+export interface Legend {
+  label: string;
+  name: string;
+  checked: boolean;
+  color: string;
+}
+
 export interface Node {
   name: string;
   uri: string;
@@ -21,6 +28,11 @@ export interface Bar {
   name: string;
 }
 
+export function objectify(dict, value) {
+    dict[value.name] = value;
+    return dict;
+ }
+
 
 /**
  * filter data by key starting from value
@@ -32,7 +44,8 @@ export function filterByKey(data: any[], key: string, value: string): any[] {
   const filterSeries = (input) => {
     return input[key].match(new RegExp('^' + value, 'i'));
   }
-  return data.filter(filterSeries)
+  const ret = data.filter(filterSeries)
+  return ret
 }
 
 /**

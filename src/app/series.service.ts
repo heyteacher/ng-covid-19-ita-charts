@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { Series, filterByKey, decodeNAYProvince, getValue } from "./app.model";
+import { Series, filterByKey, decodeNAYProvince, getValue, Legend } from "./app.model";
 import { DataService } from './data.service';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,18 +15,18 @@ export class SeriesService {
   /**
    * generate series from country data
    * @param valueKey the key of value
-   * @param label the series label
+   * @param legend the series legend
    * @param denominatorKey the key of denominator
    * @param fnValue the function to apply to value
    */
   generateCountrySeries(
     valueKey: string,
-    label: string,
+    legend: Legend,
     denominatorKey: string = null,
     fnValue: Function = null)
     : Observable<Series> {
     return this.dataService.getCountryData().pipe(
-      map(data => this.generateSeries(data, valueKey, label, denominatorKey, 'data', fnValue))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', fnValue))
     )
   }
 
@@ -41,12 +41,12 @@ export class SeriesService {
   generateRegionalSeries(
     regionFilter: string,
     valueKey: string,
-    label: string,
+    legend: Legend,
     denominatorKey: string = null,
     fnValue: Function = null): Observable<Series> {
     return this.dataService.getRegionalData().pipe(
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, label, denominatorKey, 'data', fnValue)))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', fnValue)))
   }
 
   /**
@@ -62,14 +62,14 @@ export class SeriesService {
     regionFilter: string,
     provinceFilter: string,
     valueKey: string,
-    label: string,
+    legend: Legend,
     denominatorKey: string = null,
     fnValue: Function = null
     ): Observable<Series> {
     return this.dataService.getProvincialData().pipe(
       map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, label, denominatorKey, 'data', fnValue)))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', fnValue)))
   }
 
   /**
@@ -79,10 +79,10 @@ export class SeriesService {
    */
   generateCountryARIMAForecastSeries(
     quantileKey: string, 
-    label: string
+    legend: Legend
     ): Observable<Series> {
     return this.dataService.getCountryARIMAForecastData().pipe(
-      map(data => this.generateSeries(data, quantileKey, label, null, 'date'))
+      map(data => this.generateSeries(data, quantileKey, legend, null, 'date'))
     )
   }
 
@@ -95,11 +95,15 @@ export class SeriesService {
   generateRegionalARIMAForecastSeries(
     regionFilter: string, 
     quantileKey: string, 
-    label: string
+    legend: Legend,
     ): Observable<Series> {
     return this.dataService.getRegionalARIMAForecastData().pipe(
-      map(data => filterByKey(data, 'item_id', regionFilter)),
-      map(data => this.generateSeries(data, quantileKey, label, null, 'date'))
+      map(data => {
+        return filterByKey(data, 'item_id', regionFilter)
+      }),
+      map(data => {
+        return this.generateSeries(data, quantileKey, legend, null, 'date')
+      })
     )
   }
 
@@ -110,10 +114,10 @@ export class SeriesService {
    */
   generateCountryForecastDeepARPlusSeries(
     quantileKey: string, 
-    label: string
+    legend: Legend,
     ): Observable<Series> {
     return this.dataService.getCountryDeepARPlusForecastData().pipe(
-      map(data => this.generateSeries(data, quantileKey, label, null, 'date'))
+      map(data => this.generateSeries(data, quantileKey, legend, null, 'date'))
     )
   }
 
@@ -126,17 +130,18 @@ export class SeriesService {
   generateRegionalForecastDeepARPlusSeries(
     regionFilter: string, 
     quantile: string, 
-    label: string): Observable<Series> {
+    legend: Legend,
+  ): Observable<Series> {
     return this.dataService.getRegionalDeepARPlusForecastData().pipe(
       map(data => filterByKey(data, 'item_id', regionFilter)),
-      map(data => this.generateSeries(data, quantile, label, null, 'date'))) 
+      map(data => this.generateSeries(data, quantile, legend, null, 'date'))) 
   }
 
   /**
    * generate a deries from input data
    * @param inputData the input data array
    * @param valueKey the key of value
-   * @param label the series label
+   * @param legend the series legend
    * @param denominatorKey the key of denominator
    * @param dateKey the key of date 
    * @param fnValue the function to apply to value
@@ -144,7 +149,7 @@ export class SeriesService {
   private generateSeries(
     inputData: any[], 
     valueKey: string, 
-    label: string, 
+    legend: Legend, 
     denominatorKey: string = null, 
     dateKey: string = 'data', 
     fnValue: Function = null
@@ -157,8 +162,8 @@ export class SeriesService {
       }
     }
     return {
-      name: label,
-      series: inputData.map(daySeries)
+      name: legend.label,
+      series: legend.checked? inputData.map(daySeries): []
     }
   }
 }

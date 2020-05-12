@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Legend } from '../app.model';
+
 
 @Component({
   selector: 'app-legend',
@@ -7,28 +9,19 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class LegendComponent implements OnInit {
 
-  @Input() colorScheme: any
-  @Input() isProvince: boolean
+  @Output() changeLegend = new EventEmitter<any>();
+  
 
   constructor() { }
 
-  private labels = [
-    $localize`Confirmed`,
-    $localize`Recovered/Released`,
-    $localize`Intensive Care`,
-    $localize`Deaths`,
-    $localize`Current Positive`,
-    `AWS Forecast ARIMA`,
-    `AWS Forecast Deep AR+`
-  ];
+  @Input() legends: Legend[];
 
-  private provLabels = [
-    $localize`Confirmed`,
-    $localize`New Confirmed`,
-  ];
-
-  getLabels():string[] {
-   return this.isProvince? this.provLabels: this.labels 
+  change(event) {
+    this.changeLegend.emit(
+      {
+        name:event.source.name,
+        checked: event.checked
+    })
   }
 
   backGroundColorStyle(color:string):string {
@@ -36,5 +29,4 @@ export class LegendComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-
 }

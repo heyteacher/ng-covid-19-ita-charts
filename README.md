@@ -53,15 +53,22 @@ src/
     │                          /<Region>/<Province> via URL
     │ 
     └─── app.model.ts model of dataset for Bar, Series and 
-    |                 tree Node
+    |                 tree Node, and utility function
     |
     └─── bars.service.ts prepare data to bar charts
     |
     └─── data.service.ts download JSON and prepare datasets 
     |                    and `tree-menu` structure 
     |
+    └─── legends.service.ts manage legends and checkbox 
+    |                       show/hide series in charts    
+    |
+    └─── numbers.service.ts prepare data per numbers 
+    |                       charts    
+    |
     └─── series.service.ts prepare data to series and bar 
     |                      charts    
+    |
 └───locale/
     └─── messages.it.xlf italian translations 
     |

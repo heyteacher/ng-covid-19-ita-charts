@@ -17,6 +17,7 @@ import { MatListModule} from '@angular/material/list';
 import { MatMenuModule} from '@angular/material/menu';
 import { MatSelectModule} from '@angular/material/select';
 import { MatButtonToggleModule} from "@angular/material/button-toggle";
+import { MatCheckboxModule} from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-rounting.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -55,6 +56,7 @@ import { LegendComponent } from './legend/legend.component';
     MatTreeModule,
     MatToolbarModule,
     MatMenuModule,
+    MatCheckboxModule,
     AppRoutingModule,
     FontAwesomeModule,
     MatSelectModule,
