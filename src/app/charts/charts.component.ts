@@ -101,15 +101,14 @@ export class ChartsComponent {
     }
   }
 
-  private log10fn = this.log10 ? (n) => n && n > 0 ? Math.log10(n) : n : null
-
   private setCountryData() {
+    const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
     forkJoin(
-      this.seriesService.generateCountrySeries('totale_casi', this.legendsService.legendsDict.confirmed, null, this.log10fn),
-      this.seriesService.generateCountrySeries("dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.log10fn),
-      this.seriesService.generateCountrySeries('terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.log10fn),
-      this.seriesService.generateCountrySeries('deceduti', this.legendsService.legendsDict.deaths, null, this.log10fn),
-      this.seriesService.generateCountrySeries('totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.log10fn),
+      this.seriesService.generateCountrySeries('totale_casi', this.legendsService.legendsDict.confirmed, null, log10fn),
+      this.seriesService.generateCountrySeries("dimessi_guariti", this.legendsService.legendsDict.recovered, null, log10fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, log10fn),
+      this.seriesService.generateCountrySeries('deceduti', this.legendsService.legendsDict.deaths, null, log10fn),
+      this.seriesService.generateCountrySeries('totale_positivi', this.legendsService.legendsDict.currentPositive, null, log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
@@ -161,12 +160,13 @@ export class ChartsComponent {
   }
 
   private setRegionalData(region: string) {
+    const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_casi', this.legendsService.legendsDict.confirmed, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, 'deceduti', this.legendsService.legendsDict.deaths, null, this.log10fn),
-      this.seriesService.generateRegionalSeries(region, 'totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', this.legendsService.legendsDict.confirmed, null, log10fn),
+      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", this.legendsService.legendsDict.recovered, null, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', this.legendsService.legendsDict.deaths, null, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', this.legendsService.legendsDict.currentPositive, null, log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
