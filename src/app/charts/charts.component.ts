@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { SeriesService } from '../series.service';
 import { ActivatedRoute } from '@angular/router';
-import { Bar, Series, Legend, objectify } from '../app.model';
+import { Bar, Series, AggregateEnum as AggregateEnum, ScaleEnum } from '../app.model';
 import { BarsService } from '../bars.service';
 import { NumbersService } from '../numbers.service';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { formatNumber } from '@angular/common';
-import { LegendEntryComponent } from '@heyteacher/ngx-charts';
 import { LegendsService } from '../legends.service';
 
 @Component({
@@ -63,8 +62,13 @@ export class ChartsComponent {
   numbersData: Bar[] = [];
 
   showLegend: boolean
-  log10: boolean = true
   legendsService: LegendsService
+
+  log10: boolean = true
+  private aggregate: AggregateEnum
+  private aggregateNew: AggregateEnum
+  private aggregatePerc: AggregateEnum
+  private aggregateTests: AggregateEnum
 
   constructor(
     private seriesService: SeriesService,
@@ -104,37 +108,37 @@ export class ChartsComponent {
   private setCountryData() {
     const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
     forkJoin(
-      this.seriesService.generateCountrySeries('totale_casi', this.legendsService.legendsDict.confirmed, null, log10fn),
-      this.seriesService.generateCountrySeries("dimessi_guariti", this.legendsService.legendsDict.recovered, null, log10fn),
-      this.seriesService.generateCountrySeries('terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, log10fn),
-      this.seriesService.generateCountrySeries('deceduti', this.legendsService.legendsDict.deaths, null, log10fn),
-      this.seriesService.generateCountrySeries('totale_positivi', this.legendsService.legendsDict.currentPositive, null, log10fn),
+      this.seriesService.generateCountrySeries('totale_casi', this.legendsService.legendsDict.confirmed, null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries("dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregate,true,  log10fn),
+      this.seriesService.generateCountrySeries('deceduti', this.legendsService.legendsDict.deaths, null, this.aggregate,true,  log10fn),
+      this.seriesService.generateCountrySeries('totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregate, true, log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
     forkJoin(
-      this.seriesService.generateCountrySeries("totale_nuovi_casi", this.legendsService.legendsDict.confirmed),
-      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered),
-      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive),
-      this.seriesService.generateCountryARIMAForecastSeries('p50', this.legendsService.legendsDict.awsForecastARIMA),
-      this.seriesService.generateCountryForecastDeepARPlusSeries('p50', this.legendsService.legendsDict.awsForecastDeepARPlus)
+      this.seriesService.generateCountrySeries("totale_nuovi_casi", this.legendsService.legendsDict.confirmed, null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregateNew),
+      this.seriesService.generateCountryARIMAForecastSeries('p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
+      this.seriesService.generateCountryForecastDeepARPlusSeries('p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew)
     )
       .subscribe(data => this.seriesDailyData = data)
 
     forkJoin(
-      this.seriesService.generateCountrySeries('totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri'),
-      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri'),
-      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri'),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri'),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi'),
+      this.seriesService.generateCountrySeries('totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri', this.aggregatePerc, true),
+      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri', this.aggregatePerc, true),
+      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri', this.aggregatePerc, true),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri', this.aggregatePerc, true),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi', this.aggregatePerc, true),
     )
       .subscribe(data => this.seriesPercData = data)
 
     forkJoin(
-      this.seriesService.generateCountrySeries('nuovi_tamponi', this.legendsService.legendsDict.tests),
-      this.seriesService.generateCountrySeries('nuovi_casi_testati', this.legendsService.legendsDict.peopleTested)
+      this.seriesService.generateCountrySeries('nuovi_tamponi', this.legendsService.legendsDict.tests,null,this.aggregateTests),
+      this.seriesService.generateCountrySeries('nuovi_casi_testati', this.legendsService.legendsDict.peopleTested,null,this.aggregateTests)
     )
       .subscribe(data => this.seriesSwabData = data)
 
@@ -162,37 +166,37 @@ export class ChartsComponent {
   private setRegionalData(region: string) {
     const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_casi', this.legendsService.legendsDict.confirmed, null, log10fn),
-      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", this.legendsService.legendsDict.recovered, null, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'deceduti', this.legendsService.legendsDict.deaths, null, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'totale_positivi', this.legendsService.legendsDict.currentPositive, null, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', this.legendsService.legendsDict.confirmed, null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', this.legendsService.legendsDict.deaths, null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregate, true, log10fn),
     )
       .subscribe(data => this.seriesData = data)
 
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", this.legendsService.legendsDict.confirmed),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive),
-      this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', this.legendsService.legendsDict.awsForecastARIMA),
-      this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', this.legendsService.legendsDict.awsForecastDeepARPlus),
+      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", this.legendsService.legendsDict.confirmed, null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregateNew),
+      this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
+      this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew),
     )
       .subscribe(data => this.seriesDailyData = data)
 
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri'),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi'),
+      this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri', this.aggregatePerc, true),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri', this.aggregatePerc, true),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri', this.aggregatePerc, true),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri', this.aggregatePerc, true),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi', this.aggregatePerc, true),
     )
       .subscribe(data => this.seriesPercData = data)
 
     forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', this.legendsService.legendsDict.tests),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', this.legendsService.legendsDict.peopleTested)
+      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', this.legendsService.legendsDict.tests, null, this.aggregateTests),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', this.legendsService.legendsDict.peopleTested, null, this.aggregateTests)
     )
       .subscribe(data => this.seriesSwabData = data)
 
@@ -308,11 +312,27 @@ export class ChartsComponent {
   }
 
   changeAggregate($event) {
-
+    this.aggregate = $event
+    this.initData()
   }
 
-  changeLog10($event) {
-    this.log10 = $event
+  changeAggregateNew($event) {
+    this.aggregateNew = $event
+    this.initData()
+  }
+
+  changeAggregatePerc($event) {
+    this.aggregatePerc = $event
+    this.initData()
+  }
+
+  changeAggregateTests($event) {
+    this.aggregateTests = $event
+    this.initData()
+  }
+
+  changeScale($event) {
+    this.log10 = ScaleEnum.Log10 == $event
     this.initData()
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { Series, filterByKey, decodeNAYProvince, getValue, Legend } from "./app.model";
+import { Series, filterByKey, decodeNAYProvince, getValue, Legend, AggregateEnum } from "./app.model";
 import { DataService } from './data.service';
 import { map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -23,10 +23,12 @@ export class SeriesService {
     valueKey: string,
     legend: Legend,
     denominatorKey: string = null,
+    aggregate: AggregateEnum = AggregateEnum.Day,
+    avg: boolean = false,
     fnValue: Function = null)
     : Observable<Series> {
     return this.dataService.getCountryData().pipe(
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', fnValue))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', aggregate, avg, fnValue))
     )
   }
 
@@ -43,10 +45,12 @@ export class SeriesService {
     valueKey: string,
     legend: Legend,
     denominatorKey: string = null,
+    aggregate: AggregateEnum = AggregateEnum.Day,
+    avg: boolean = false,
     fnValue: Function = null): Observable<Series> {
     return this.dataService.getRegionalData().pipe(
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', fnValue)))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', aggregate, avg, fnValue)))
   }
 
   /**
@@ -63,13 +67,12 @@ export class SeriesService {
     provinceFilter: string,
     valueKey: string,
     legend: Legend,
-    denominatorKey: string = null,
-    fnValue: Function = null
-    ): Observable<Series> {
+    denominatorKey: string = null
+  ): Observable<Series> {
     return this.dataService.getProvincialData().pipe(
       map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', fnValue)))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey)))
   }
 
   /**
@@ -78,11 +81,12 @@ export class SeriesService {
    * @param label the series label
    */
   generateCountryARIMAForecastSeries(
-    quantileKey: string, 
-    legend: Legend
-    ): Observable<Series> {
+    quantileKey: string,
+    legend: Legend,
+    aggregate: AggregateEnum = AggregateEnum.Day,
+  ): Observable<Series> {
     return this.dataService.getCountryARIMAForecastData().pipe(
-      map(data => this.generateSeries(data, quantileKey, legend, null, 'date'))
+      map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date', aggregate):{name:"",series:[]})
     )
   }
 
@@ -93,16 +97,17 @@ export class SeriesService {
    * @param label the series label
    */
   generateRegionalARIMAForecastSeries(
-    regionFilter: string, 
-    quantileKey: string, 
+    regionFilter: string,
+    quantileKey: string,
     legend: Legend,
-    ): Observable<Series> {
+    aggregate: AggregateEnum = AggregateEnum.Day
+  ): Observable<Series> {
     return this.dataService.getRegionalARIMAForecastData().pipe(
       map(data => {
         return filterByKey(data, 'item_id', regionFilter)
       }),
       map(data => {
-        return this.generateSeries(data, quantileKey, legend, null, 'date')
+        return aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date'):{name:"",series:[]}
       })
     )
   }
@@ -113,11 +118,12 @@ export class SeriesService {
    * @param label the series label
    */
   generateCountryForecastDeepARPlusSeries(
-    quantileKey: string, 
+    quantileKey: string,
     legend: Legend,
-    ): Observable<Series> {
+    aggregate: AggregateEnum = AggregateEnum.Day
+  ): Observable<Series> {
     return this.dataService.getCountryDeepARPlusForecastData().pipe(
-      map(data => this.generateSeries(data, quantileKey, legend, null, 'date'))
+      map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date'):{name:"",series:[]})
     )
   }
 
@@ -128,13 +134,14 @@ export class SeriesService {
    * @param label the series label
    */
   generateRegionalForecastDeepARPlusSeries(
-    regionFilter: string, 
-    quantile: string, 
+    regionFilter: string,
+    quantile: string,
     legend: Legend,
+    aggregate: AggregateEnum = AggregateEnum.Day
   ): Observable<Series> {
     return this.dataService.getRegionalDeepARPlusForecastData().pipe(
       map(data => filterByKey(data, 'item_id', regionFilter)),
-      map(data => this.generateSeries(data, quantile, legend, null, 'date'))) 
+      map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantile, legend, null, 'date'):{name:"",series:[]}))
   }
 
   /**
@@ -147,13 +154,15 @@ export class SeriesService {
    * @param fnValue the function to apply to value
    */
   private generateSeries(
-    inputData: any[], 
-    valueKey: string, 
-    legend: Legend, 
-    denominatorKey: string = null, 
-    dateKey: string = 'data', 
+    inputData: any[],
+    valueKey: string,
+    legend: Legend,
+    denominatorKey: string = null,
+    dateKey: string = 'data',
+    aggregate: AggregateEnum = AggregateEnum.Day,
+    avg: boolean = false,
     fnValue: Function = null
-    ): Series {
+  ): Series {
     const daySeries = (input) => {
       let value = getValue(input, valueKey, denominatorKey);
       return {
@@ -161,9 +170,52 @@ export class SeriesService {
         name: moment(input[dateKey]).format('DD/MM')
       }
     }
+    const aggregateSeries = (accumulator: any, input: any) => {
+      let aggregateKey = moment(input[dateKey]).format('DD/MM/YYYY')
+      switch (aggregate) {
+        case AggregateEnum.Week:
+          aggregateKey = moment(input[dateKey]).format('w/YYYY')
+          break;
+        case AggregateEnum.Month:
+          aggregateKey = moment(input[dateKey]).format('MM/YYYY')
+          break;
+        default:
+          break;
+      }
+      if (!accumulator[aggregateKey]) {
+        accumulator[aggregateKey] = {}
+        accumulator[aggregateKey][dateKey] = input[dateKey]
+        accumulator[aggregateKey][valueKey] = 0
+        if (denominatorKey) {
+          accumulator[aggregateKey][denominatorKey] = 0
+        }
+        accumulator[aggregateKey]['aggregate_count'] = 0
+      }
+      accumulator[aggregateKey]['aggregate_count'] += 1
+      const addAverage = (oldAvg, newValue, size) => {
+        return oldAvg + ((newValue - oldAvg) / size)
+      }
+      accumulator[aggregateKey][valueKey] = avg ?
+        addAverage(
+          accumulator[aggregateKey][valueKey],
+          input[valueKey],
+          accumulator[aggregateKey]['aggregate_count']
+        ) :
+        accumulator[aggregateKey][valueKey] + input[valueKey]
+      if (denominatorKey) {
+        accumulator[aggregateKey][denominatorKey] = avg ?
+          addAverage(
+            accumulator[aggregateKey][denominatorKey],
+            input[denominatorKey],
+            accumulator[aggregateKey]['aggregate_count']) :
+          accumulator[aggregateKey][denominatorKey] + input[denominatorKey]
+      }
+      return accumulator
+    }
+
     return {
       name: legend.label,
-      series: legend.checked? inputData.map(daySeries): []
+      series: legend.checked ? Object.values(inputData.reduce(aggregateSeries, {})).map(daySeries) : []
     }
   }
 }

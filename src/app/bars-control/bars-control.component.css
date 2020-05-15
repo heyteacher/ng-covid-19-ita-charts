@@ -13,4 +13,5 @@ mat-form-field {
     height: 30px;
     font-size: 14px;
     font-weight: 700;
+    padding-top: 3px;
 }

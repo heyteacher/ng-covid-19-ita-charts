@@ -18,7 +18,7 @@
     </div>
     <div class="row" *ngIf="!breadcrumbs['province']; else provinceTemplate">
         <div class="col-lg-6 chart-container text-center">
-            <app-series-control (changeLog10)="changeLog10($event)" [log10Enabled]="true" (changeAggregate)="changeAggregate($event)" i18n-title title="Trend">
+            <app-series-control (changeScale)="changeScale($event)" [scaleEnabled]="true" (changeAggregate)="changeAggregate($event)" [aggregateEnabled]="true" i18n-title title="Trend">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="legendsService.colorScheme" showXAxisLabel="true" showYAxisLabel="truel" timeline="true"
                 xAxis="true" yAxis="true" showGridLines="true">
@@ -28,7 +28,7 @@
             <app-legend [legends]="legendsService.legends" (changeLegend)="changeLegend($event)"></app-legend>
         </div>
         <div class="col-lg-6 chart-container text-center">
-            <app-series-control i18n-title title="Daily Variations">
+            <app-series-control (changeAggregate)="changeAggregateNew($event)" [aggregateEnabled]="true" i18n-title title="Variations">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [gridLineNgStyleByYAxisTick]="gridLineNgStyleByYAxisTick" [results]="seriesDailyData" [scheme]="legendsService.colorScheme" [yAxisTickFormatting]="formatRound" showXAxisLabel="true"
                 showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
@@ -43,14 +43,14 @@
 
     <div class="row" *ngIf="!breadcrumbs['province']">
         <div class=" col-lg-6 chart-container text-center" style="padding-top:13px">
-            <app-series-control i18n-title title="Daily Variations Rate">
+            <app-series-control (changeAggregate)="changeAggregatePerc($event)" [aggregateEnabled]="true" i18n-title title="Variations Rate">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [gridLineNgStyleByYAxisTick]="gridLineNgStyleByYAxisTick" [results]="seriesPercData" [scheme]="legendsService.colorScheme" [yAxisTickFormatting]="formatPercentage" yScaleMax="50
 " showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center" style="padding-top:13px">
-            <app-series-control i18n-title title="Daily Tests">
+            <app-series-control (changeAggregate)="changeAggregateTests($event)" [aggregateEnabled]="true" i18n-title title="Tests">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [results]="seriesSwabData" [scheme]="legendsService.colorScheme" [yAxisTickFormatting]="formatRound" showLegend="false" showXAxisLabel="true" showYAxisLabel="true" timeline="true"
                 xAxis="true

@@ -34,6 +34,17 @@ export function objectify(dict, value) {
  }
 
 
+ export enum AggregateEnum {
+  Day = "DAY",
+  Week = "WEEK",
+  Month = "MONTH"
+}
+
+export enum ScaleEnum {
+  Log10 = "LOG10",
+  Linear = "LINEAR"
+}
+
 /**
  * filter data by key starting from value
  * @param data the data array

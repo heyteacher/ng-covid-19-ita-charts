@@ -32,9 +32,24 @@
       </trans-unit>
       <trans-unit id="1d4da0f99939cca6eb2566bdd3f2ea33b30cfd9d" datatype="html">
         <source>Trend</source><target state="final">Trend</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="9e7d0359a2488250be3069a3e33695f60a9f503b" datatype="html">
+        <source>Variations</source><target state="final">Variations</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">15</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit><trans-unit id="ab9f5160e7a317b474a07e883ae8f422c672e820" datatype="html">
+        <source>Variations Rate</source><target state="final">Variations Rate</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit><trans-unit id="be8e1a199c0f65656ec614786777a1552a968979" datatype="html">
+        <source>Tests</source><target state="final">Tests</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="b9099f7e47f64fea9032904206789e9fec2c06ab" datatype="html">
@@ -49,44 +64,62 @@
         <source>Daily Tests</source><target state="final">Daily Tests</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">47</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">103</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">117</context></context-group></trans-unit><trans-unit id="8686b7c2acc619d64d29f78c6b20b71bc5bfd417" datatype="html">
+        <source>Daily Confirmed per Tests Rate</source><target state="final">Daily Confirmed per Tests Rate</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="0b299ce81fc1b8d78e9e112c62bd8a194225bfbf" datatype="html">
         <source>Daily Confirmed Rate</source><target state="final">Daily Confirmed Rate</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">127</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">62</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">160</context></context-group></trans-unit>
       <trans-unit id="4509adab816e7575022aca7b74a271c70e16df08" datatype="html">
         <source>Daily Confirmed</source><target state="final">Daily Confirmed</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">63</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">69</context></context-group></trans-unit>
       <trans-unit id="4e083fccf902bee897ca099dbaa11222398eddde" datatype="html">
         <source>Total Confirmed</source><target state="final">Total Confirmed</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">69</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">75</context></context-group></trans-unit>
       <trans-unit id="3e2ba8abdb40b8d3310200087940b7a21ed32471" datatype="html">
         <source>Lethality</source><target state="final">Lethality</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">76</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">82</context></context-group></trans-unit><trans-unit id="34a47811fd82ea7d9d526e420f57ff08fd5316bf" datatype="html">
+        <source>Daily Death</source><target state="final">Daily Death</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit><trans-unit id="93aa4f068cb0bd9b4a796af2fd7c79b7a11a1336" datatype="html">
+        <source>Death</source><target state="final">Death</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="404882bf6ec548938a93a94288b7e4ed2a52c848" datatype="html">
         <source>Intensive Care</source><target state="final">Intensive Care</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">83</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">131</context></context-group></trans-unit>
       <trans-unit id="e581581a31c8b066d65a85fa2fd80c0524f2df2d" datatype="html">
         <source>Confirmed by Province</source><target state="final">Confirmed by Province</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">89</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">137</context></context-group></trans-unit>
       <trans-unit id="5b2b252ad3e4154c0a46b0fc0c5151c0208c36cb" datatype="html">
         <source>Total Tests</source><target state="final">Total Tests</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">97</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">111</context></context-group></trans-unit>
       <trans-unit id="4ad1640a30820dd1a47cd3ea0c541f21e03c9f00" datatype="html">
         <source>Confirmed per Tests Rate</source><target state="final">Confirmed per Tests Rate</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">109</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">104</context></context-group></trans-unit>
       <trans-unit id="8bac997b4cd20f2928b5846122553f2c0c24e572" datatype="html">
         <source>Confirmed Trend</source><target state="final">Confirmed Trend</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">121</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">150</context></context-group></trans-unit>
       <trans-unit id="efffb64bda94fa4f4493322c5e3717e845d5dc30" datatype="html">
         <source>Day</source><target state="final">Day</target>
         <context-group purpose="location">

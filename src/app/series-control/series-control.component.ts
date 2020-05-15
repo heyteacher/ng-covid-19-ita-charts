@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AggregateEnum,ScaleEnum } from '../app.model';
 
 @Component({
   selector: 'app-series-control',
@@ -9,22 +10,23 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SeriesControlComponent  {
   
   @Input() title: string;
-  @Input() log10:string = "log10"
-  @Input() aggregate:string = "daily"
+
+  @Input() scaleEnabled:boolean = false
+  @Input() scale:ScaleEnum = ScaleEnum.Log10
+  @Output() changeScale = new EventEmitter<any>();
+  scaleEnum = ScaleEnum
 
   @Input() aggregateEnabled:boolean = false
-  @Input() log10Enabled:boolean = false
-  
-
-  @Output() changeLog10 = new EventEmitter<any>();
+  @Input() aggregate:AggregateEnum = AggregateEnum.Day
   @Output() changeAggregate = new EventEmitter<any>();
+  aggregateEnum = AggregateEnum
 
-  newLog10($event) {
-    this.changeLog10.emit($event.value == this.log10)
+  onChangeScale($event) {
+    this.changeScale.emit($event.value)
   }
 
-  newAggregate($event) {
-    this.changeLog10.emit($event.value)
+  onChangeAggregate($event) {
+    this.changeAggregate.emit($event.value)
   }
 
   constructor() {

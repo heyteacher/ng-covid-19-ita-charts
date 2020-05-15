@@ -1,18 +1,18 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col control-title text-left">{{title}}</div>
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 control-title text-left">{{title}}</div>
         <div class="col text-right">
             <div class="d-inline" *ngIf="aggregateEnabled==true">
-                <mat-button-toggle-group [value]="aggregate" (change)="newAggregate($event)">
-                    <mat-button-toggle value="daily" i18n>Day</mat-button-toggle>
-                    <mat-button-toggle value="weekly" i18n>Week</mat-button-toggle>
-                    <mat-button-toggle value="montly" i18n>Month</mat-button-toggle>
+                <mat-button-toggle-group [value]="aggregate" (change)="onChangeAggregate($event)">
+                    <mat-button-toggle [value]="aggregateEnum.Day" i18n>Day</mat-button-toggle>
+                    <mat-button-toggle [value]="aggregateEnum.Week" i18n>Week</mat-button-toggle>
+                    <mat-button-toggle [value]="aggregateEnum.Month" i18n>Month</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
-            <div class="d-inline" *ngIf="log10Enabled==true">
-                <mat-button-toggle-group [value]="log10" (change)="newLog10($event)">
-                    <mat-button-toggle value="log10" i18n>Log</mat-button-toggle>
-                    <mat-button-toggle value="linear" i18n>Linear</mat-button-toggle>
+            <div class="d-inline" *ngIf="scaleEnabled==true">
+                <mat-button-toggle-group [value]="scale" (change)="onChangeScale($event)">
+                    <mat-button-toggle [value]="scaleEnum.Log10" i18n>Log</mat-button-toggle>
+                    <mat-button-toggle [value]="scaleEnum.Linear" i18n>Linear</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
         </div>
