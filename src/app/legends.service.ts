@@ -12,8 +12,8 @@ export class LegendsService {
     { name: 'intensiveCare', checked: true, label: $localize`Intensive Care`, color: '#7aa3e5' },
     { name: 'deaths', checked: true, label: $localize`Deaths`, color: '#E44D25' },
     { name: 'currentPositive', checked: true, label: $localize`Current Positive`, color: '#aae3f5' },
-    { name: 'awsForecastARIMA', checked: true, label: `AWS Forecast ARIMA`, color: '#a8385d' },
-    { name: 'awsForecastDeepARPlus', checked: true, label: `AWS Forecast Deep AR+`, color: '#aFb3F5' }
+  //  { name: 'awsForecastARIMA', checked: true, label: `AWS Forecast ARIMA`, color: '#a8385d' },
+  //  { name: 'awsForecastDeepARPlus', checked: true, label: `AWS Forecast Deep AR+`, color: '#aFb3F5' }
   ];
   legendsDict = this.legends.reduce(objectify, {})
 

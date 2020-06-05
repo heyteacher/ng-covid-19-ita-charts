@@ -122,8 +122,8 @@ export class ChartsComponent {
       this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregateNew),
       this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, null, this.aggregateNew),
       this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregateNew),
-      this.seriesService.generateCountryARIMAForecastSeries('p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
-      this.seriesService.generateCountryForecastDeepARPlusSeries('p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew)
+      // this.seriesService.generateCountryARIMAForecastSeries('p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
+      // this.seriesService.generateCountryForecastDeepARPlusSeries('p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew)
     )
       .subscribe(data => this.seriesDailyData = data)
 
@@ -180,8 +180,8 @@ export class ChartsComponent {
       this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregateNew),
       this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, null, this.aggregateNew),
       this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregateNew),
-      this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
-      this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew),
+      // this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
+      // this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew),
     )
       .subscribe(data => this.seriesDailyData = data)
 
@@ -212,12 +212,12 @@ export class ChartsComponent {
   private setProvincialData(region: string, province: string) {
 
     forkJoin(
-      this.seriesService.generateProvincialSeries(region, province, 'totale_casi', this.legendsService.provLegendsDict.confirmed),
-      this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmed)
+      this.seriesService.generateProvincialSeries(region, province, 'totale_casi', this.legendsService.provLegendsDict.confirmed, null, this.aggregate, true),
+      this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmed, null, this.aggregate)
     )
       .subscribe(data => this.seriesData = data)
 
-    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmedRate, 'totale_casi_ieri')
+    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmedRate, 'totale_casi_ieri', this.aggregateNew)
       .subscribe(data => this.seriesPercData = [data])
 
     this.numbersService.generateProvinceNumbers(region, province)

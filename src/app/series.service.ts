@@ -67,12 +67,14 @@ export class SeriesService {
     provinceFilter: string,
     valueKey: string,
     legend: Legend,
-    denominatorKey: string = null
+    denominatorKey: string = null,
+    aggregate: AggregateEnum = AggregateEnum.Day,
+    avg: boolean = false,
   ): Observable<Series> {
     return this.dataService.getProvincialData().pipe(
       map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey)))
+      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', aggregate, avg)))
   }
 
   /**
@@ -80,15 +82,15 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  generateCountryARIMAForecastSeries(
-    quantileKey: string,
-    legend: Legend,
-    aggregate: AggregateEnum = AggregateEnum.Day,
-  ): Observable<Series> {
-    return this.dataService.getCountryARIMAForecastData().pipe(
-      map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date', aggregate):{name:"",series:[]})
-    )
-  }
+  // generateCountryARIMAForecastSeries(
+  //   quantileKey: string,
+  //   legend: Legend,
+  //   aggregate: AggregateEnum = AggregateEnum.Day,
+  // ): Observable<Series> {
+  //   return this.dataService.getCountryARIMAForecastData().pipe(
+  //     map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date', aggregate):{name:"",series:[]})
+  //   )
+  // }
 
   /**
    * generate che regional ARIMA Forecast
@@ -96,36 +98,36 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  generateRegionalARIMAForecastSeries(
-    regionFilter: string,
-    quantileKey: string,
-    legend: Legend,
-    aggregate: AggregateEnum = AggregateEnum.Day
-  ): Observable<Series> {
-    return this.dataService.getRegionalARIMAForecastData().pipe(
-      map(data => {
-        return filterByKey(data, 'item_id', regionFilter)
-      }),
-      map(data => {
-        return aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date'):{name:"",series:[]}
-      })
-    )
-  }
+  // generateRegionalARIMAForecastSeries(
+  //   regionFilter: string,
+  //   quantileKey: string,
+  //   legend: Legend,
+  //   aggregate: AggregateEnum = AggregateEnum.Day
+  // ): Observable<Series> {
+  //   return this.dataService.getRegionalARIMAForecastData().pipe(
+  //     map(data => {
+  //       return filterByKey(data, 'item_id', regionFilter)
+  //     }),
+  //     map(data => {
+  //       return aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date'):{name:"",series:[]}
+  //     })
+  //   )
+  // }
 
   /**
    * generate che country DeepAR+ Forecast
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  generateCountryForecastDeepARPlusSeries(
-    quantileKey: string,
-    legend: Legend,
-    aggregate: AggregateEnum = AggregateEnum.Day
-  ): Observable<Series> {
-    return this.dataService.getCountryDeepARPlusForecastData().pipe(
-      map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date'):{name:"",series:[]})
-    )
-  }
+  // generateCountryForecastDeepARPlusSeries(
+  //   quantileKey: string,
+  //   legend: Legend,
+  //   aggregate: AggregateEnum = AggregateEnum.Day
+  // ): Observable<Series> {
+  //   return this.dataService.getCountryDeepARPlusForecastData().pipe(
+  //     map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantileKey, legend, null, 'date'):{name:"",series:[]})
+  //   )
+  // }
 
   /**
    * generate che regional DeepAR+ Forecast
@@ -133,16 +135,16 @@ export class SeriesService {
    * @param quantileKey the quantile key
    * @param label the series label
    */
-  generateRegionalForecastDeepARPlusSeries(
-    regionFilter: string,
-    quantile: string,
-    legend: Legend,
-    aggregate: AggregateEnum = AggregateEnum.Day
-  ): Observable<Series> {
-    return this.dataService.getRegionalDeepARPlusForecastData().pipe(
-      map(data => filterByKey(data, 'item_id', regionFilter)),
-      map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantile, legend, null, 'date'):{name:"",series:[]}))
-  }
+  // generateRegionalForecastDeepARPlusSeries(
+  //   regionFilter: string,
+  //   quantile: string,
+  //   legend: Legend,
+  //   aggregate: AggregateEnum = AggregateEnum.Day
+  // ): Observable<Series> {
+  //   return this.dataService.getRegionalDeepARPlusForecastData().pipe(
+  //     map(data => filterByKey(data, 'item_id', regionFilter)),
+  //     map(data => aggregate == AggregateEnum.Day? this.generateSeries(data, quantile, legend, null, 'date'):{name:"",series:[]}))
+  // }
 
   /**
    * generate a deries from input data

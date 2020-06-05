@@ -147,7 +147,7 @@
 <ng-template #provinceTemplate>
     <div class="row">
         <div class="col-lg-6 chart-container-single text-center">
-            <app-series-control i18n-title title="Confirmed Trend">
+            <app-series-control i18n-title title="Confirmed Trend" (changeAggregate)="changeAggregate($event)" [aggregateEnabled]="true">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [yAxisTickFormatting]="formatRound" [results]="seriesData" [scheme]="legendsService.provColorScheme" showXAxisLabel="true" showYAxisLabel="true" xAxis="true" yAxis="true
 " showGridLines="true">
@@ -157,7 +157,7 @@
             <app-legend [legends]="legendsService.provLegends" (changeLegend)="changeProvLegend($event)"></app-legend>
         </div>
         <div class="col-lg-6 chart-container text-center">
-            <app-series-control i18n-title title="Daily Confirmed Rate">
+            <app-series-control i18n-title title="Daily Confirmed Rate" (changeAggregate)="changeAggregateNew($event)" [aggregateEnabled]="true">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByXAxisTick]="gridLineNgStyleByXAxisTick" [results]="seriesPercData" [scheme]="legendsService.provColorScheme" [yAxisTickFormatting]="formatPercentage" showYAxisLabel="true" timeline="true" xAxis="true" yAxis="true"
                 showGridLines="true">

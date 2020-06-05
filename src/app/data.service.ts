@@ -47,30 +47,30 @@ export class DataService {
   /**
    * singleton get regional forecast data
    */
-  getCountryARIMAForecastData(): Observable<any[]> {
-    return this.getObservableURL(this.appConfigService.countryARIMAForecastDataURL)
-  }
+  // getCountryARIMAForecastData(): Observable<any[]> {
+  //   return this.getObservableURL(this.appConfigService.countryARIMAForecastDataURL)
+  // }
 
   /**
    * singleton get regional forecast data
    */
-  getRegionalARIMAForecastData(): Observable<any[]> {
-    return this.getObservableURL(this.appConfigService.regionalARIMAForecastDataURL)
-  }
+  // getRegionalARIMAForecastData(): Observable<any[]> {
+  //   return this.getObservableURL(this.appConfigService.regionalARIMAForecastDataURL)
+  // }
 
   /**
   * singleton get regional forecast data
   */
-  getCountryDeepARPlusForecastData(): Observable<any[]> {
-    return this.getObservableURL(this.appConfigService.countryDeepARPlusForecastDataURL)
-  }
+  // getCountryDeepARPlusForecastData(): Observable<any[]> {
+  //   return this.getObservableURL(this.appConfigService.countryDeepARPlusForecastDataURL)
+  // }
 
   /**
    * singleton get regional forecast data
    */
-  getRegionalDeepARPlusForecastData(): Observable<any[]> {
-    return this.getObservableURL(this.appConfigService.regionalDeepARPlusForecastDataURL)
-  }
+  // getRegionalDeepARPlusForecastData(): Observable<any[]> {
+  //   return this.getObservableURL(this.appConfigService.regionalDeepARPlusForecastDataURL)
+  // }
 
   /**
   * singleton get regional data
