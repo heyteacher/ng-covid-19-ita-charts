@@ -169,7 +169,7 @@ export class SeriesService {
       let value = getValue(input, valueKey, denominatorKey);
       return {
         value: fnValue ? fnValue(value) : value,
-        name: moment(input[dateKey]).format('DD/MM')
+        name: moment(input[dateKey]).toDate()
       }
     }
     const aggregateSeries = (accumulator: any, input: any) => {

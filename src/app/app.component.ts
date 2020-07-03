@@ -102,7 +102,9 @@ export class AppComponent extends GoogleAnalyticsComponent {
           this.otherLang.url += '#/' + curUrlTree.root.children.primary.segments.map(
             (segment) => {
               if (segment.path == 'NON ATTRIBUITI') return 'NOT ATTRIBUTED YET'
+              if (segment.path == 'FUORI REGIONE') return 'OUT REGION'
               if (segment.path == 'NOT ATTRIBUTED YET') return 'NON ATTRIBUITI'
+              if (segment.path == 'OUT REGION') return 'FUORI REGIONE'
               return segment.path 
             }
           ).join('/');

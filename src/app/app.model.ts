@@ -19,7 +19,7 @@ export interface Series {
   name: string;
   series: {
     value: any;
-    name: string;
+    name: Date;
   }[];
 }
 
@@ -76,7 +76,13 @@ export function filterByDay(data: any[], day: string = null): any[] {
  * @param province the province to encode
  */
 export function encodeNAYProvince(province: string): string {
-  return province == 'In fase di definizione/aggiornamento' ? $localize? $localize`NOT ATTRIBUTED YET`:`NOT ATTRIBUTED YET` : province
+  if ( province == 'In fase di definizione/aggiornamento') {
+    return $localize? $localize`NOT ATTRIBUTED YET`:`NOT ATTRIBUTED YET` 
+  }
+  if ( province == 'Fuori Regione / Provincia Autonoma') {
+    return $localize? $localize`OUT REGION`:`OUT REGION` 
+  }
+  return province
 }
 
 /**
@@ -84,7 +90,13 @@ export function encodeNAYProvince(province: string): string {
  * @param province  the province to encode
  */
 export function decodeNAYProvince(province: string): string {
-  return province == $localize`NOT ATTRIBUTED YET` ? 'In fase di definizione/aggiornamento' : province
+  if (province == $localize`NOT ATTRIBUTED YET`) {
+    return  'In fase di definizione/aggiornamento' 
+  }
+  if (province == $localize`OUT REGION`) {
+    return  'Fuori Regione / Provincia Autonoma' 
+  }
+  return province
 }
 
 /**

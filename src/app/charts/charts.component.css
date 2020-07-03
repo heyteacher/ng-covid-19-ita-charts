@@ -1,6 +1,7 @@
 .chart-container {
     height: 50vh;
     min-height: 300px;
+    margin-bottom: 60px;
 }
 
 .margin-top {
@@ -10,9 +11,13 @@
 .chart-container-single {
     height: 80vh;
     min-height: 300px;
+    margin-bottom: 60px;
 }
 
 @media (max-width: 1090px) {
+    .chart-container-single {
+        margin-top: 50px;
+    }
     .chart-container {
         margin-top: 50px;
     }

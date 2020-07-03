@@ -2,6 +2,10 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="it" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="4540909519781480855" datatype="html" approved="yes">
+        <source>OUT REGION</source>
+        <target state="translated">Fuori Regione</target>
+      </trans-unit>
       <trans-unit id="8558928513634991910" datatype="html" approved="yes">
         <source>Daily Death</source>
         <target state="translated">Deceduti Giornalieri</target>
@@ -159,9 +163,9 @@
       <trans-unit id="0b299ce81fc1b8d78e9e112c62bd8a194225bfbf" datatype="html" approved="yes">
         <source>Daily Confirmed Rate</source>
         <target state="translated">Tasso Infettati Giornaliero</target>
-        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">62</context></context-group>
-        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">160</context></context-group>
-      </trans-unit>
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">62</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">161</context></context-group></trans-unit>
       <trans-unit id="4509adab816e7575022aca7b74a271c70e16df08" datatype="html" approved="yes">
         <source>Daily Confirmed</source>
         <target state="translated">Infettati Giornalieri</target>
