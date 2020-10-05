@@ -2,9 +2,13 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="it" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="4540909519781480855" datatype="html" approved="yes">
+      <trans-unit id="1914977581762567118" datatype="html" approved="no">
+        <source>Hospitalized</source>
+        <target state="needs-translation">Ricoverati</target>
+      </trans-unit>
+      <trans-unit id="4540909519781480855" datatype="html" approved="no">
         <source>OUT REGION</source>
-        <target state="translated">Fuori Regione</target>
+        <target state="needs-translation">Fuori Regione</target>
       </trans-unit>
       <trans-unit id="8558928513634991910" datatype="html" approved="yes">
         <source>Daily Death</source>
@@ -68,7 +72,7 @@
       </trans-unit>
       <trans-unit id="3844920811361480358" datatype="html" approved="yes">
         <source>Tests</source>
-        <target state="translated">Test</target>
+        <target state="translated">Tamponi</target>
       </trans-unit>
       <trans-unit id="3368280636033966908" datatype="html" approved="yes">
         <source>Total Confirmed</source>
@@ -116,10 +120,7 @@
       <trans-unit id="9e7d0359a2488250be3069a3e33695f60a9f503b" datatype="html">
         <source>Variations</source>
         <target state="needs-translation">Variazione</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
-          <context context-type="linenumber">31</context>
-        </context-group>
+        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">30</context></context-group>
       </trans-unit>
       <trans-unit id="ab9f5160e7a317b474a07e883ae8f422c672e820" datatype="html" approved="yes">
         <source>Variations Rate</source>
@@ -154,7 +155,7 @@
       </trans-unit>
       <trans-unit id="8686b7c2acc619d64d29f78c6b20b71bc5bfd417" datatype="html" approved="yes">
         <source>Daily Confirmed per Tests Rate</source>
-        <target state="translated">Tasso giornaliero  per test</target>
+        <target state="translated">Tasso iornaliero per tTamponi</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/charts/charts.component.html</context>
           <context context-type="linenumber">124</context>
@@ -163,9 +164,9 @@
       <trans-unit id="0b299ce81fc1b8d78e9e112c62bd8a194225bfbf" datatype="html" approved="yes">
         <source>Daily Confirmed Rate</source>
         <target state="translated">Tasso Infettati Giornaliero</target>
-        
-        
-      <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">62</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">161</context></context-group></trans-unit>
+        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">62</context></context-group>
+        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">161</context></context-group>
+      </trans-unit>
       <trans-unit id="4509adab816e7575022aca7b74a271c70e16df08" datatype="html" approved="yes">
         <source>Daily Confirmed</source>
         <target state="translated">Infettati Giornalieri</target>
@@ -200,7 +201,125 @@
       <trans-unit id="404882bf6ec548938a93a94288b7e4ed2a52c848" datatype="html" approved="yes">
         <source>Intensive Care</source>
         <target state="translated">Terapia Intensiva</target>
-        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">131</context></context-group>
+        <context-group purpose="location"><context context-type="sourcefile">src/app/charts/charts.component.html</context><context context-type="linenumber">45</context></context-group>
+      </trans-unit>
+      <trans-unit id="c753fe26bad2d4ecd48e27ba75d6ab0150a92dcb" datatype="html" approved="yes">
+        <source>Tests and People Tested</source>
+        <target state="translated">Tamponi e Persone Testate</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="37b8a5bac118d86658f24361ac0d7ab53652e3f5" datatype="html">
+        <source>Daily Confirmed Rate</source>
+        <target state="needs-translation">Tasso Infentatti Giornaliero</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bfdeceeab9e588e60966285181fb70df16b2f616" datatype="html">
+        <source>Daily Confirmed</source>
+        <target state="needs-translation">Insettati Giornal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="acc17168ca3cd4097aecc4f895001fe51727b92a" datatype="html">
+        <source>Total Confirmed</source>
+        <target state="needs-translation">Totale Infettati</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4dc6af6515542456c050e7fbdc86d7a13286ef49" datatype="html" approved="yes">
+        <source>Lethality</source>
+        <target state="translated">Letalità</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3ae9d42f1a4be2ce03d7f87f2054a4f2e951ef3b" datatype="html">
+        <source>Daily Death</source>
+        <target state="needs-translation">Deceduti Giorna
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1fd6ef0eed0dfa36aeaec4772f816936b42ecf74" datatype="html">
+        <source>Death</source>
+        <target state="needs-translation">Deceduti
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="377206383f65b9d96fb8f7c702ff33aff6c94233" datatype="html">
+        <source>Confirmed per Tests Rate</source>
+        <target state="needs-translation">Tasso Confermati per Pamponi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f6889b7d93cbe68adddd0291a09ff5a348b7aa07" datatype="html" approved="yes">
+        <source>Total Tests</source>
+        <target state="translated">Tamponi Totali</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3a097422b2530b1befcb01ac460993f8d536e8ec" datatype="html">
+        <source>Daily Tests</source>
+        <target state="needs-translation">Tamponi iornalieri</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f38eadd9fd0ae3530d3601028356632fa9db0244" datatype="html" approved="yes">
+        <source>Daily Confirmed per Tests Rate</source>
+        <target state="translated">Tasso Giornalieri Infettati per Tamponi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="41e546a50cd059f4b64d0b95fe6a5955a72b6b39" datatype="html" approved="yes">
+        <source>Intensive Care</source>
+        <target state="translated">Terapia Intensiva</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="96b415298a277ed0e4afff4b597a44d73be0f4e1" datatype="html">
+        <source>Confirmed by Province</source>
+        <target state="needs-translation">Infettati per Regione</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a68e9657aacdabde603e647463dc7e974408cb2b" datatype="html" approved="yes">
+        <source>Confirmed Trend</source>
+        <target state="translated">Andamento Infettati</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/charts/charts.component.html</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="e581581a31c8b066d65a85fa2fd80c0524f2df2d" datatype="html" approved="yes">
         <source>Confirmed by Province</source>

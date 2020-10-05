@@ -4,7 +4,7 @@ import { filterByDay, filterByKey, Bar, getValue, decodeNAYProvince } from './ap
 import moment from 'moment';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { formatNumber } from '@angular/common';
+import { LegendsService } from './legends.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +12,26 @@ import { formatNumber } from '@angular/common';
 export class NumbersService {
 
   constructor(
-    private dataService: DataService) { 
+    private dataService: DataService, private legendsService: LegendsService) { 
       moment.locale(document.documentElement.lang)
     }
 
   /**
    * generate conuntry daily numbers
    */
-  generateCountryNumbers(): Observable<Bar[]> {
-    return this.dataService.getCountryData().pipe(
-      map(data => filterByDay(data)),
-      map(data => this.generateCountryRegionNumbers(data[0]))
-    )
+  generateCountryNumbers(): Bar[] {
+    return this.generateCountryRegionNumbers(this.dataService.getDailyCountryData())
   }
 
   /**
    * generate regional daily numbers
    * @param regionFilter the filter region applied to data
    */
-  generateRegionNumbers(regionFilter: string): Observable<Bar[]> {
-    return this.dataService.getRegionalData().pipe(
-      map(data => filterByDay(data)),
-      map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateCountryRegionNumbers(data[0]))
+  generateRegionNumbers(regionFilter: string): Bar[] {
+    return this.generateCountryRegionNumbers(
+      filterByKey(
+        this.dataService.getDailyRegionalData(),'denominazione_regione', regionFilter
+      )[0]
     )
   }
 
@@ -43,18 +40,21 @@ export class NumbersService {
    * @param regionFilter the filter region applied to data
    * @param provinceFilter the filter region applied to data
    */
-  generateProvinceNumbers(regionFilter: string, provinceFilter: string): Observable<Bar[]> {
-    return this.dataService.getProvincialData().pipe(
-      map(data => filterByDay(data)),
-      map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
-      map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => [
-        {name: $localize`Total Confirmed`, value: data[0].totale_casi},
-        {name: $localize`New Confirmed`, value: data[0].totale_nuovi_casi},
-        {name: $localize`Confirmed Rate`, value: `${formatNumber(getValue(data[0],'totale_nuovi_casi', 'totale_casi'), document.documentElement.lang)} %` },
-        {name: $localize`Date`, value: moment(data[0].data).format('ddd D MMMM')},
-      ])
-    )
+  generateProvinceNumbers(regionFilter: string, provinceFilter: string): Bar[] {
+    const  data = 
+      filterByKey(
+        filterByKey(
+          this.dataService.getDailyProvincialData(), 
+          'denominazione_provincia', 
+          decodeNAYProvince(provinceFilter)
+        ), 
+        'denominazione_regione', 
+        regionFilter)
+      return [
+        {name: $localize`Total Confirmed`, value: data[0].totale_casi , color: this.legendsService.legendsDict['totale_casi'].color},
+        {name: $localize`New Confirmed`, value: data[0].totale_nuovi_casi, color: this.legendsService.legendsDict['totale_nuovi_casi'].color},
+        {name: $localize`Date`, value: moment(data[0].data).format('ddd D MMMM'), color: "#607d8b"},
+      ]
   }
 
   /**
@@ -63,12 +63,12 @@ export class NumbersService {
    */
   private generateCountryRegionNumbers(row: any): Bar[] {
     return [
-      {name: $localize`Confirmed`, value: row.totale_nuovi_casi},
-      {name: $localize`Recovered/Released`, value: row.nuovi_dimessi_guariti},
-      {name: $localize`Intensive Care`, value: row.nuovi_terapia_intensiva},
-      {name: $localize`Deaths` , value: row.nuovi_deceduti},
-      {name: $localize`Current Positive`, value: row.variazione_totale_positivi},
-      {name: $localize`Date`, value: moment(row.data).format('ddd D MMMM')},
+      {name: $localize`Confirmed`, value: row.totale_nuovi_casi, color: this.legendsService.legendsDict['totale_nuovi_casi'].color},
+      {name: $localize`Hospitalized`, value: row.nuovi_ricoverati_con_sintomi, color: this.legendsService.legendsDict['nuovi_ricoverati_con_sintomi'].color},
+      {name: $localize`Intensive Care`, value: row.nuovi_terapia_intensiva, color: this.legendsService.legendsDict['nuovi_terapia_intensiva'].color},
+      {name: $localize`Deaths` , value: row.nuovi_deceduti, color: this.legendsService.legendsDict['nuovi_deceduti'].color},
+      {name: $localize`Current Positive`, value: row.variazione_totale_positivi, color: this.legendsService.legendsDict['variazione_totale_positivi'].color},
+      {name: $localize`Date`, value: moment(row.data).format('ddd D MMMM'), color: "#607d8b"},
     ]
   }
 }

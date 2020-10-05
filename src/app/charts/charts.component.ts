@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { SeriesService } from '../series.service';
 import { ActivatedRoute } from '@angular/router';
-import { Bar, Series, AggregateEnum as AggregateEnum, ScaleEnum } from '../app.model';
+import { Bar, Series, AggregateEnum as AggregateEnum, ScaleEnum, ColorScheme } from '../app.model';
 import { BarsService } from '../bars.service';
 import { NumbersService } from '../numbers.service';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { formatNumber } from '@angular/common';
 import { LegendsService } from '../legends.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-charts',
@@ -19,9 +20,15 @@ export class ChartsComponent {
   breadcrumbs: any;
 
   seriesData: Series[] = [];
+  seriesColorScheme: ColorScheme = { domain: [] }
+
   seriesDailyData: Series[] = [];
-  seriesPercData: Series[] = [];
+  seriesDailyColorScheme: ColorScheme = { domain: [] }
+
+  seriesIntensiveCareData: Series[] = [];
+  seriesIntensiveCareColorScheme: ColorScheme = { domain: [] }
   seriesSwabData: Series[];
+  seriesSwabColorScheme: ColorScheme = { domain: [] }
 
   totalCasesBarsData: Bar[] = [];
   totalCasesBarsMax: number;
@@ -60,6 +67,7 @@ export class ChartsComponent {
   newSwabBarsMax: number;
 
   numbersData: Bar[] = [];
+  numbersServiceColorScheme: ColorScheme = { domain: [] }
 
   showLegend: boolean
   legendsService: LegendsService
@@ -67,13 +75,13 @@ export class ChartsComponent {
   log10: boolean = true
   private aggregate: AggregateEnum
   private aggregateNew: AggregateEnum
-  private aggregatePerc: AggregateEnum
   private aggregateTests: AggregateEnum
 
   constructor(
     private seriesService: SeriesService,
     private barsService: BarsService,
     private numbersService: NumbersService,
+    private dataService: DataService,
     legendsService: LegendsService,
     activateRoute: ActivatedRoute
   ) {
@@ -84,14 +92,10 @@ export class ChartsComponent {
     })
   }
 
-  changeLegend(event) {
-    this.legendsService.legendsDict[event.name].checked = event.checked
-    this.initData()
-  }
-  changeProvLegend(event) {
-    this.legendsService.provLegendsDict[event.name].checked = event.checked
-    this.initData()
-  }
+  // changeLegend(event) {
+  //   this.legendsService.legendsDict[event.name].checked = event.checked
+  //   this.initData()
+  // }
 
   private initData() {
     if (this.breadcrumbs['province']) {
@@ -107,208 +111,218 @@ export class ChartsComponent {
 
   private setCountryData() {
     const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
-    forkJoin(
-      this.seriesService.generateCountrySeries('totale_casi', this.legendsService.legendsDict.confirmed, null, this.aggregate, true, log10fn),
-      this.seriesService.generateCountrySeries("dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.aggregate, true, log10fn),
-      this.seriesService.generateCountrySeries('terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregate,true,  log10fn),
-      this.seriesService.generateCountrySeries('deceduti', this.legendsService.legendsDict.deaths, null, this.aggregate,true,  log10fn),
-      this.seriesService.generateCountrySeries('totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregate, true, log10fn),
-    )
-      .subscribe(data => this.seriesData = data)
+    forkJoin([
+      this.seriesService.generateCountrySeries('totale_casi', null, this.aggregate, true, log10fn),
+      //this.seriesService.generateCountrySeries("dimessi_guariti", null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries('totale_positivi', null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries('deceduti', null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries('ricoverati_con_sintomi', null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', null, this.aggregate, true, log10fn),
+    ])
+      .subscribe(data => {
+        this.seriesColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesData = data
+        this.numbersData = this.numbersService.generateCountryNumbers()
+        this.numbersServiceColorScheme = { domain: this.numbersData.map(bar => bar.color) }
+      })
 
-    forkJoin(
-      this.seriesService.generateCountrySeries("totale_nuovi_casi", this.legendsService.legendsDict.confirmed, null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregateNew),
-      // this.seriesService.generateCountryARIMAForecastSeries('p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
-      // this.seriesService.generateCountryForecastDeepARPlusSeries('p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew)
-    )
-      .subscribe(data => this.seriesDailyData = data)
+    forkJoin([
+      this.seriesService.generateCountrySeries("totale_nuovi_casi", null, this.aggregateNew),
+      //this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', null, this.aggregateNew),
+      this.seriesService.generateCountrySeries('nuovi_ricoverati_con_sintomi', null, this.aggregate, true),
+    ])
+      .subscribe(data => {
+        this.seriesDailyColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesDailyData = data
+      })
 
-    forkJoin(
-      this.seriesService.generateCountrySeries('totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri', this.aggregatePerc, true),
-      this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri', this.aggregatePerc, true),
-      this.seriesService.generateCountrySeries('nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri', this.aggregatePerc, true),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri', this.aggregatePerc, true),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi', this.aggregatePerc, true),
-    )
-      .subscribe(data => this.seriesPercData = data)
+    forkJoin([
+      this.seriesService.generateCountrySeries('terapia_intensiva', null, this.aggregate, true),
+    ])
+      .subscribe(data => {
+        this.seriesIntensiveCareColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesIntensiveCareData = data
+      })
 
-    forkJoin(
-      this.seriesService.generateCountrySeries('nuovi_tamponi', this.legendsService.legendsDict.tests,null,this.aggregateTests),
-      this.seriesService.generateCountrySeries('nuovi_casi_testati', this.legendsService.legendsDict.peopleTested,null,this.aggregateTests)
-    )
-      .subscribe(data => this.seriesSwabData = data)
+    forkJoin([
+      this.seriesService.generateCountrySeries('nuovi_tamponi', null, this.aggregateTests),
+      this.seriesService.generateCountrySeries('nuovi_casi_testati', null, this.aggregateTests)
+    ])
+      .subscribe(data => {
+        this.seriesSwabColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesSwabData = data
+      })
 
-    this.getIntensiveBarsData()
-    this.getNewPositiveBarsData()
+    this.dataService.getRegionalDataObservable().subscribe(data => {
+      this.dataService.getProvincialDataObservable().subscribe(data => {
+        this.getIntensiveBarsData()
+        this.getNewPositiveBarsData()
 
-    this.getLethalityBarsData()
-    this.getDailyDeathBarsData()
-    this.getDeathBarsData()
+        this.getLethalityBarsData()
+        this.getDailyDeathBarsData()
+        this.getDeathBarsData()
 
-    this.getDailyPositivePerSwabBarsData()
+        this.getDailyPositivePerSwabBarsData()
 
-    this.getNewCasesPercBarsData()
-    this.getTotalCasesBarsData()
-    this.getTotalCasesPerProvinceBarsData()
+        this.getNewCasesPercBarsData()
+        this.getTotalCasesBarsData()
+        this.getTotalCasesPerProvinceBarsData()
 
-    this.getTotalSwabBarsData()
-    this.getPositivePerSwabBarsData()
-    this.getNewSwabBarsData()
-
-    this.numbersService.generateCountryNumbers()
-      .subscribe(data => this.numbersData = data)
+        this.getTotalSwabBarsData()
+        this.getPositivePerSwabBarsData()
+        this.getNewSwabBarsData()
+      })
+    })
   }
 
   private setRegionalData(region: string) {
     const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
-    forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_casi', this.legendsService.legendsDict.confirmed, null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, "dimessi_guariti", this.legendsService.legendsDict.recovered, null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'deceduti', this.legendsService.legendsDict.deaths, null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregate, true, log10fn),
-    )
-      .subscribe(data => this.seriesData = data)
+    forkJoin([
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', null, this.aggregate, true, log10fn),
+      //this.seriesService.generateRegionalSeries(region, "dimessi_guariti", null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'ricoverati_con_sintomi', null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', null, this.aggregate, true, log10fn),
+    ])
+      .subscribe(data => {
+        this.seriesColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesData = data
+        this.numbersData = this.numbersService.generateRegionNumbers(region)
+        this.numbersServiceColorScheme = { domain: this.numbersData.map(bar => bar.color) }
+      })
 
-    forkJoin(
-      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", this.legendsService.legendsDict.confirmed, null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, null, this.aggregateNew),
-      // this.seriesService.generateRegionalARIMAForecastSeries(region, 'p50', this.legendsService.legendsDict.awsForecastARIMA, this.aggregateNew),
-      // this.seriesService.generateRegionalForecastDeepARPlusSeries(region, 'p50', this.legendsService.legendsDict.awsForecastDeepARPlus, this.aggregateNew),
-    )
-      .subscribe(data => this.seriesDailyData = data)
+    forkJoin([
+      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", null, this.aggregateNew),
+      //this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti',  null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_ricoverati_con_sintomi', null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', null, this.aggregateNew),
+    ])
+      .subscribe(data => {
+        this.seriesDailyColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesDailyData = data
+      })
 
-    forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', this.legendsService.legendsDict.confirmed, 'totale_casi_ieri', this.aggregatePerc, true),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti', this.legendsService.legendsDict.recovered, 'dimessi_guariti_ieri', this.aggregatePerc, true),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', this.legendsService.legendsDict.intensiveCare, 'terapia_intensiva_ieri', this.aggregatePerc, true),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', this.legendsService.legendsDict.deaths, 'deceduti_ieri', this.aggregatePerc, true),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', this.legendsService.legendsDict.currentPositive, 'totale_positivi', this.aggregatePerc, true),
-    )
-      .subscribe(data => this.seriesPercData = data)
+    forkJoin([
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', null, this.aggregate, true),
+    ])
+      .subscribe(data => {
+        this.seriesIntensiveCareColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesIntensiveCareData = data
+      })
 
-    forkJoin(
-      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', this.legendsService.legendsDict.tests, null, this.aggregateTests),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', this.legendsService.legendsDict.peopleTested, null, this.aggregateTests)
-    )
-      .subscribe(data => this.seriesSwabData = data)
+    forkJoin([
+      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', null, this.aggregateTests),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', null, this.aggregateTests)
+    ])
+      .subscribe(data => {
+        this.seriesSwabColorScheme = {
+          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+        }
+        this.seriesSwabData = data
+      })
 
-
-    this.getTotalCasesBarsData()
-    this.getNewCasesPercBarsData()
-    this.getNewPositiveBarsData()
-
-    this.numbersService.generateRegionNumbers(region)
-      .subscribe((data) => this.numbersData = data)
+    this.dataService.getProvincialDataObservable().subscribe(() => {
+      this.getTotalCasesBarsData()
+      this.getNewCasesPercBarsData()
+      this.getNewPositiveBarsData()
+    })
   }
 
   private setProvincialData(region: string, province: string) {
 
-    forkJoin(
-      this.seriesService.generateProvincialSeries(region, province, 'totale_casi', this.legendsService.provLegendsDict.confirmed, null, this.aggregate, true),
-      this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmed, null, this.aggregate)
-    )
-      .subscribe(data => this.seriesData = data)
+    this.seriesService.generateProvincialSeries(region, province, 'totale_casi', null, this.aggregate, true)
+      .subscribe(data => {
+        this.seriesColorScheme = {
+          domain: [this.legendsService.legendsDict[data.key].color]
+        }
+        this.seriesData = [data]
+        this.numbersData = this.numbersService.generateProvinceNumbers(region, province)
+        this.numbersServiceColorScheme = { domain: this.numbersData.map(bar => bar.color) }
+      })
 
-    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', this.legendsService.provLegendsDict.newConfirmedRate, 'totale_casi_ieri', this.aggregateNew)
-      .subscribe(data => this.seriesPercData = [data])
-
-    this.numbersService.generateProvinceNumbers(region, province)
-      .subscribe(data => this.numbersData = data)
+    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', null, this.aggregate)
+      .subscribe(data => {
+        this.seriesDailyColorScheme = {
+          domain: [this.legendsService.legendsDict[data.key].color]
+        }
+        this.seriesDailyData = [data]
+      })
   }
 
   getTotalCasesBarsData($event = { value: null }) {
-    (this.breadcrumbs["region"] != null ?
+    [this.totalCasesBarsData, this.totalCasesBarsMax] = (this.breadcrumbs["region"] != null ?
       this.barsService.generateProvincialBars('totale_casi', $event.value, this.breadcrumbs["region"]) :
       this.barsService.generateRegionalBars('totale_casi', $event.value)
     )
-      .subscribe((data) => [this.totalCasesBarsData, this.totalCasesBarsMax] = data)
   }
 
   getNewCasesPercBarsData($event = { value: null }) {
-    (this.breadcrumbs["region"] != null ?
+    [this.newCasesPercBarsData, this.newCasesPercBarsMax] = (this.breadcrumbs["region"] != null ?
       this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
       this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
     )
-      .subscribe((data) => [this.newCasesPercBarsData, this.newCasesPercBarsMax] = data)
   }
 
   getNewPositiveBarsData($event = { value: null }) {
-    (this.breadcrumbs["region"] != null ?
+    [this.newPositiveBarsData, this.newPositiveBarsMax] = (this.breadcrumbs["region"] != null ?
       this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"]) :
       this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value)
     )
-      .subscribe((data) => [this.newPositiveBarsData, this.newPositiveBarsMax] = data)
   }
 
   getIntensiveBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
-      .subscribe((data) => {
-        [this.intensiveBarsData, this.intensiveBarsMax] = data
-      })
+    [this.intensiveBarsData, this.intensiveBarsMax] = this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
   }
 
   getLethalityBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
-      .subscribe((data) => {
-        [this.lethalityBarsData, this.lethalityBarsMax] = data
-      })
+    [this.lethalityBarsData, this.lethalityBarsMax] = this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
   }
 
   getDailyDeathBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('nuovi_deceduti', $event.value)
-      .subscribe((data) => {
-        [this.dailyDeathBarsData, this.dailyDeathBarsMax] = data
-      })
+    [this.dailyDeathBarsData, this.dailyDeathBarsMax] = this.barsService.generateRegionalBars('nuovi_deceduti', $event.value)
   }
 
   getDeathBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('deceduti', $event.value)
-      .subscribe((data) => {
-        [this.deathBarsData, this.deathBarsMax] = data
-      })
+    [this.deathBarsData, this.deathBarsMax] = this.barsService.generateRegionalBars('deceduti', $event.value)
   }
 
 
   getTotalCasesPerProvinceBarsData($event = { value: null }) {
-    this.barsService.generateProvincialBars('totale_casi', $event.value)
-      .subscribe((data) => {
-        [this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax] = data
-      })
+    [this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax] = this.barsService.generateProvincialBars('totale_casi', $event.value)
   }
 
   getTotalSwabBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('tamponi', $event.value)
-      .subscribe((data) => {
-        [this.totalSwabBarsData, this.totalSwabBarsMax] = data
-      })
+    [this.totalSwabBarsData, this.totalSwabBarsMax] = this.barsService.generateRegionalBars('tamponi', $event.value)
   }
 
   getNewSwabBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
-      .subscribe((data) => {
-        [this.newSwabBarsData, this.newSwabBarsMax] = data
-      })
+    [this.newSwabBarsData, this.newSwabBarsMax] = this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
   }
 
   getPositivePerSwabBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
-      .subscribe((data) => {
-        [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = data
-      })
+    [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
   }
   getDailyPositivePerSwabBarsData($event = { value: null }) {
-    this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'nuovi_tamponi')
-      .subscribe((data) => {
-        [this.dailyPositivePerSwabBarsData, this.dailyPositivePerSwabBarsMax] = data
-      })
+    [this.dailyPositivePerSwabBarsData, this.dailyPositivePerSwabBarsMax] = this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'nuovi_tamponi')
   }
 
   changeAggregate($event) {
@@ -322,7 +336,6 @@ export class ChartsComponent {
   }
 
   changeAggregatePerc($event) {
-    this.aggregatePerc = $event
     this.initData()
   }
 
@@ -352,11 +365,6 @@ export class ChartsComponent {
     return typeof input.value === 'number' ?
       formatNumber(input.value, document.documentElement.lang) :
       input.value
-  }
-  public gridLineNgStyleByXAxisTick(tick) {
-    var day = moment(tick, 'DD/MM').day();
-    var isWeekend = (day === 6) || (day === 0);
-    return isWeekend ? { stroke: '#999' } : null
   }
 
   public gridLineNgStyleByYAxisTick(tick) {

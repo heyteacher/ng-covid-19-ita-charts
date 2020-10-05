@@ -23,21 +23,18 @@ export class BarsService {
     keyValue: string,
     filterDay: string = null,
     denominatorKey: string = null
-  ):Observable<[Bar[], number]> {
-    return this.dataService.getRegionalData()
-    .pipe(
-      map((data: any[]) => filterByDay(data, filterDay)),
-      map((data: any[]) => [
-        this.generateBars(
-          data,
-          'denominazione_regione',
-          keyValue,
-          20,
-          denominatorKey)
-        ,
-        getMaxValue(data, keyValue, denominatorKey,this.appConfigService.daysToShowInBars)
-      ]
-    ))
+  ):[Bar[], number] {
+    let data = this.dataService.getDailyRegionalData() 
+    return [
+      this.generateBars(
+        data,
+        'denominazione_regione',
+        keyValue,
+        20,
+        denominatorKey)
+      ,
+      getMaxValue(data, keyValue, denominatorKey,this.appConfigService.daysToShowInBars)
+    ]
   }
 
   /**
@@ -53,22 +50,19 @@ export class BarsService {
     filterDay: string = null,
     filterRegion: string = null,
     denomKey: string = null
-  ): Observable<[Bar[], number]> {
-    return this.dataService.getProvincialData()
-    .pipe(
-      map((data: any[]) => filterRegion?filterByKey(data, 'denominazione_regione', filterRegion): data),
-      map((data: any[]) => filterByDay(data, filterDay)),
-      map((data: any[]) => [
-        this.generateBars(
-          data,
-          'denominazione_provincia',
-          keyValue,
-          20,
-          denomKey)
-        ,
-        getMaxValue(data, keyValue, denomKey,this.appConfigService.daysToShowInBars)
-      ]
-    ))
+  ): [Bar[], number] {
+    let data = this.dataService.getDailyProvincialData()
+    data = filterRegion? filterByKey(data, 'denominazione_regione', filterRegion): data
+    return [
+      this.generateBars(
+        data,
+        'denominazione_provincia',
+        keyValue,
+        20,
+        denomKey)
+      ,
+      getMaxValue(data, keyValue, denomKey,this.appConfigService.daysToShowInBars)
+    ]
   }
 
   /**

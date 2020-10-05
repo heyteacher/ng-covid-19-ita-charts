@@ -21,11 +21,10 @@ export class TreeMenuComponent implements OnInit {
   hasChild = (_: number, node: Node) => !!node.children && node.children.length > 0;
 
   ngOnInit(): void {
-    this.dataService.getProvincialData()
-      .pipe(map((data: any[]) => generateRegionProvinceTree(data)))
-      .subscribe((data) => {
-        this.dataSource.data = data
-        this.treeControl.expand(data[0])
+    this.dataService.getProvincialDataObservable()
+      .subscribe(() => {
+        this.dataSource.data = generateRegionProvinceTree(this.dataService.getDailyProvincialData())
+        this.treeControl.expand(this.dataSource.data[0])
       })
   }
 

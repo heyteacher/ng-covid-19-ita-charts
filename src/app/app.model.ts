@@ -17,15 +17,22 @@ export interface Node {
 
 export interface Series {
   name: string;
+  key:string
   series: {
     value: any;
     name: Date;
   }[];
 }
 
+export interface ColorScheme {
+  domain: String[]
+}
+
+
 export interface Bar {
   value: number;
   name: string;
+  color?: string
 }
 
 export function objectify(dict, value) {
@@ -109,7 +116,6 @@ export function generateRegionProvinceTree(provincialData: any[]): Node[] {
     uri: '/',
     children: []
   }];
-  provincialData = filterByDay(provincialData);
   let regions = {}
   for (const row of provincialData) {
     const region = row.denominazione_regione

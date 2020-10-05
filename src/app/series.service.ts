@@ -4,31 +4,30 @@ import { Series, filterByKey, decodeNAYProvince, getValue, Legend, AggregateEnum
 import { DataService } from './data.service';
 import { map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { LegendsService } from './legends.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeriesService {
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private legendsService: LegendsService) { }
 
   /**
    * generate series from country data
    * @param valueKey the key of value
-   * @param legend the series legend
    * @param denominatorKey the key of denominator
    * @param fnValue the function to apply to value
    */
   generateCountrySeries(
     valueKey: string,
-    legend: Legend,
     denominatorKey: string = null,
     aggregate: AggregateEnum = AggregateEnum.Day,
     avg: boolean = false,
     fnValue: Function = null)
     : Observable<Series> {
-    return this.dataService.getCountryData().pipe(
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', aggregate, avg, fnValue))
+    return this.dataService.getCountryDataObservable().pipe(
+      map(data => this.generateSeries(data, valueKey, this.legendsService.legendsDict[valueKey], denominatorKey, 'data', aggregate, avg, fnValue))
     )
   }
 
@@ -43,14 +42,13 @@ export class SeriesService {
   generateRegionalSeries(
     regionFilter: string,
     valueKey: string,
-    legend: Legend,
     denominatorKey: string = null,
     aggregate: AggregateEnum = AggregateEnum.Day,
     avg: boolean = false,
     fnValue: Function = null): Observable<Series> {
-    return this.dataService.getRegionalData().pipe(
+    return this.dataService.getRegionalDataObservable().pipe(
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', aggregate, avg, fnValue)))
+      map(data => this.generateSeries(data, valueKey, this.legendsService.legendsDict[valueKey], denominatorKey, 'data', aggregate, avg, fnValue)))
   }
 
   /**
@@ -66,15 +64,14 @@ export class SeriesService {
     regionFilter: string,
     provinceFilter: string,
     valueKey: string,
-    legend: Legend,
     denominatorKey: string = null,
     aggregate: AggregateEnum = AggregateEnum.Day,
     avg: boolean = false,
   ): Observable<Series> {
-    return this.dataService.getProvincialData().pipe(
+    return this.dataService.getProvincialDataObservable().pipe(
       map(data => filterByKey(data, 'denominazione_provincia', decodeNAYProvince(provinceFilter))),
       map(data => filterByKey(data, 'denominazione_regione', regionFilter)),
-      map(data => this.generateSeries(data, valueKey, legend, denominatorKey, 'data', aggregate, avg)))
+      map(data => this.generateSeries(data, valueKey, this.legendsService.legendsDict[valueKey], denominatorKey, 'data', aggregate, avg)))
   }
 
   /**
@@ -217,6 +214,7 @@ export class SeriesService {
 
     return {
       name: legend.label,
+      key: legend.name,
       series: legend.checked ? Object.values(inputData.reduce(aggregateSeries, {})).map(daySeries) : []
     }
   }
