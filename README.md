@@ -177,7 +177,7 @@ Replace <gitub-user> with your account
 
 1. run script
    ```
-   ng run release
+   npm run release
    ```
 
 1. browser `https://<gitub-user>.github.io/COVID-19`
