@@ -26,8 +26,9 @@ export class SeriesService {
     avg: boolean = false,
     fnValue: Function = null)
     : Observable<Series> {
+    const legendKey = denominatorKey? `${valueKey}_${denominatorKey}`: valueKey  
     return this.dataService.getCountryDataObservable().pipe(
-      map(data => this.generateSeries(data, valueKey, this.legendsService.legendsDict[valueKey], denominatorKey, 'data', aggregate, avg, fnValue))
+      map(data => this.generateSeries(data, valueKey, this.legendsService.legendsDict[legendKey], denominatorKey, 'data', aggregate, avg, fnValue))
     )
   }
 

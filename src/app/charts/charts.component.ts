@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Bar, Series, AggregateEnum as AggregateEnum, ScaleEnum, ColorScheme } from '../app.model';
 import { BarsService } from '../bars.service';
 import { NumbersService } from '../numbers.service';
-import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { formatNumber } from '@angular/common';
 import { LegendsService } from '../legends.service';
@@ -27,6 +26,14 @@ export class ChartsComponent {
 
   seriesIntensiveCareData: Series[] = [];
   seriesIntensiveCareColorScheme: ColorScheme = { domain: [] }
+
+
+  seriesHospitalizedData: Series[] = [];
+  seriesHospitalizedColorScheme: ColorScheme = { domain: [] }
+
+  seriesCasesPerPeopleTestedRateData: Series[] = [];
+  seriesCasesPerPeopleTestedRateColorScheme: ColorScheme = { domain: [] }
+
   seriesSwabData: Series[];
   seriesSwabColorScheme: ColorScheme = { domain: [] }
 
@@ -36,20 +43,18 @@ export class ChartsComponent {
   intensiveBarsData: Bar[] = [];
   intensiveBarsMax: number;
 
+  hospitalizedBarsData: Bar[] = [];
+  hospitalizedBarsMax: number;
+
   newPositiveBarsData: Bar[];
   newPositiveBarsMax: number;
 
-  totalCasesPerProvinceBarsData: Bar[] = [];
-  totalCasesPerProvinceBarsMax: number;
+  dailyCasesPerProvinceBarsData: Bar[] = [];
+  dailyCasesPerProvinceBarsMax: number;
 
   totalSwabBarsData: Bar[] = []
   totalSwabBarsMax: number;
 
-  positivePerSwabBarsData: Bar[] = []
-  positivePerSwabBarsMax: number;
-
-  dailyPositivePerSwabBarsData: Bar[] = []
-  dailyPositivePerSwabBarsMax: number;
 
   lethalityBarsData: Bar[] = []
   lethalityBarsMax: number;
@@ -60,8 +65,8 @@ export class ChartsComponent {
   deathBarsData: Bar[] = []
   deathBarsMax: number;
 
-  newCasesPercBarsData: Bar[] = []
-  newCasesPercBarsMax: number;
+  casesPerPeopleTestedBarsData: Bar[] = []
+  casesPerPeopleTestedBarsMax: number;
 
   newSwabBarsData: Bar[] = [];
   newSwabBarsMax: number;
@@ -73,9 +78,7 @@ export class ChartsComponent {
   legendsService: LegendsService
 
   log10: boolean = true
-  private aggregate: AggregateEnum
-  private aggregateNew: AggregateEnum
-  private aggregateTests: AggregateEnum
+  private aggregateCasesPerPeopleTestedRate: AggregateEnum
 
   constructor(
     private seriesService: SeriesService,
@@ -92,11 +95,6 @@ export class ChartsComponent {
     })
   }
 
-  // changeLegend(event) {
-  //   this.legendsService.legendsDict[event.name].checked = event.checked
-  //   this.initData()
-  // }
-
   private initData() {
     if (this.breadcrumbs['province']) {
       this.setProvincialData(this.breadcrumbs.region, this.breadcrumbs.province)
@@ -112,12 +110,11 @@ export class ChartsComponent {
   private setCountryData() {
     const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
     forkJoin([
-      this.seriesService.generateCountrySeries('totale_casi', null, this.aggregate, true, log10fn),
-      //this.seriesService.generateCountrySeries("dimessi_guariti", null, this.aggregate, true, log10fn),
-      this.seriesService.generateCountrySeries('totale_positivi', null, this.aggregate, true, log10fn),
-      this.seriesService.generateCountrySeries('deceduti', null, this.aggregate, true, log10fn),
-      this.seriesService.generateCountrySeries('ricoverati_con_sintomi', null, this.aggregate, true, log10fn),
-      this.seriesService.generateCountrySeries('terapia_intensiva', null, this.aggregate, true, log10fn),
+      this.seriesService.generateCountrySeries('totale_casi', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateCountrySeries('totale_positivi', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateCountrySeries('deceduti', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateCountrySeries('ricoverati_con_sintomi', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateCountrySeries('terapia_intensiva', null, AggregateEnum.Day, true, log10fn),
     ])
       .subscribe(data => {
         this.seriesColorScheme = {
@@ -129,11 +126,10 @@ export class ChartsComponent {
       })
 
     forkJoin([
-      this.seriesService.generateCountrySeries("totale_nuovi_casi", null, this.aggregateNew),
-      //this.seriesService.generateCountrySeries('nuovi_dimessi_guariti', null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('variazione_totale_positivi', null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('nuovi_deceduti', null, this.aggregateNew),
-      this.seriesService.generateCountrySeries('nuovi_ricoverati_con_sintomi', null, this.aggregate, true),
+      this.seriesService.generateCountrySeries("totale_nuovi_casi", null, AggregateEnum.Day),
+      this.seriesService.generateCountrySeries('variazione_totale_positivi', null, AggregateEnum.Day),
+      this.seriesService.generateCountrySeries('nuovi_deceduti', null, AggregateEnum.Day),
+      this.seriesService.generateCountrySeries('nuovi_ricoverati_con_sintomi', null, AggregateEnum.Day, true),
     ])
       .subscribe(data => {
         this.seriesDailyColorScheme = {
@@ -142,19 +138,33 @@ export class ChartsComponent {
         this.seriesDailyData = data
       })
 
-    forkJoin([
-      this.seriesService.generateCountrySeries('terapia_intensiva', null, this.aggregate, true),
-    ])
+    this.seriesService.generateCountrySeries('terapia_intensiva', null, AggregateEnum.Day, true)
       .subscribe(data => {
         this.seriesIntensiveCareColorScheme = {
-          domain: data.map(series => this.legendsService.legendsDict[series.key].color)
+          domain: [this.legendsService.legendsDict[data.key].color]
         }
-        this.seriesIntensiveCareData = data
+        this.seriesIntensiveCareData = [data]
+      })
+
+    this.seriesService.generateCountrySeries('ricoverati_con_sintomi', null, AggregateEnum.Day, true)
+      .subscribe(data => {
+        this.seriesHospitalizedColorScheme = {
+          domain: [this.legendsService.legendsDict[data.key].color]
+        }
+        this.seriesHospitalizedData = [data]
+      })
+
+    this.seriesService.generateCountrySeries('totale_nuovi_casi', 'nuovi_casi_testati', this.aggregateCasesPerPeopleTestedRate, false)
+      .subscribe(data => {
+        this.seriesCasesPerPeopleTestedRateColorScheme = {
+          domain: [this.legendsService.legendsDict.totale_nuovi_casi_nuovi_casi_testati.color]
+        }
+        this.seriesCasesPerPeopleTestedRateData = [data]
       })
 
     forkJoin([
-      this.seriesService.generateCountrySeries('nuovi_tamponi', null, this.aggregateTests),
-      this.seriesService.generateCountrySeries('nuovi_casi_testati', null, this.aggregateTests)
+      this.seriesService.generateCountrySeries('nuovi_tamponi', null, AggregateEnum.Day),
+      this.seriesService.generateCountrySeries('nuovi_casi_testati', null, AggregateEnum.Day)
     ])
       .subscribe(data => {
         this.seriesSwabColorScheme = {
@@ -166,20 +176,18 @@ export class ChartsComponent {
     this.dataService.getRegionalDataObservable().subscribe(data => {
       this.dataService.getProvincialDataObservable().subscribe(data => {
         this.getIntensiveBarsData()
+        this.getHospitalizedBarsData()
         this.getNewPositiveBarsData()
 
         this.getLethalityBarsData()
         this.getDailyDeathBarsData()
         this.getDeathBarsData()
 
-        this.getDailyPositivePerSwabBarsData()
-
-        this.getNewCasesPercBarsData()
+        this.getCasesPerPeopleTestedBarsData()
         this.getTotalCasesBarsData()
-        this.getTotalCasesPerProvinceBarsData()
+        this.getDailyCasesPerProvinceBarsData()
 
         this.getTotalSwabBarsData()
-        this.getPositivePerSwabBarsData()
         this.getNewSwabBarsData()
       })
     })
@@ -188,12 +196,11 @@ export class ChartsComponent {
   private setRegionalData(region: string) {
     const log10fn = this.log10 ? ((n) => n && n > 0 ? Math.log10(n) : n) : null
     forkJoin([
-      this.seriesService.generateRegionalSeries(region, 'totale_casi', null, this.aggregate, true, log10fn),
-      //this.seriesService.generateRegionalSeries(region, "dimessi_guariti", null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'deceduti', null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'ricoverati_con_sintomi', null, this.aggregate, true, log10fn),
-      this.seriesService.generateRegionalSeries(region, 'totale_positivi', null, this.aggregate, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_casi', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'deceduti', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'ricoverati_con_sintomi', null, AggregateEnum.Day, true, log10fn),
+      this.seriesService.generateRegionalSeries(region, 'totale_positivi', null, AggregateEnum.Day, true, log10fn),
     ])
       .subscribe(data => {
         this.seriesColorScheme = {
@@ -205,12 +212,11 @@ export class ChartsComponent {
       })
 
     forkJoin([
-      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", null, this.aggregateNew),
-      //this.seriesService.generateRegionalSeries(region, 'nuovi_dimessi_guariti',  null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_ricoverati_con_sintomi', null, this.aggregateNew),
-      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', null, this.aggregateNew),
+      this.seriesService.generateRegionalSeries(region, "totale_nuovi_casi", null, AggregateEnum.Day),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_terapia_intensiva', null, AggregateEnum.Day),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_deceduti', null, AggregateEnum.Day),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_ricoverati_con_sintomi', null, AggregateEnum.Day),
+      this.seriesService.generateRegionalSeries(region, 'variazione_totale_positivi', null, AggregateEnum.Day),
     ])
       .subscribe(data => {
         this.seriesDailyColorScheme = {
@@ -220,7 +226,7 @@ export class ChartsComponent {
       })
 
     forkJoin([
-      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', null, this.aggregate, true),
+      this.seriesService.generateRegionalSeries(region, 'terapia_intensiva', null, AggregateEnum.Day, true),
     ])
       .subscribe(data => {
         this.seriesIntensiveCareColorScheme = {
@@ -230,8 +236,8 @@ export class ChartsComponent {
       })
 
     forkJoin([
-      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', null, this.aggregateTests),
-      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', null, this.aggregateTests)
+      this.seriesService.generateRegionalSeries(region, 'nuovi_tamponi', null, AggregateEnum.Day),
+      this.seriesService.generateRegionalSeries(region, 'nuovi_casi_testati', null, AggregateEnum.Day)
     ])
       .subscribe(data => {
         this.seriesSwabColorScheme = {
@@ -240,16 +246,32 @@ export class ChartsComponent {
         this.seriesSwabData = data
       })
 
+    this.seriesService.generateRegionalSeries(region, 'ricoverati_con_sintomi', null, AggregateEnum.Day, true)
+      .subscribe(data => {
+        this.seriesHospitalizedColorScheme = {
+          domain: [this.legendsService.legendsDict[data.key].color]
+        }
+        this.seriesHospitalizedData = [data]
+      })
+
+    this.seriesService.generateRegionalSeries(region, 'totale_nuovi_casi', 'nuovi_casi_testati', this.aggregateCasesPerPeopleTestedRate, true)
+      .subscribe(data => {
+        this.seriesCasesPerPeopleTestedRateColorScheme = {
+          domain: [this.legendsService.legendsDict.totale_nuovi_casi_nuovi_casi_testati.color]
+        }
+        this.seriesCasesPerPeopleTestedRateData = [data]
+      })
+
     this.dataService.getProvincialDataObservable().subscribe(() => {
       this.getTotalCasesBarsData()
-      this.getNewCasesPercBarsData()
+      this.getCasesPerPeopleTestedBarsData()
       this.getNewPositiveBarsData()
     })
   }
 
   private setProvincialData(region: string, province: string) {
 
-    this.seriesService.generateProvincialSeries(region, province, 'totale_casi', null, this.aggregate, true)
+    this.seriesService.generateProvincialSeries(region, province, 'totale_casi', null, AggregateEnum.Day, true)
       .subscribe(data => {
         this.seriesColorScheme = {
           domain: [this.legendsService.legendsDict[data.key].color]
@@ -259,7 +281,7 @@ export class ChartsComponent {
         this.numbersServiceColorScheme = { domain: this.numbersData.map(bar => bar.color) }
       })
 
-    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', null, this.aggregate)
+    this.seriesService.generateProvincialSeries(region, province, 'totale_nuovi_casi', null, AggregateEnum.Day)
       .subscribe(data => {
         this.seriesDailyColorScheme = {
           domain: [this.legendsService.legendsDict[data.key].color]
@@ -275,11 +297,9 @@ export class ChartsComponent {
     )
   }
 
-  getNewCasesPercBarsData($event = { value: null }) {
-    [this.newCasesPercBarsData, this.newCasesPercBarsMax] = (this.breadcrumbs["region"] != null ?
-      this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value, this.breadcrumbs["region"], 'totale_casi_ieri') :
-      this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'totale_casi_ieri')
-    )
+  getCasesPerPeopleTestedBarsData($event = { value: null }) {
+    [this.casesPerPeopleTestedBarsData, this.casesPerPeopleTestedBarsMax] =       
+    this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'nuovi_casi_testati')
   }
 
   getNewPositiveBarsData($event = { value: null }) {
@@ -293,6 +313,10 @@ export class ChartsComponent {
     [this.intensiveBarsData, this.intensiveBarsMax] = this.barsService.generateRegionalBars('terapia_intensiva', $event.value)
   }
 
+  getHospitalizedBarsData($event = { value: null }) {
+    [this.hospitalizedBarsData, this.hospitalizedBarsMax] = this.barsService.generateRegionalBars('ricoverati_con_sintomi', $event.value)
+  }
+
   getLethalityBarsData($event = { value: null }) {
     [this.lethalityBarsData, this.lethalityBarsMax] = this.barsService.generateRegionalBars('deceduti', $event.value, 'totale_casi')
   }
@@ -300,14 +324,14 @@ export class ChartsComponent {
   getDailyDeathBarsData($event = { value: null }) {
     [this.dailyDeathBarsData, this.dailyDeathBarsMax] = this.barsService.generateRegionalBars('nuovi_deceduti', $event.value)
   }
-
+  
   getDeathBarsData($event = { value: null }) {
     [this.deathBarsData, this.deathBarsMax] = this.barsService.generateRegionalBars('deceduti', $event.value)
   }
 
 
-  getTotalCasesPerProvinceBarsData($event = { value: null }) {
-    [this.totalCasesPerProvinceBarsData, this.totalCasesPerProvinceBarsMax] = this.barsService.generateProvincialBars('totale_casi', $event.value)
+  getDailyCasesPerProvinceBarsData($event = { value: null }) {
+    [this.dailyCasesPerProvinceBarsData, this.dailyCasesPerProvinceBarsMax] = this.barsService.generateProvincialBars('totale_nuovi_casi', $event.value)
   }
 
   getTotalSwabBarsData($event = { value: null }) {
@@ -318,29 +342,8 @@ export class ChartsComponent {
     [this.newSwabBarsData, this.newSwabBarsMax] = this.barsService.generateRegionalBars('nuovi_tamponi', $event.value)
   }
 
-  getPositivePerSwabBarsData($event = { value: null }) {
-    [this.positivePerSwabBarsData, this.positivePerSwabBarsMax] = this.barsService.generateRegionalBars('totale_casi', $event.value, 'tamponi')
-  }
-  getDailyPositivePerSwabBarsData($event = { value: null }) {
-    [this.dailyPositivePerSwabBarsData, this.dailyPositivePerSwabBarsMax] = this.barsService.generateRegionalBars('totale_nuovi_casi', $event.value, 'nuovi_tamponi')
-  }
-
-  changeAggregate($event) {
-    this.aggregate = $event
-    this.initData()
-  }
-
-  changeAggregateNew($event) {
-    this.aggregateNew = $event
-    this.initData()
-  }
-
-  changeAggregatePerc($event) {
-    this.initData()
-  }
-
-  changeAggregateTests($event) {
-    this.aggregateTests = $event
+  changeAggregateCasesPerPeopleTestedRate($event) {
+    this.aggregateCasesPerPeopleTestedRate = $event
     this.initData()
   }
 

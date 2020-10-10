@@ -18,28 +18,19 @@
     </div>
     <div class="row" *ngIf="!breadcrumbs['province']; else provinceTemplate">
         <div class="col-lg-6 chart-container text-center">
-            <app-series-control (changeScale)="changeScale($event)" [scaleEnabled]="true" (changeAggregate)="changeAggregate($event)" [aggregateEnabled]="false" i18n-title title="Trend">
+            <app-series-control (changeScale)="changeScale($event)" [scaleEnabled]="true" [aggregateEnabled]="false" i18n-title title="Trend">
             </app-series-control>
             <ngx-charts-line-chart [yAxisTickFormatting]="log10?formatPow10:formatRound" [results]="seriesData" [scheme]="seriesColorScheme" showXAxisLabel="true" showYAxisLabel="truel" timeline="true" xAxis="true" yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
-        <!-- <div class="col-12 d-block d-lg-none">
-            <app-legend [legends]="legendsService.legends" (changeLegend)="changeLegend($event)"></app-legend>
-        </div> -->
         <div class="col-lg-6 chart-container text-center">
-            <app-series-control (changeAggregate)="changeAggregateNew($event)" [aggregateEnabled]="false" i18n-title title="Variations">
+            <app-series-control [aggregateEnabled]="false" i18n-title title="Variations">
             </app-series-control>
             <ngx-charts-line-chart [gridLineNgStyleByYAxisTick]="gridLineNgStyleByYAxisTick" [results]="seriesDailyData" [scheme]="seriesDailyColorScheme" [yAxisTickFormatting]="formatRound" showXAxisLabel="true" showYAxisLabel="true" timeline="true" xAxis="true"
                 yAxis="true" showGridLines="true">
             </ngx-charts-line-chart>
         </div>
     </div>
-    <!-- <div class="row" *ngIf="!breadcrumbs['province']">
-        <div class="col">
-            <app-legend [legends]="legendsService.legends" (changeLegend)="changeLegend($event)"></app-legend>
-        </div>
-    </div> -->
-
     <div class="row" *ngIf="!breadcrumbs['province']">
         <div class=" col-lg-6 chart-container text-center" style="padding-top:13px">
             <app-series-control [aggregateEnabled]="false" i18n-title title="Intensive Care">
@@ -48,81 +39,32 @@
                 " xAxis="true " yAxis="true " showGridLines="true ">
             </ngx-charts-line-chart>
         </div>
+        <div class=" col-lg-6 chart-container text-center" style="padding-top:13px">
+            <app-series-control [aggregateEnabled]="false" i18n-title title="Hospitalized">
+            </app-series-control>
+            <ngx-charts-line-chart [gridLineNgStyleByYAxisTick]="gridLineNgStyleByYAxisTick" [results]="seriesHospitalizedData" [scheme]="seriesHospitalizedColorScheme" [yAxisTickFormatting]="formatRound" showXAxisLabel="true " showYAxisLabel="true " timeline="true
+                " xAxis="true " yAxis="true " showGridLines="true ">
+            </ngx-charts-line-chart>
+        </div>
         <div class="col-lg-6 chart-container text-center " style="padding-top:13px ">
-            <app-series-control (changeAggregate)="changeAggregateTests($event) " [aggregateEnabled]="false " i18n-title title="Tests and People Tested">
+            <app-series-control (changeAggregate)="changeAggregateCasesPerPeopleTestedRate($event) " [aggregateEnabled]="true" i18n-title title="Daily Cases per People Tested">
+            </app-series-control>
+            <ngx-charts-line-chart [results]="seriesCasesPerPeopleTestedRateData" [scheme]="seriesCasesPerPeopleTestedRateColorScheme" [yAxisTickFormatting]="formatPercentage" showLegend="false" showXAxisLabel="true" showYAxisLabel="true" timeline="true " xAxis="true "
+                yAxis="true" showGridLines="true ">
+            </ngx-charts-line-chart>
+        </div>
+        <div class="col-lg-6 chart-container text-center " style="padding-top:13px ">
+            <app-series-control [aggregateEnabled]="false " i18n-title title="Tests and People Tested">
             </app-series-control>
             <ngx-charts-line-chart [results]="seriesSwabData " [scheme]="seriesSwabColorScheme" [yAxisTickFormatting]="formatRound " showLegend="false " showXAxisLabel="true " showYAxisLabel="true " timeline="true " xAxis="true " yAxis="true" showGridLines="true ">
             </ngx-charts-line-chart>
         </div>
-
-        <div class="col-lg-4 chart-container text-center ">
-            <app-bars-control (change)="getNewCasesPercBarsData($event) " i18n-title title="Daily Confirmed Rate ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage " [results]="newCasesPercBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="newCasesPercBarsMax " showDataLabel="true " showXAxisLabel="true
-                " showYAxisLabel="true " yAxis="true " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="col-lg-4 chart-container text-center ">
-            <app-bars-control (change)="getNewPositiveBarsData($event) " i18n-title title="Daily Confirmed ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="newPositiveBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="newPositiveBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
-                " yAxis="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="col-lg-4 chart-container text-center ">
-            <app-bars-control (change)="getTotalCasesBarsData($event) " i18n-title title="Total Confirmed ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="totalCasesBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="totalCasesBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
-                " yAxis="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-
+    </div>
+    <div class="row" *ngIf="!breadcrumbs['province']">
         <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getLethalityBarsData($event) " i18n-title title="Lethality ">
+            <app-bars-control (change)="getCasesPerPeopleTestedBarsData($event) " i18n-title title="Daily Confirmed Per People Tested ">
             </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage " [results]="lethalityBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="lethalityBarsMax " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
-                " yAxis="true " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getDailyDeathBarsData($event) " i18n-title title="Daily Death ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="dailyDeathBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="dailyDeathBarsMax " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true " yAxis="true " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getDeathBarsData($event) " i18n-title title="Death ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="deathBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="deathBarsMax " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true " yAxis="true " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-
-        <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getPositivePerSwabBarsData($event) " i18n-title title="Confirmed per Tests Rate ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage " [results]="positivePerSwabBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="positivePerSwabBarsMax " showDataLabel="true " showXAxisLabel="true
-                " showYAxisLabel="true " yAxis="true " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getTotalSwabBarsData($event) " i18n-title title="Total Tests ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="totalSwabBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="totalSwabBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
-                " yAxis="true " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getNewSwabBarsData($event) " i18n-title title="Daily Tests ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="newSwabBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="newSwabBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true " yAxis="true
-                " showGridLines="true ">
-            </ngx-charts-bar-horizontal>
-        </div>
-
-        <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getDailyPositivePerSwabBarsData($event) " i18n-title title="Daily Confirmed per Tests Rate ">
-            </app-bars-control>
-            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage " [results]="dailyPositivePerSwabBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="positivePerSwabBarsMax " showDataLabel="true " showXAxisLabel="true
+            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage " [results]="casesPerPeopleTestedBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="casesPerPeopleTestedBarsMax " showDataLabel="true " showXAxisLabel="true
                 " showYAxisLabel="true " yAxis="true " showGridLines="true ">
             </ngx-charts-bar-horizontal>
         </div>
@@ -134,30 +76,82 @@
             </ngx-charts-bar-horizontal>
         </div>
         <div class="col-lg-4 chart-container margin-top text-center " *ngIf="!breadcrumbs[ 'region'] ">
-            <app-bars-control (change)="getTotalCasesPerProvinceBarsData($event) " i18n-title title="Confirmed by Province ">
+            <app-bars-control (change)="getHospitalizedBarsData($event) " i18n-title title="Hospitalized ">
             </app-bars-control>
-            <ngx-charts-bar-horizontal [results]="totalCasesPerProvinceBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="totalCasesPerProvinceBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true
+            <ngx-charts-bar-horizontal [results]="hospitalizedBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="hospitalizedBarsMax " showDataLabel="true " [dataLabelFormatting]="formatRound " showXAxisLabel="true " showYAxisLabel="true
+                " yAxis="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center " *ngIf="!breadcrumbs[ 'region'] ">
+            <app-bars-control (change)="getDailyDeathBarsData($event) " i18n-title title="Daily Death ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="dailyDeathBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="dailyDeathBarsMax " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true " yAxis="true " showGridLines="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center ">
+            <app-bars-control (change)="getNewPositiveBarsData($event) " i18n-title title="Daily Confirmed ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="newPositiveBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="newPositiveBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
+                " yAxis="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center " *ngIf="!breadcrumbs[ 'region'] ">
+            <app-bars-control (change)="getNewSwabBarsData($event) " i18n-title title="Daily Tests ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="newSwabBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="newSwabBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true " yAxis="true
+                " showGridLines="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center " *ngIf="!breadcrumbs[ 'region'] ">
+            <app-bars-control (change)="getDailyCasesPerProvinceBarsData($event) " i18n-title title="Daily Confirmed by Province ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="dailyCasesPerProvinceBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="dailyCasesPerProvinceBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true
                 " showYAxisLabel="true " yAxis="true " showGridLines="true ">
             </ngx-charts-bar-horizontal>
         </div>
-
+        <div class="col-lg-4 chart-container text-center ">
+            <app-bars-control (change)="getTotalCasesBarsData($event) " i18n-title title="Total Confirmed ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="totalCasesBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="totalCasesBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
+                " yAxis="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center " *ngIf="!breadcrumbs[ 'region'] ">
+            <app-bars-control (change)="getTotalSwabBarsData($event) " i18n-title title="Total Tests ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="totalSwabBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="totalSwabBarsMax " [dataLabelFormatting]="formatRound " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
+                " yAxis="true " showGridLines="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center " *ngIf="!breadcrumbs[ 'region'] ">
+            <app-bars-control (change)="getDeathBarsData($event) " i18n-title title="Death ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [results]="deathBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="deathBarsMax " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true " yAxis="true " showGridLines="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="col-lg-4 chart-container text-center " *ngIf="!breadcrumbs[ 'region'] ">
+            <app-bars-control (change)="getLethalityBarsData($event) " i18n-title title="Lethality ">
+            </app-bars-control>
+            <ngx-charts-bar-horizontal [dataLabelFormatting]="formatPercentage " [results]="lethalityBarsData " [scheme]="legendsService.colorScheme " [xScaleMax]="lethalityBarsMax " showDataLabel="true " showXAxisLabel="true " showYAxisLabel="true
+                " yAxis="true " showGridLines="true ">
+            </ngx-charts-bar-horizontal>
+        </div>
     </div>
 </div>
 
 <ng-template #provinceTemplate>
     <div class="row ">
         <div class="col-lg-6 chart-container text-center ">
-            <app-series-control i18n-title title="Confirmed Trend " (changeAggregate)="changeAggregate($event) " [aggregateEnabled]="true ">
+            <app-series-control i18n-title title="Confirmed Trend " [aggregateEnabled]="true ">
             </app-series-control>
             <ngx-charts-line-chart [yAxisTickFormatting]="formatRound " [results]="seriesData " [scheme]="seriesColorScheme " timeline="true " showXAxisLabel="true " showYAxisLabel="true " xAxis="true " yAxis="true " showGridLines="true ">
             </ngx-charts-line-chart>
         </div>
         <div class="col-lg-6 chart-container text-center ">
-            <app-series-control i18n-title title="Daily Confirmed " (changeAggregate)="changeAggregateNew($event) " [aggregateEnabled]="false ">
+            <app-series-control i18n-title title="Daily Confirmed " [aggregateEnabled]="false ">
             </app-series-control>
             <ngx-charts-line-chart [results]="seriesDailyData " [scheme]="seriesDailyColorScheme " [yAxisTickFormatting]="formatRound " showYAxisLabel="true " timeline="true " xAxis="true " yAxis="true " showGridLines="true ">
             </ngx-charts-line-chart>
         </div>
     </div>
-
 </ng-template>
