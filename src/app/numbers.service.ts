@@ -51,9 +51,9 @@ export class NumbersService {
         'denominazione_regione', 
         regionFilter)
       return [
+        {name: $localize`Today`, value: moment(data[0].data).format('ddd D MMMM'), color: '#607d8b'},
         {name: $localize`Total Confirmed`, value: data[0].totale_casi , color: this.legendsService.legendsDict['totale_casi'].color},
         {name: $localize`New Confirmed`, value: data[0].totale_nuovi_casi, color: this.legendsService.legendsDict['totale_nuovi_casi'].color},
-        {name: $localize`Date`, value: moment(data[0].data).format('ddd D MMMM'), color: "#607d8b"},
       ]
   }
 
@@ -63,12 +63,12 @@ export class NumbersService {
    */
   private generateCountryRegionNumbers(row: any): Bar[] {
     return [
+      {name: $localize`Today`, value: moment(row.data).format('ddd D MMMM'), color: '#607d8b'},
       {name: $localize`Confirmed`, value: row.totale_nuovi_casi, color: this.legendsService.legendsDict['totale_nuovi_casi'].color},
       {name: $localize`Hospitalized`, value: row.nuovi_ricoverati_con_sintomi, color: this.legendsService.legendsDict['nuovi_ricoverati_con_sintomi'].color},
       {name: $localize`Intensive Care`, value: row.nuovi_terapia_intensiva, color: this.legendsService.legendsDict['nuovi_terapia_intensiva'].color},
       {name: $localize`Deaths` , value: row.nuovi_deceduti, color: this.legendsService.legendsDict['nuovi_deceduti'].color},
       {name: $localize`Current Positive`, value: row.variazione_totale_positivi, color: this.legendsService.legendsDict['variazione_totale_positivi'].color},
-      {name: $localize`Date`, value: moment(row.data).format('ddd D MMMM'), color: "#607d8b"},
     ]
   }
 }
