@@ -34,7 +34,7 @@
         "@fortawesome/free-brands-svg-icons": "^5.13.0",
         "@fortawesome/free-solid-svg-icons": "^5.13.0",
         "@heyteacher/ngx-charts": "^16.0.1",
-        "bootstrap": "^4.4.1",
+        "bootstrap": "^5.0.0",
         "help": "^3.0.2",
         "jquery": "^3.5.1",
         "moment": "^2.29.4",
